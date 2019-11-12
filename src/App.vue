@@ -1,11 +1,18 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <AppHeader/>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
+  import AppHeader from "./components/AppHeader";
   import axios from 'axios'
   export default {
     name: 'app',
+    components:{
+      AppHeader
+    },
     created: function () {
       axios.interceptors.response.use(response => {
         return response;

@@ -1,54 +1,59 @@
 <template>
-    <section class="hero is-success is-fullheight">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <div class="column is-4 is-offset-4">
-                    <h3 class="title has-text-black">Регистрация</h3>
-                    <div class="box">
-                        <form @submit="onSubmit">
-                            <div class="field">
-                                <label class="label">Телефон:</label>
-                                <div class="control">
-                                    <the-mask type="tel" class="input is-large" placeholder="+7 (921) 324 53 55" v-model="phone" mask="+#(###)###-##-##" required />
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Имя:</label>
-                                <div class="control">
-                                    <input class="input" type="text"  v-model="fname" required>
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <label class="label">Фамилия:</label>
-                                <div class="control">
-                                    <input class="input" type="text" v-model="lname" required>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Отчество:</label>
-                                <div class="control">
-                                    <input class="input" type="text" v-model="mname">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Email:</label>
-                                <div class="control">
-                                    <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" v-model="email" required>
-                                </div>
-                            </div>
-                            <button class="button is-block is-info is-large is-fullwidth">Выслать код<i class="fa fa-sign-in" aria-hidden="true"></i></button>
-                        </form>
-                        <br>
-                        <router-link to="/login">Вход</router-link>
-                    </div>
+    <main class="page">
+        <div class="centered">
+            <section class="login" style="margin: 50px 0">
+                <div class="login__logo">
+                    <AppLogo/>
                 </div>
-            </div>
+                <form class="form login__form" @submit="onSubmit">
+                    <div class="form__wrapper">
+                        <div class="input-field form__input">
+                            <div class="input-field__wrapper">
+                                <input class="input" type="text" placeholder="Имя" v-model="$v.fname.$model" :class="status($v.fname)" required>
+                                <UserIcon/>
+                            </div>
+                            <p class="input-field__error-text">Имя более 20 сим.</p>
+                        </div>
+                        <div class="input-field form__input">
+                            <div class="input-field__wrapper">
+                                <input class="input" type="text" placeholder="Фамилия" v-model="$v.lname.$model" :class="status($v.lname)" required>
+                                <UserIcon/>
+                            </div>
+                            <p class="input-field__error-text"> Фамилия более 20 сим.</p>
+                        </div>
+                        <div class="input-field input-field--error form__input">
+                            <div class="input-field__wrapper">
+                                <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" v-model="$v.email.$model" :class="status($v.email)" required>
+                                <MailIcon/>
+                            </div>
+                            <p class="input-field__error-text">E-mail занят</p>
+                        </div>
+                        <div class="input-field form__input">
+                            <div class="input-field__wrapper">
+                                <the-mask type="tel" placeholder="+7 (921) 324 53 55" v-model="$v.phone.$model" :class="status($v.phone)" mask="+#(###)###-##-##" required />
+                            </div>
+                            <p class="input-field__error-text">Укажите телефон</p>
+                        </div>
+                    </div>
+                    <button class="button form__submit" type="submit" @click="onSubmit">Регистрация</button>
+                    <div class="form__footer">
+                        <p>Уже зарегистрированы</p><router-link class="form__link" to="/login">Войти</router-link>
+                    </div>
+                </form>
+            </section>
         </div>
-    </section>
+    <SnackBar/>
+    </main>
+
 </template>
 
 <script>
+    import AppLogo from "../components/AppLogo";
+    import UserIcon from "../components/UserIcon";
+    import MailIcon from "../components/MailIcon";
+    import SnackBar from "../components/SnackBar";
+    import { required, minLength,alpha,email } from 'vuelidate/lib/validators'
+
     export default {
         name: "AppRegistration",
         data(){
@@ -59,6 +64,12 @@
                 mname:'',
                 email:''
             }
+        },
+        components:{
+          AppLogo,
+            UserIcon,
+            MailIcon,
+            SnackBar
         },
         methods: {
             onSubmit(e) {
@@ -79,15 +90,58 @@
                         this.$router.push('registration_confirm')
                     })
                     .catch((error) => {
-                        // eslint-disable-next-line
-                        console.error(error);
                         this.$store.commit('error/SET_ERROR', error);
                     })
+            }, status(validation) {
+                return {
+                    error: validation.$error,
+                    dirty: validation.$dirty
+                }
+            }
+        },
+        validations: {
+            phone: {
+                required,
+                minLength: minLength(11)
             },
-    }
+            fname: {
+                required,
+                minLength: minLength(2),
+                alpha
+            },
+            lname: {
+                alpha
+            },
+            email: {
+                email
+            }
+        }
     }
 </script>
 
 <style scoped>
+    input {
+        border: 1px;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+    }
 
+    .dirty {
+        border-color: #5A5;
+        background: #EFE;
+    }
+
+    .dirty:focus {
+        outline-color: #8E8;
+    }
+
+    .error {
+        border-color: red;
+        background: #FDD;
+    }
+
+    .error:focus {
+        outline-color: #F99;
+    }
 </style>

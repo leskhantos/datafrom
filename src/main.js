@@ -5,9 +5,12 @@ import router from './router'
 import { SetTokenHeaders } from '@/api'
 import VueCookies from 'vue-cookies'
 import VueThemask from 'vue-the-mask'
+import Vuelidate from 'vuelidate'
+
 
 Vue.use(VueCookies)
 Vue.use(VueThemask)
+Vue.use(Vuelidate)
 Vue.config.productionTip = false
 
 const token = VueCookies.get('Authorization')

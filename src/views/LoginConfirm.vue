@@ -1,50 +1,76 @@
 <template>
-    <section class="hero is-success is-fullheight">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <div class="column is-4 is-offset-4">
-                    <h3 class="title has-text-black">Введите код подтверждения</h3>
-                    <div class="box">
-                        <form @submit="onSubmit">
-                            <div class="field">
-                                <div class="control">
-                                    <input type="text" class="input is-large" v-model="code" required/>
-                                </div>
-                            </div>
-                            <button class="button is-block is-info is-large is-fullwidth" @click="onSubmit">Войти<i class="fa fa-sign-in" aria-hidden="true"></i></button>
-                        </form>
+<main class="page">
+    <div class="centered">
+        <section class="login" style="margin: 50px 0">
+            <div class="login__logo"><img src="../assets/images/png/mail.png" alt="logo"></div>
+            <form class="form login__form" @submit="onSubmit">
+                <div class="form__recovery">
+                    <p>Введите код СМС</p>
+                    <div class="form__recovery-inputs">
+                        <div class="form__recovery-input">
+                            <input type="text" id="num1" v-model="num1" maxlength="1" v-on:keyup="getFocus('num2')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" ref="num2" id="num2" v-model="num2" maxlength="1" v-on:keyup="getFocus('num3')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="num3" v-model="num3" maxlength="1" v-on:keyup="getFocus('num4')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="num4" v-model="num4" maxlength="1" v-on:keyup="getFocus('num5')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="num5" v-model="num5" maxlength="1" v-on:keyup="getFocus('num6')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="num6" v-model="num6" maxlength="1" v-on:keyup="onSubmit">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="form__footer">
+                    <p>Код действителен в течении 10 минут</p><a class="form__link" href="">Отправить код еще раз</a>
+                </div>
+            </form>
+        </section>
+    </div>
+    <SnackBar/>
+</main>
+
+
 </template>
 
 <script>
+    import SnackBar from "../components/SnackBar";
     export default {
-        name: "VueConfirm",
+        name: "LoginConfirm",
         data(){
             return {
-                code: ""
+                num1:"",
+                num2:"",
+                num3:"",
+                num4:"",
+                num5:"",
+                num6:""
             }
         },
+        components:{
+            SnackBar
+        },
         methods: {
+            getFocus(id) {
+                document.getElementById(id).focus();
+            },
             onSubmit(e) {
                 e.preventDefault()
                 let phone = this.$store.getters['user/getPhone']
+                let code = this.num1+this.num2+this.num3+this.num4+this.num5+this.num6
                 const info = {
                     phone: phone,
-                    smsConfirmationCode: this.code
+                    smsConfirmationCode: code
                 }
-                // eslint-disable-next-line no-console
-                console.log(info)
-                // eslint-disable-next-line no-console
-                console.log(phone)
-
                 this.$store.dispatch('user/loginConfirm', info).then(()=>{
                     this.$router.push('/')
                 }).catch((error) => {
-                    // eslint-disable-next-line
                     this.$store.commit('error/SET_ERROR', error);
                 });
             }
