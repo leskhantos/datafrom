@@ -1,0 +1,149 @@
+stages:
+- build app
+- build docker image
+- package helm chart
+- deploy helm chart
+
+variables:
+  CHART_VERSION: 1.0.0
+
+.dev: &dev
+  only:
+  - dev
+  environment:
+    name: dev
+    url: https://$BASE_DEV_HOST
+  variables:
+    # app
+    VUE_APP_API_HOST: https://api.$BASE_DEV_HOST
+
+    # docker & helm
+    IMAGE: $CI_REGISTRY_IMAGE:dev
+
+    # helm
+    HOST: lk.$BASE_DEV_HOST
+    RELEASE: $CI_PROJECT_NAME-dev
+    REGISTRY_SECRET: spiks-gitlab-registry
+
+.stage: &stage
+  only:
+  - stage
+  environment:
+    name: dev
+    url: https://$BASE_DEV_HOST
+  variables:
+    # app
+    VUE_APP_API_HOST: https://api.$BASE_STAGE_HOST
+
+    # docker & helm
+    IMAGE: $CI_REGISTRY_IMAGE:stage
+
+    # helm
+    HOST: lk.$BASE_STAGE_HOST
+    RELEASE: $CI_PROJECT_NAME-stage
+    REGISTRY_SECRET: spiks-gitlab-registry
+
+.prod: &prod
+  only:
+  - master
+  environment:
+    name: prod
+    url: https://$BASE_PROD_HOST
+  variables:
+    # app
+    VUE_APP_API_HOST: https://api.$BASE_PROD_HOST
+
+    # docker & helm
+    IMAGE: $CI_REGISTRY_IMAGE:prod
+
+    # helm
+    HOST: lk.$BASE_PROD_HOST
+    RELEASE: $CI_PROJECT_NAME-prod
+    REGISTRY_SECRET: spiks-gitlab-registry
+
+.build_app: &build_app
+  image: node:8.11.4-alpine
+  stage: build app
+  cache:
+    paths:
+    - node_modules
+  artifacts:
+    paths:
+    - dist
+  before_script:
+  - npm i
+  script:
+  - npm run build
+
+.build_docker_image: &build_docker_image
+  image: docker:18
+  stage: "build docker image"
+
+  services:
+  - docker:18-dind
+  tags:
+  - docker
+  script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker build -t $IMAGE .
+  - docker push $IMAGE
+
+.package helm chart: &package_helm_chart
+  image: registry.gitlab.spiks.ru/is/helm-kubernetes:dev
+  stage: package helm chart
+  artifacts:
+    paths:
+    - $CI_PROJECT_NAME-$CHART_VERSION.tgz
+  script:
+  - helm package $CI_PROJECT_NAME
+
+.deploy helm chart: &deploy_helm_chart
+  image: registry.gitlab.spiks.ru/is/helm-kubernetes:dev
+  stage: deploy helm chart
+  script:
+  - >
+    helm upgrade --recreate-pods --install $RELEASE $CI_PROJECT_NAME-$CHART_VERSION.tgz
+    --set host=$HOST,image=$IMAGE,project=$CI_PROJECT_NAMESPACE,registrySecret=$REGISTRY_SECRET
+    --force
+    --wait
+
+build dev app:
+  <<: *dev
+  <<: *build_app
+
+build prod app:
+  <<: *prod
+  <<: *build_app
+
+build dev docker image:
+  <<: *dev
+  <<: *build_docker_image
+  dependencies:
+  - build dev app
+
+build prod docker image:
+  <<: *prod
+  <<: *build_docker_image
+  dependencies:
+  - build prod app
+
+
+package dev helm chart:
+  <<: *dev
+  <<: *package_helm_chart
+
+package prod helm chart:
+  <<: *prod
+  <<: *package_helm_chart
+
+deploy dev helm chart:
+  <<: *dev
+  <<: *deploy_helm_chart
+  dependencies:
+  - package dev helm chart
+
+deploy prod helm chart:
+  <<: *prod
+  <<: *deploy_helm_chart
+  dependencies:
+  - package prod helm chart

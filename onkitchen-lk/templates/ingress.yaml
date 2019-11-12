@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    project: {{ .Values.project }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.host }}
+    secretName: {{ .Release.Name }}-certificate
+  rules:
+  - host: {{required "You have to specify .Value.host" .Values.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}
+          servicePort: http
