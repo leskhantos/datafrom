@@ -78,6 +78,10 @@
             staticScript.setAttribute('id', 'main-js')
             staticScript.async = true
             document.head.appendChild(staticScript)
+        },
+        beforeDestroy() {
+            let src = document.getElementById('main-js')
+            document.head.removeChild(src)
         }
         }
 </script>

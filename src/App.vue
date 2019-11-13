@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <body>
     <AppHeader/>
     <router-view></router-view>
-  </div>
+    <div class="overlay"></div>
+  </body>
 </template>
 
 <script>
