@@ -80,11 +80,29 @@ const getListProfiles = async ({commit}) => {
       console.error(error);
     })
 }
+const getMainProfile = async ({commit}) => {
+  await ListProfiles()
+    .then((response) => {
+      const data = response.data._embedded.items
+      let mainProfile = {};
+      Object.keys(data).forEach(function (key) {
+        if (data[key].isMain) {
+          mainProfile = data[key];
+        }
+      })
+      commit('MAIN_PROFILE', mainProfile)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
 export default {
   loginConfirm,
   registrationConfirm,
   logout,
   sendSMSLogin,
   sendSMSRegistration,
-  getListProfiles
+  getListProfiles,
+  getMainProfile
 }

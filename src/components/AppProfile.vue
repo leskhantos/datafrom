@@ -5,9 +5,10 @@
                 <div class="user__profiles">
                     <label class="user__profile user__profile--main">
                         <input class="visually-hidden" type="radio" name="profile" checked>
-                        <div class="user__avatar user__avatar--big"><img src="@/assets/images/jpg/avatar.jpg"
-                                                                         alt="avatar"></div>
-                        <p class="user__name">Ольга</p>
+                        <div v-if="mainProfile.avatar !== null" class="user__avatar user__avatar--big"><img
+                                :src="mainProfile.avatar.path"
+                                alt="avatar"></div>
+                        <p class="user__name">{{mainProfile.fullName.firstName}}</p>
                     </label>
                     <ul class="user__profile-list">
                         <li v-for="(item, key) in listProfiles" :key="key">
@@ -28,7 +29,8 @@
                 </div>
                 <div class="user__menu">
                     <ul>
-                        <li><a class="user__menu-link user__menu-link--submenu" href="">
+                        <li><a :class="['user__menu-link','user__menu-link--submenu', { 'open':open_menu }]" href=""
+                               @click.prevent="open_menu=!open_menu">
                             <UserIcon />
                             <span>Редактирование профиля</span></a>
                             <div class="user__submenu-wrap">
@@ -76,6 +78,11 @@
 
   export default {
     name: "AppProfile",
+    data() {
+      return {
+        open_menu: false
+      }
+    },
     components: {
       UserIcon,
       DiaryIcon,
@@ -87,10 +94,14 @@
     computed: {
       listProfiles() {
         return this.$store.getters['user/getListProfiles'].items;
+      },
+      mainProfile() {
+        return this.$store.getters['user/getMainProfile'];
       }
     },
     mounted() {
-      this.$store.dispatch('user/getListProfiles')
+      this.$store.dispatch('user/getListProfiles'),
+        this.$store.dispatch('user/getMainProfile')
     }
   }
 </script>
