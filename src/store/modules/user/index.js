@@ -6,8 +6,9 @@ import VueCookies from 'vue-cookies'
 const state = {
   user: [],
   token: VueCookies.get('Authorization') || '',
-  phone:'',
-  registration_info:{}
+  phone: '',
+  registration_info: {},
+  list_profiles: []
 }
 
 export default {
