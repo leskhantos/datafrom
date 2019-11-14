@@ -36,7 +36,8 @@
                             <div class="user__submenu-wrap">
                                 <ul class="user__submenu">
                                     <li v-for="(item, key) in listProfiles" :key="key"><a class="user__menu-link"
-                                                                                          href="">
+                                                                                          href=""
+                                                                                          @click="goToProfile(item.id)">
                                         <div v-if="item.avatar !== null" class="user__avatar"><img
                                                 :src="item.avatar.path"
                                                 alt="avatar"></div>
@@ -90,6 +91,11 @@
       MenuIcon,
       BlogIcon,
       StatisticsIcon
+    },
+    methods: {
+      goToProfile(id) {
+        this.$router.push({name: 'profile', params: {id: id}})
+      },
     },
     computed: {
       listProfiles() {

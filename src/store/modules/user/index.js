@@ -9,7 +9,8 @@ const state = {
   phone: '',
   registration_info: {},
   list_profiles: [],
-  main_profile: []
+  main_profile: [],
+  profile: {}
 }
 
 export default {

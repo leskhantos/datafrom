@@ -27,3 +27,7 @@ export function SendSMSRegistration(phone) {
 export function ListProfiles() {
   return axios.get(Settings.host + '/api/v1/profiles/self')
 }
+
+export function GetProfile(id) {
+  return axios.get(Settings.host + '/api/v1/profiles/' + id)
+}
