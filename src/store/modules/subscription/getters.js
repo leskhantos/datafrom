@@ -1,5 +1,5 @@
-const getSubscription = state => state.subscriptions
+const getShopList = state => state.shopList
 
 export default {
-  getSubscription
+    getShopList
 }

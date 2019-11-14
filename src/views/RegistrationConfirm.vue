@@ -33,12 +33,10 @@
                 </form>
             </section>
         </div>
-        <SnackBar/>
     </main>
 </template>
 
 <script>
-    import SnackBar from "../components/SnackBar";
     export default {
         name: "RegistrationConfirm",
         data(){
@@ -52,7 +50,7 @@
             }
         },
         components:{
-            SnackBar
+
         },
         methods: {
             getFocus(id) {

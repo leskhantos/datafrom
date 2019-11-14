@@ -1,8 +1,8 @@
 
-const GET_SUBSCRIPTION = (state, subscriptions) => {
-  state.subscriptions = subscriptions
+const GET_SHOP_LIST = (state, shopList) => {
+  state.shopList = shopList
 }
 
 export default {
-  GET_SUBSCRIPTION
+  GET_SHOP_LIST
 }

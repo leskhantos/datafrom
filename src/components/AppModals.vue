@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import CloseIcon from "./CloseIcon";
+    import CloseIcon from "./icons/CloseIcon";
     export default {
         name: "AppModals",
         components: {CloseIcon}

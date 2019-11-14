@@ -42,16 +42,14 @@
                 </form>
             </section>
         </div>
-    <SnackBar/>
     </main>
 
 </template>
 
 <script>
     import AppLogo from "../components/AppLogo";
-    import UserIcon from "../components/UserIcon";
-    import MailIcon from "../components/MailIcon";
-    import SnackBar from "../components/SnackBar";
+    import UserIcon from "../components/icons/UserIcon";
+    import MailIcon from "../components/icons/MailIcon";
     import { required, minLength,alpha,email } from 'vuelidate/lib/validators'
 
     export default {
@@ -68,8 +66,7 @@
         components:{
           AppLogo,
             UserIcon,
-            MailIcon,
-            SnackBar
+            MailIcon
         },
         methods: {
             onSubmit(e) {

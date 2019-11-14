@@ -2,6 +2,7 @@
   <body>
     <AppHeader/>
     <router-view></router-view>
+    <SnackBar/>
     <div class="overlay"></div>
   </body>
 </template>
@@ -9,10 +10,12 @@
 <script>
   import AppHeader from "./components/AppHeader";
   import axios from 'axios'
+  import SnackBar from "./components/icons/SnackBar";
   export default {
     name: 'app',
     components:{
-      AppHeader
+      AppHeader,
+      SnackBar
     },
     created: function () {
       axios.interceptors.response.use(response => {

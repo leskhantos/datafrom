@@ -23,7 +23,6 @@
             </section>
 
         </div>
-        <SnackBar/>
     </main>
 
 </template>
@@ -31,7 +30,6 @@
 <script>
 
     import AppLogo from "../components/AppLogo";
-    import SnackBar from "../components/SnackBar";
     import { required, minLength } from 'vuelidate/lib/validators'
 
     export default {
@@ -42,7 +40,7 @@
         },
         components:{
           AppLogo,
-            SnackBar
+
         },
         methods: {
             onSubmit(e) {

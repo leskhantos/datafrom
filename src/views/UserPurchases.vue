@@ -11,7 +11,6 @@
                         <span>Поделиться</span>
                     </button>
                 </div>
-<!--                <PurchaseFilter :pick="pick" :type="type" v-on:changeType="updateType($event)" v-on:changePick="updatePick($event)"/>-->
                 <div class="paper filter">
                     <div class="filter__col">
                         <p class="filter__name">Сортировать по:</p>
@@ -55,10 +54,6 @@
                                 <label class="input-radio">
                                     <input class="visually-hidden" type="radio" name="type" value="second" v-model="typed" ><span class="input-radio__custom"></span>
                                     <p>2 вид</p>
-                                </label>
-                                <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="type" value="third" v-model="typed"><span class="input-radio__custom"></span>
-                                    <p>3 вид</p>
                                 </label>
                             </div>
                         </form>
@@ -108,7 +103,7 @@
                         <div class="buy__item-wrap">
                             <label class="input-checkbox">
                                 <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>{{ item.ingredient.title }}</p>
+                                <p>{{ item.ingredient.title }} {{item.weight}}г</p>
                             </label>
                             <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
                             <button class="icon-button buy__item-arrow" type="button" title="Открыть">
@@ -230,11 +225,11 @@
                             <button class="tabs__btn" type="button">Ужин</button>
                         </div>
                         <ul class="scheduler-food__list">
-                            <li class="scheduler-food__item">
+                            <li class="scheduler-food__item" v-for="item in getSubList" :key="item.id">
                                 <div class="scheduler-food__item-wrap">
                                     <label class="input-checkbox">
                                         <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Борщ</p>
+                                        <p>{{ item.recipe.title }}</p>
                                     </label>
                                     <button class="icon-button scheduler-food__btn-submenu" type="button" title="Открыть">
                                      <DownIcon/>
@@ -267,7 +262,7 @@
                                     </section>
                                     <div class="scheduler-food__meta">
                                         <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
-                                        <p class="scheduler-food__weight">200 г</p>
+                                        <p class="scheduler-food__weight">{{item.weight}} г</p>
                                         <p class="scheduler-food__ccal">89 Кал</p>
                                         <p class="scheduler-food__item-date">Завтрак: <b>11.11.2018</b></p>
                                     </div>
@@ -357,21 +352,19 @@
 <script>
     import AppProfile from "../components/AppProfile";
     import BreadCrumbs from "../components/BreadCrumbs";
-    import ShareIcon from "../components/ShareIcon";
-    // import PurchaseFilter from "../components/PurchaseFilter";
-    import DownIcon from "../components/DownIcon";
-    import ActionsIcon from "../components/ActionsIcon";
-    import ClockIcon from "../components/ClockIcon";
-    import CloseIcon from "../components/CloseIcon";
-    import ProfileAddIcon from "../components/ProfileAddIcon";
+    import ShareIcon from "../components/icons/ShareIcon";
+    import DownIcon from "../components/icons/DownIcon";
+    import ActionsIcon from "../components/icons/ActionsIcon";
+    import ClockIcon from "../components/icons/ClockIcon";
+    import CloseIcon from "../components/icons/CloseIcon";
+    import ProfileAddIcon from "../components/icons/ProfileAddIcon";
     import AppModals from "../components/AppModals";
-    import PreviousIcon from "../components/PreviousIcon";
-    import NextIcon from "../components/NextIcon";
-    import ResetIcon from "../components/ResetIcon";
+    import PreviousIcon from "../components/icons/PreviousIcon";
+    import NextIcon from "../components/icons/NextIcon";
+    import ResetIcon from "../components/icons/ResetIcon";
     export default {
         name: "UserPurchases",
         components:{
-            // PurchaseFilter,
             AppProfile,
             BreadCrumbs,
             ShareIcon,
@@ -392,24 +385,15 @@
             }
         },
         methods: {
-            // updatePick(pick){
-            //     this.pick=pick
-            // },
-            // updateType(type){
-            //     this.type=type
-            // }
         },
         computed:{
             getSubList(){
-                let d = this.$store.getters['subscription/getSubscription']
-                // eslint-disable-next-line no-console
-                console.log(d)
-                return d
+                return this.$store.getters['subscription/getShopList']
             }
         },
         created() {
             let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c'
-            this.$store.dispatch('subscription/getSubscriptionAction',profile)
+            this.$store.dispatch('subscription/getShopListAction',profile)
         }
 
     }

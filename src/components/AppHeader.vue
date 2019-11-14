@@ -49,9 +49,9 @@
 
 <script>
     import AppLogo from "./AppLogo";
-    import LogoutIcon from "./LogoutIcon";
-    import NotificationIcon from "./NotificationIcon";
-    import InformationIcon from "./InformationIcon";
+    import LogoutIcon from "./icons/LogoutIcon";
+    import NotificationIcon from "./icons/NotificationIcon";
+    import InformationIcon from "./icons/InformationIcon";
     export default {
         name: "Header",
         components:{
