@@ -10,7 +10,7 @@
 <script>
   import AppHeader from "./components/AppHeader";
   import axios from 'axios'
-  import SnackBar from "./components/icons/SnackBar";
+  import SnackBar from "./components/SnackBar";
   export default {
     name: 'app',
     components:{
