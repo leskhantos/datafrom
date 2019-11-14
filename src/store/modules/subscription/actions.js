@@ -8,10 +8,8 @@ const getShopListAction = ({commit}, profile) => {
             const data = response.data
             commit('GET_SHOP_LIST', data.items)
         })
-        .catch((error) => {
-            commit('SET_ERROR',error)
-            // eslint-disable-next-line
-            console.error(error);
+        .catch(() => {
+            commit('SET_ERROR','Ошибка при получении данных')
         })
 }
 
