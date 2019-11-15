@@ -20,7 +20,7 @@
 
 <script>
   export default {
-    name: "Phone"
+    name: "PhoneIcon"
   }
 </script>
 

@@ -10,8 +10,7 @@
 
 <script>
   export default {
-    name: "ParagraphProfile",
-    props: ['item', 'value', 'measure', 'icon']
+    name: "ParagraphProfile"
   }
 </script>
 

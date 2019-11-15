@@ -7,7 +7,7 @@
 
 <script>
   export default {
-    name: "Email"
+    name: "EmailIcon"
   }
 </script>
 

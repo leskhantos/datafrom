@@ -20,41 +20,31 @@
                         <div class="profile__fields-wrap">
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Face />
+                                    <FaceIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Имя</p>
                                 <span slot="label">{{this.firstName}}</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Email />
+                                    <EmailIcon />
                                 </div>
                                 <p class="profile__label" slot="item">E-mail</p>
                                 <span slot="label">mail@mail.ru</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Phone />
+                                    <PhoneIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Телефон</p>
                                 <span slot="label">+7 (921) 315-57-75</span>
                             </paragraph-profile>
                         </div>
                         <a class="profile__edit" href="">
-                            <svg height="30" viewBox="0 -1 401.52289 401" width="30" xmlns="http://www.w3.org/2000/svg">
-                                <path d="m370.589844 250.972656c-5.523438 0-10 4.476563-10 10v88.789063c-.019532 16.5625-13.4375 29.984375-30 30h-280.589844c-16.5625-.015625-29.980469-13.4375-30-30v-260.589844c.019531-16.558594 13.4375-29.980469 30-30h88.789062c5.523438 0 10-4.476563 10-10 0-5.519531-4.476562-10-10-10h-88.789062c-27.601562.03125-49.96875 22.398437-50 50v260.59375c.03125 27.601563 22.398438 49.96875 50 50h280.589844c27.601562-.03125 49.96875-22.398437 50-50v-88.792969c0-5.523437-4.476563-10-10-10zm0 0" />
-                                <path d="m376.628906 13.441406c-17.574218-17.574218-46.066406-17.574218-63.640625 0l-178.40625 178.40625c-1.222656 1.222656-2.105469 2.738282-2.566406 4.402344l-23.460937 84.699219c-.964844 3.472656.015624 7.191406 2.5625 9.742187 2.550781 2.546875 6.269531 3.527344 9.742187 2.566406l84.699219-23.464843c1.664062-.460938 3.179687-1.34375 4.402344-2.566407l178.402343-178.410156c17.546875-17.585937 17.546875-46.054687 0-63.640625zm-220.257812 184.90625 146.011718-146.015625 47.089844 47.089844-146.015625 146.015625zm-9.40625 18.875 37.621094 37.625-52.039063 14.417969zm227.257812-142.546875-10.605468 10.605469-47.09375-47.09375 10.609374-10.605469c9.761719-9.761719 25.589844-9.761719 35.351563 0l11.738281 11.734375c9.746094 9.773438 9.746094 25.589844 0 35.359375zm0 0" />
-                            </svg>
+                            <EditIcon />
                             <span>Редактировать профиль</span></a>
                         <button class="profile__btn-logout" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 467.2" width="30" height="30">
-                                <path d="M356.5,221.3l-54.8-38.6c-9.9-7-23.6,0.1-23.6,12.3v23.6H15c-8.3,0-15,6.7-15,15c0,8.3,6.7,15,15,15h263v23.6
-    c0,12.2,13.8,19.2,23.6,12.3l54.8-38.6C364.9,239.9,364.9,227.3,356.5,221.3z" />
-                                <path d="M278.4,0C192.3,0,116.6,46.8,76.1,116.8c-4.1,7.2-1.7,16.3,5.5,20.5c7.2,4.1,16.3,1.7,20.5-5.5
-    C137.3,70.9,203.1,30,278.4,30C390.7,30,482,121.3,482,233.6s-91.3,203.6-203.6,203.6c-75.3,0-141.2-40.9-176.4-101.8
-    c-4.1-7.2-13.3-9.6-20.5-5.5c-7.2,4.1-9.6,13.3-5.5,20.5c40.5,70,116.2,116.8,202.3,116.8c129.1,0,233.6-104.5,233.6-233.6
-    C512,104.5,407.5,0,278.4,0z" />
-                            </svg>
+                            <CloseIcon />
                             <span>Выйти из аккаунта</span>
                         </button>
                     </div>
@@ -63,49 +53,49 @@
                         <div class="profile__fields-wrap">
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Face />
+                                    <FaceIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Пол</p>
                                 <span slot="label">{{this.gender}}</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Cake />
+                                    <CakeIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Возраст</p>
                                 <span slot="label">{{this.birthDate}} лет</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Weight />
+                                    <WeightIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Вес</p>
                                 <span slot="label">{{this.weight}} кг</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Height />
+                                    <HeightIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Рост</p>
                                 <span slot="label">{{this.height}} см</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Activity />
+                                    <ActivityIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Активность</p>
                                 <span slot="label">Средняя активность</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Target />
+                                    <TargetIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Цель</p>
                                 <span slot="label">{{this.target}}</span>
                             </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
-                                    <Allerg />
+                                    <AllergIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Аллергены</p>
                                 <span slot="label">Морковь, свекла</span>
@@ -148,15 +138,17 @@
   import AppModals from "../components/AppModals";
   import BreadCrumbs from "../components/BreadCrumbs";
   import AppProfile from "../components/AppProfile";
-  import Email from "../components/icons/Email";
-  import Phone from "../components/icons/Phone";
-  import Activity from "../components/icons/Activity";
-  import Allerg from "../components/icons/Allerg";
-  import Face from "../components/icons/Face";
-  import Height from "../components/icons/Height";
-  import Weight from "../components/icons/Weight";
-  import Cake from "../components/icons/Cake";
-  import Target from "../components/icons/Target";
+  import EmailIcon from "../components/icons/EmailIcon";
+  import PhoneIcon from "../components/icons/PhoneIcon";
+  import ActivityIcon from "../components/icons/ActivityIcon";
+  import AllergIcon from "../components/icons/AllergIcon";
+  import FaceIcon from "../components/icons/FaceIcon";
+  import HeightIcon from "../components/icons/HeightIcon";
+  import WeightIcon from "../components/icons/WeightIcon";
+  import CakeIcon from "../components/icons/CakeIcon";
+  import TargetIcon from "../components/icons/TargetIcon";
+  import EditIcon from "../components/icons/EditIcon";
+  import CloseIcon from "../components/icons/CloseIcon";
 
 
   export default {
@@ -167,15 +159,17 @@
       AppModals,
       BreadCrumbs,
       AppProfile,
-      Email,
-      Phone,
-      Activity,
-      Allerg,
-      Face,
-      Height,
-      Weight,
-      Cake,
-      Target,
+      EmailIcon,
+      PhoneIcon,
+      ActivityIcon,
+      AllergIcon,
+      FaceIcon,
+      HeightIcon,
+      WeightIcon,
+      CakeIcon,
+      TargetIcon,
+      EditIcon,
+      CloseIcon,
       "paragraph-profile": ParagraphProfile
     },
     data() {

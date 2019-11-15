@@ -23,7 +23,7 @@
 
 <script>
   export default {
-    name: "Allerg"
+    name: "AllergIcon"
   }
 </script>
 

@@ -26,7 +26,7 @@
 
 <script>
   export default {
-    name: "Target"
+    name: "TargetIcon"
   }
 </script>
 

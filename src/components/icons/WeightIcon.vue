@@ -25,7 +25,7 @@
 
 <script>
   export default {
-    name: "Cake"
+    name: "CakeIcon"
   }
 </script>
 
