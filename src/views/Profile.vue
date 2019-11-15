@@ -18,7 +18,6 @@
                         <div class="user__avatar profile__avatar"><img src="@/assets/images/jpg/avatar.jpg"
                                                                        alt="avatar"></div>
                         <div class="profile__fields-wrap">
-
                             <paragraph-profile>
                                 <div slot="icon">
                                     <Face />
@@ -26,20 +25,20 @@
                                 <p class="profile__label" slot="item">Имя</p>
                                 <span slot="label">{{this.firstName}}</span>
                             </paragraph-profile>
-                            <div class="profile__field">
-                                <p class="profile__label">E-mail</p>
-                                <p class="profile__input">
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Email />
-                                    <span>mail@mail.ru</span>
-                                </p>
-                            </div>
-                            <div class="profile__field">
-                                <p class="profile__label">Телефон</p>
-                                <p class="profile__input">
+                                </div>
+                                <p class="profile__label" slot="item">E-mail</p>
+                                <span slot="label">mail@mail.ru</span>
+                            </paragraph-profile>
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Phone />
-                                    <span>+7 (921) 315-57-75</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Телефон</p>
+                                <span slot="label">+7 (921) 315-57-75</span>
+                            </paragraph-profile>
                         </div>
                         <a class="profile__edit" href="">
                             <svg height="30" viewBox="0 -1 401.52289 401" width="30" xmlns="http://www.w3.org/2000/svg">
@@ -90,13 +89,13 @@
                                 <p class="profile__label" slot="item">Рост</p>
                                 <span slot="label">{{this.height}} см</span>
                             </paragraph-profile>
-                            <div class="profile__field">
-                                <p class="profile__label">Активность</p>
-                                <p class="profile__input">
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Activity />
-                                    <span>Средняя активность</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Активность</p>
+                                <span slot="label">Средняя активность</span>
+                            </paragraph-profile>
                             <paragraph-profile>
                                 <div slot="icon">
                                     <Target />
@@ -104,13 +103,13 @@
                                 <p class="profile__label" slot="item">Цель</p>
                                 <span slot="label">{{this.target}}</span>
                             </paragraph-profile>
-                            <div class="profile__field">
-                                <p class="profile__label">Аллергены</p>
-                                <p class="profile__input">
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Allerg />
-                                    <span>Морковь, свекла</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Аллергены</p>
+                                <span slot="label">Морковь, свекла</span>
+                            </paragraph-profile>
                         </div>
                         <button class="button profile__btn" type="button">Расчёт калорийности и БЖУ</button>
                     </div>
