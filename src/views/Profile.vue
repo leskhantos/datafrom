@@ -9,18 +9,23 @@
                 <div class="title__wrapper">
                     <h1 class="title">Профиль</h1>
                 </div>
+                <div id="app">
+                    <child :text="message"></child>
+                    <child :text="message"></child>
+                </div>
                 <div class="paper profile">
                     <div class="profile__col">
                         <div class="user__avatar profile__avatar"><img src="@/assets/images/jpg/avatar.jpg"
                                                                        alt="avatar"></div>
                         <div class="profile__fields-wrap">
-                            <div class="profile__field">
-                                <p class="profile__label">Имя</p>
-                                <p class="profile__input">
+
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Face />
-                                    <span>{{this.firstName}}</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Имя</p>
+                                <span slot="label">{{this.firstName}}</span>
+                            </paragraph-profile>
                             <div class="profile__field">
                                 <p class="profile__label">E-mail</p>
                                 <p class="profile__input">
@@ -57,34 +62,34 @@
                     <div class="profile__col">
                         <h2 class="profile__caption">Информация о профиле</h2>
                         <div class="profile__fields-wrap">
-                            <div class="profile__field">
-                                <p class="profile__label">Пол</p>
-                                <p class="profile__input">
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Face />
-                                    <span>{{this.gender}}</span>
-                                </p>
-                            </div>
-                            <div class="profile__field">
-                                <p class="profile__label">Возраст</p>
-                                <p class="profile__input">
+                                </div>
+                                <p class="profile__label" slot="item">Пол</p>
+                                <span slot="label">{{this.gender}}</span>
+                            </paragraph-profile>
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Cake />
-                                    <span>{{this.birthDate}} лет</span>
-                                </p>
-                            </div>
-                            <div class="profile__field">
-                                <p class="profile__label">Вес</p>
-                                <p class="profile__input">
+                                </div>
+                                <p class="profile__label" slot="item">Возраст</p>
+                                <span slot="label">{{this.birthDate}} лет</span>
+                            </paragraph-profile>
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Weight />
-                                    <span>{{this.weight}} кг</span>
-                                </p>
-                            </div>
-                            <div class="profile__field">
-                                <p class="profile__label">Рост</p>
-                                <p class="profile__input">
+                                </div>
+                                <p class="profile__label" slot="item">Вес</p>
+                                <span slot="label">{{this.weight}} кг</span>
+                            </paragraph-profile>
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Height />
-                                    <span>{{this.height}} см</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Рост</p>
+                                <span slot="label">{{this.height}} см</span>
+                            </paragraph-profile>
                             <div class="profile__field">
                                 <p class="profile__label">Активность</p>
                                 <p class="profile__input">
@@ -92,13 +97,13 @@
                                     <span>Средняя активность</span>
                                 </p>
                             </div>
-                            <div class="profile__field">
-                                <p class="profile__label">Цель</p>
-                                <p class="profile__input">
+                            <paragraph-profile>
+                                <div slot="icon">
                                     <Target />
-                                    <span>{{this.target}}</span>
-                                </p>
-                            </div>
+                                </div>
+                                <p class="profile__label" slot="item">Цель</p>
+                                <span slot="label">{{this.target}}</span>
+                            </paragraph-profile>
                             <div class="profile__field">
                                 <p class="profile__label">Аллергены</p>
                                 <p class="profile__input">
@@ -139,36 +144,40 @@
 </template>
 
 <script>
+  import ParagraphProfile from '../components/ParagraphProfile'
   import AppHeader from "../components/AppHeader";
   import AppModals from "../components/AppModals";
   import BreadCrumbs from "../components/BreadCrumbs";
   import AppProfile from "../components/AppProfile";
-  import Face from "../components/icons/Face";
   import Email from "../components/icons/Email";
   import Phone from "../components/icons/Phone";
-  import Cake from "../components/icons/Cake";
-  import Weight from "../components/icons/Weight";
-  import Height from "../components/icons/Height";
   import Activity from "../components/icons/Activity";
-  import Target from "../components/icons/Target";
   import Allerg from "../components/icons/Allerg";
+  import Face from "../components/icons/Face";
+  import Height from "../components/icons/Height";
+  import Weight from "../components/icons/Weight";
+  import Cake from "../components/icons/Cake";
+  import Target from "../components/icons/Target";
+
 
   export default {
+
     props: ['id'],
     components: {
       AppHeader,
       AppModals,
       BreadCrumbs,
       AppProfile,
-      Face,
       Email,
       Phone,
-      Cake,
-      Weight,
-      Height,
       Activity,
+      Allerg,
+      Face,
+      Height,
+      Weight,
+      Cake,
       Target,
-      Allerg
+      "paragraph-profile": ParagraphProfile
     },
     data() {
       return {
@@ -208,8 +217,8 @@
         } else {
           this.gender = "Женщина"
         }
-        this.height = profile.height
-        this.weight = profile.weight
+        this.height = Math.round(profile.height)
+        this.weight = Math.round(profile.weight)
         this.target = profile.target
       })
     }

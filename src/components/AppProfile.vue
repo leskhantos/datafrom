@@ -3,21 +3,23 @@
         <div class="grid__column user__wrapper">
             <section class="paper user">
                 <div class="user__profiles">
-                    <label class="user__profile user__profile--main">
+                    <label v-if="mainProfile != null" class="user__profile user__profile--main">
                         <input class="visually-hidden" type="radio" name="profile" checked>
-                        <div v-if="mainProfile.avatar !== null" class="user__avatar user__avatar--big"><img
+                        <div v-if="mainProfile.avatar != null" class="user__avatar user__avatar--big"><img
                                 :src="mainProfile.avatar.path"
                                 alt="avatar"></div>
-                        <p class="user__name">{{mainProfile.fullName.firstName}}</p>
+                        <p v-if="mainProfile.fullName.firstName != null" class="user__name">
+                            {{mainProfile.fullName.firstName}}</p>
                     </label>
                     <ul class="user__profile-list">
                         <li v-for="(item, key) in listProfiles" :key="key">
-                            <label class="user__profile" v-if="item.isMain === false">
+                            <label class="user__profile" v-if="item.isMain == false">
                                 <input class="visually-hidden" type="radio" name="profile">
-                                <div v-if="item.avatar !== null" class="user__avatar"><img :src="item.avatar.path"
-                                                                                           alt="avatar">
+                                <div v-if="item.avatar != null" class="user__avatar"><img :src="item.avatar.path"
+                                                                                          alt="avatar">
                                 </div>
-                                <p class="user__name">{{item.fullName.firstName}}</p>
+                                <p v-if="item.fullName.firstName != null" class="user__name">
+                                    {{item.fullName.firstName}}</p>
                             </label>
                         </li>
                         <li class="user__btn-add">
@@ -38,10 +40,11 @@
                                     <li v-for="(item, key) in listProfiles" :key="key"><a class="user__menu-link"
                                                                                           href=""
                                                                                           @click="goToProfile(item.id)">
-                                        <div v-if="item.avatar !== null" class="user__avatar"><img
+                                        <div v-if="item.avatar != null" class="user__avatar"><img
                                                 :src="item.avatar.path"
                                                 alt="avatar"></div>
-                                        <p class="user__name">{{item.fullName.firstName}}</p></a></li>
+                                        <p v-if="item.fullName.firstName != null" class="user__name">
+                                            {{item.fullName.firstName}}</p></a></li>
                                 </ul>
                             </div>
                         </li>
