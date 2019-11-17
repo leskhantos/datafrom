@@ -20,5 +20,5 @@ export function SendSMSRegistration(phone) {
     return axios.post(Settings.host + '/api/v1/request-sms/account-creation', phone)
 }
 export function GetShopList(profile) {
-    return axios.get(Settings.host + '/api/v1/subscription/shop_list/'+profile+'?'+'dateFrom=2019-11-05&dateTo=2019-11-11')
+    return axios.get(Settings.host + '/api/v1/subscription/shop_list/'+profile)
 }

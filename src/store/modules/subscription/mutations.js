@@ -1,8 +1,8 @@
 
-const GET_SHOP_LIST = (state, shopList) => {
+const SET_SHOP_LIST = (state, shopList) => {
   state.shopList = shopList
 }
 
 export default {
-  GET_SHOP_LIST
+  SET_SHOP_LIST: SET_SHOP_LIST
 }
