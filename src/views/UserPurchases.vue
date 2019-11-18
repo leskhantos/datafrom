@@ -92,7 +92,7 @@
                     <div class="filter__col span-2" v-if="typed==='first' && picked==='recipe'">
                         <div class="tabs__buttons">
                             <button class="tabs__btn" v-bind:class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast')">Завтрак</button>
-                            <button class="tabs__btn" v-bind:class="{ active: type==='snack' }" type="button" @click="getFilteredByMealOfDay('snack')">Перекус</button>
+                            <button class="tabs__btn" v-bind:class="{ active: type==='brunch' }" type="button" @click="getFilteredByMealOfDay('brunch')">Перекус</button>
                             <button class="tabs__btn" v-bind:class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch')">Обед</button>
                             <button class="tabs__btn" v-bind:class="{ active: type==='dinner' }"  type="button" @click="getFilteredByMealOfDay('dinner')">Ужин</button>
                         </div>
@@ -167,7 +167,7 @@
                                                 </label>
                                             </div>
                                         </section>
-                                        <p class="buy__item-meta">{{item.mealType}}: {{dateFormat(item.date)}}</p>
+                                        <p class="buy__item-meta">{{getTranslatedMealType(item.mealType)}}: {{dateFormat(item.date)}}</p>
                                     </div>
                                 </li>
                             </ul>
@@ -229,7 +229,7 @@
                                         <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
                                         <p class="scheduler-food__weight">{{item.weight}} г</p>
                                         <p class="scheduler-food__ccal">89 Кал</p>
-                                        <p class="scheduler-food__item-date">{{item.mealType}}: <b>{{dateFormat(item.date)}}</b></p>
+                                        <p class="scheduler-food__item-date">{{getTranslatedMealType(item.mealType)}}: <b>{{dateFormat(item.date)}}</b></p>
                                     </div>
                                 </div>
                                 <div  :class="['scheduler-food__item-dropdown',{'open':item.open}]">
@@ -444,6 +444,19 @@
             }
         },
         methods: {
+            getTranslatedMealType(type){
+                let rusMealType
+                if(type==="breakfast"){
+                    rusMealType="Завтрак"
+                }else if(type==="dinner"){
+                    rusMealType="Ужин"
+                }else if(type==="brunch"){
+                    rusMealType="Перекус"
+                }else if(type==="lunch"){
+                    rusMealType="Обед"
+                }
+                return rusMealType
+            },
             getFilteredByMealOfDay(type){
                 let shopLists = this.$store.getters['subscription/getShopList']
                 this.type = type;
