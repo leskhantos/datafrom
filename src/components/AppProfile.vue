@@ -3,7 +3,7 @@
         <div class="grid__column user__wrapper">
             <section class="paper user">
                 <div class="user__profiles">
-                    <label v-if="mainProfile != null" class="user__profile user__profile--main">
+                    <label v-if="mainProfile.fullName != null" class="user__profile user__profile--main">
                         <input class="visually-hidden" type="radio" name="profile" checked>
                         <div v-if="mainProfile.avatar != null" class="user__avatar user__avatar--big"><img
                                 :src="mainProfile.avatar.path"
@@ -37,14 +37,16 @@
                             <span>Редактирование профиля</span></a>
                             <div class="user__submenu-wrap">
                                 <ul class="user__submenu">
-                                    <li v-for="(item, key) in listProfiles" :key="key"><a class="user__menu-link"
-                                                                                          href=""
-                                                                                          @click="goToProfile(item.id)">
-                                        <div v-if="item.avatar != null" class="user__avatar"><img
-                                                :src="item.avatar.path"
-                                                alt="avatar"></div>
-                                        <p v-if="item.fullName.firstName != null" class="user__name">
-                                            {{item.fullName.firstName}}</p></a></li>
+                                    <li v-for="(item, key) in listProfiles" :key="key">
+                                        <router-link class="user__menu-link"
+                                                     href=""
+                                                     :to="{ name: 'profile', params: { id: item.id }}">
+                                            <div v-if="item.avatar != null" class="user__avatar"><img
+                                                    :src="item.avatar.path"
+                                                    alt="avatar"></div>
+                                            <p v-if="item.fullName.firstName != null" class="user__name">
+                                                {{item.fullName.firstName}}</p></router-link>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -94,11 +96,6 @@
       MenuIcon,
       BlogIcon,
       StatisticsIcon
-    },
-    methods: {
-      goToProfile(id) {
-        this.$router.push({name: 'profile', params: {id: id}})
-      },
     },
     computed: {
       listProfiles() {

@@ -127,7 +127,6 @@
                 </div>
             </div>
         </section>
-        <AppModals />
     </main>
     </body>
 </template>
@@ -135,7 +134,6 @@
 <script>
   import ParagraphProfile from '../components/ParagraphProfile'
   import AppHeader from "../components/AppHeader";
-  import AppModals from "../components/AppModals";
   import BreadCrumbs from "../components/BreadCrumbs";
   import AppProfile from "../components/AppProfile";
   import EmailIcon from "../components/icons/EmailIcon";
@@ -156,7 +154,6 @@
     props: ['id'],
     components: {
       AppHeader,
-      AppModals,
       BreadCrumbs,
       AppProfile,
       EmailIcon,
@@ -194,26 +191,25 @@
         return age;
       }
     },
-    computed: {
-      getProfile() {
-        return this.$store.getters['user/getProfile'];
-      }
-    },
-    created() {
-      const id = this.id
-      this.$store.dispatch('user/getProfile', id).then(() => {
-        let profile = this.$store.getters['user/getProfile'];
-        this.birthDate = this.getAge(profile.birthDate);
-        this.firstName = profile.fullName.firstName
-        if (profile.gender == 'male') {
-          this.gender = "Мужчина"
-        } else {
-          this.gender = "Женщина"
+    watch: {
+      id: {
+        immediate: true,
+        handler(id) {
+          this.$store.dispatch('user/getProfile', id).then(() => {
+            let profile = this.$store.getters['user/getProfile'];
+            this.birthDate = this.getAge(profile.birthDate);
+            this.firstName = profile.fullName.firstName
+            if (profile.gender === 'male') {
+              this.gender = "Мужчина"
+            } else {
+              this.gender = "Женщина"
+            }
+            this.height = Math.round(profile.height)
+            this.weight = Math.round(profile.weight)
+            this.target = profile.target
+          })
         }
-        this.height = Math.round(profile.height)
-        this.weight = Math.round(profile.weight)
-        this.target = profile.target
-      })
+      }
     }
   }
 </script>
