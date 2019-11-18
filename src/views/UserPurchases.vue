@@ -1,27 +1,13 @@
 <template>
-    <body>
-    <AppHeader/>
     <main class="page">
-        <section class="breadcrumbs">
-            <ul class="breadcrumbs__list">
-                <li class="breadcrumbs__item"><router-link class="breadcrumbs__link" to="/">Личный кабинет</router-link></li>
-                <li class="breadcrumbs__item">Покупки</li>
-            </ul>
-        </section>
+        <BreadCrumbs/>
         <section class="grid">
             <AppProfile/>
             <div class="grid__column">
                 <div class="title__wrapper">
                     <h1 class="title">Покупки</h1>
-                    <button class="button-share" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 454 481.6">
-                        <path d="M367.8,309.4c-27.7,0-52.4,13.2-68.2,33.6l-132.3-73.9c3.1-8.9,4.8-18.5,4.8-28.4c0-10-1.7-19.5-4.9-28.5l132.2-73.8
-    c15.7,20.5,40.5,33.8,68.3,33.8c47.4,0,86.1-38.6,86.1-86.1S415.2,0,367.7,0s-86.1,38.6-86.1,86.1c0,10,1.7,19.6,4.9,28.5
-    l-132.1,73.8c-15.7-20.6-40.5-33.8-68.3-33.8C38.7,154.6,0,193.2,0,240.7s38.7,86.1,86.2,86.1c27.8,0,52.6-13.3,68.4-33.9
-    l132.2,73.9c-3.2,9-5,18.7-5,28.7c0,47.4,38.6,86.1,86.1,86.1S454,443,454,395.5S415.3,309.4,367.8,309.4z M367.8,27.1
-    c32.6,0,59.1,26.5,59.1,59.1s-26.5,59.1-59.1,59.1s-59.1-26.5-59.1-59.1S335.3,27.1,367.8,27.1z M86.2,299.8
-    c-32.6,0-59.1-26.5-59.1-59.1s26.5-59.1,59.1-59.1s59.1,26.5,59.1,59.1S118.7,299.8,86.2,299.8z M367.8,454.5
-    c-32.6,0-59.1-26.5-59.1-59.1s26.5-59.1,59.1-59.1s59.1,26.5,59.1,59.1S400.4,454.5,367.8,454.5z"/>
-                    </svg>
+                    <button class="button-share" type="button">
+                        <ShareIcon/>
                         <span>Поделиться</span>
                     </button>
                 </div>
@@ -32,24 +18,19 @@
                             <p class="filter__label">По алфавиту:</p>
                             <div class="filter__item-wrap">
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="alphabet"><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="alphabet" value="asc" v-model="sortType" @click="sorting"><span class="input-radio__custom"></span>
                                     <p>А - Я</p>
                                 </label>
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="alphabet"><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="alphabet" value="desc" v-model="sortType" @click="sorting"><span class="input-radio__custom"></span>
                                     <p>Я - А</p>
                                 </label>
                             </div>
-                            <button class="icon-button filter__reset-item" type="reset"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                            </svg>
-
+                            <button class="icon-button filter__reset-item" type="reset">
+                                <ResetIcon/>
                             </button>
                         </form>
-                        <form class="filter__item">
+                        <form class="filter__item" v-if="picked==='ingredient'">
                             <p class="filter__label">По отделам:</p>
                             <div class="select filter__select">
                                 <select>
@@ -59,88 +40,82 @@
                                     <option value="Овощи">Овощи</option>
                                 </select>
                             </div>
-                            <button class="icon-button filter__reset-item" type="reset"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                            </svg>
-
+                            <button class="icon-button filter__reset-item" type="reset">
+                                <ResetIcon/>
                             </button>
                         </form>
+                        <form class="filter__item" v-else-if="picked==='recipe'">
+                            <p class="filter__label"><span class="tooltip">Вид меню:</span></p>
+                            <div class="filter__item-wrap">
+                                <label class="input-radio">
+                                    <input class="visually-hidden" type="radio" name="type" value="first" v-model="typed"><span class="input-radio__custom"></span>
+                                    <p>1 вид</p>
+                                </label>
+                                <label class="input-radio">
+                                    <input class="visually-hidden" type="radio" name="type" value="second" v-model="typed" ><span class="input-radio__custom"></span>
+                                    <p>2 вид</p>
+                                </label>
+                            </div>
+                        </form>
+
                     </div>
                     <div class="filter__col">
                         <p class="filter__name">Выбор недели:</p>
                         <div class="filter__item">
-                            <button class="icon-button filter__btn-arrow filter__btn-arrow--prev" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
+                            <button class="icon-button filter__btn-arrow filter__btn-arrow--prev" type="button">
+                                <PreviousIcon/>
                             </button>
                             <div class="datepicker filter__datepicker">
-                                <input type="date">
+                                <input type="date" v-model="fromDate" @change="getFilteredDate">
                             </div><span>&ndash;</span>
                             <div class="datepicker filter__datepicker">
-                                <input type="date">
+                                <input type="date" v-model="toDate" @change="getFilteredDate">
                             </div>
-                            <button class="icon-button filter__btn-arrow filter__btn-arrow--next" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
+                            <button class="icon-button filter__btn-arrow filter__btn-arrow--next" type="button">
+                                <NextIcon/>
                             </button>
                         </div>
                         <div class="filter__item">
                             <p class="filter__label">Вид списка покупок:</p>
                             <div class="filter__item-wrap">
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="type" checked><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="type" value="ingredient" v-model="picked" ><span class="input-radio__custom"></span>
                                     <p>Ингредиенты</p>
                                 </label>
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="type"><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="type" value="recipe" v-model="picked"><span class="input-radio__custom"></span>
                                     <p>По рецептам</p>
                                 </label>
                             </div>
                         </div>
                     </div>
+                    <div class="filter__col span-2" v-if="typed==='first' && picked==='recipe'">
+                        <div class="tabs__buttons">
+                            <button class="tabs__btn active" type="button">Завтрак</button>
+                            <button class="tabs__btn" type="button">Перекус</button>
+                            <button class="tabs__btn" type="button">Обед</button>
+                            <button class="tabs__btn" type="button">Ужин</button>
+                        </div>
+                    </div>
                 </div>
-                <ul class="paper buy__list">
-                    <li class="buy__item">
+                <ul class="paper buy__list" v-if="picked==='ingredient'">
+                    <li :class="['buy__item',{'open':item.open}]" v-for="item in getSubList" :key="item.id">
                         <div class="buy__item-wrap">
                             <label class="input-checkbox">
                                 <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Картофель 200г</p>
+                                <p>{{ item.ingredient.title }} {{item.weight}}г</p>
                             </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
+                            <button class="button-add buy__item-add" type="button" title="Купить ещё" @click="showBuyMoreModal=true"></button>
+                            <button :class="['icon-button buy__item-arrow',{'open':item.open}]" type="button" title="Открыть" @click="openItem(item.id)">
+                                <DownIcon/>
                             </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
+                            <button :class="['icon-button buy__item-action',{'show':item.show}]" type="button" title="Действия" @click="showItem(item.id)">
+                                <ActionsIcon/>
                             </button>
-                            <section class="paper actions anim-show-action">
+                            <section :class="['paper actions anim-show-action',{'show':item.show}]">
                                 <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
+                                    <div class="actions__img">
+                                        <ClockIcon/>
                                     </div>
                                     <label class="input-checkbox">
                                         <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -148,13 +123,8 @@
                                     </label>
                                 </div>
                                 <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
+                                    <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                        <CloseIcon/>
                                     </div>
                                     <label class="input-checkbox">
                                         <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -163,7 +133,7 @@
                                 </div>
                             </section>
                         </div>
-                        <div class="buy__item-dropdown">
+                        <div :class="['buy__item-dropdown',{'open':item.open}]">
                             <ul class="buy__sublist">
                                 <li class="buy__item">
                                     <div class="buy__item-wrap">
@@ -171,38 +141,16 @@
                                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
                                             <p>Картофель 200г</p>
                                         </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
+                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
+                                            <ProfileAddIcon/>
                                         </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
+                                        <button class="icon-button buy__item-action" type="button" title="Действия">
+                                            <ActionsIcon/>
                                         </button>
                                         <section class="paper actions anim-show-action">
                                             <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
+                                                <div class="actions__img">
+                                                   <ClockIcon/>
                                                 </div>
                                                 <label class="input-checkbox">
                                                     <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -210,13 +158,8 @@
                                                 </label>
                                             </div>
                                             <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
+                                                <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                   <CloseIcon/>
                                                 </div>
                                                 <label class="input-checkbox">
                                                     <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -233,38 +176,16 @@
                                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
                                             <p>Солянка 200г</p>
                                         </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
+                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
+                                            <ProfileAddIcon/>
                                         </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
+                                        <button class="icon-button buy__item-action" type="button" title="Действия">
+                                            <ActionsIcon/>
                                         </button>
                                         <section class="paper actions anim-show-action">
                                             <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
+                                                <div class="actions__img">
+                                                    <ClockIcon/>
                                                 </div>
                                                 <label class="input-checkbox">
                                                     <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -272,75 +193,8 @@
                                                 </label>
                                             </div>
                                             <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
+                                                <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                    <CloseIcon/>
                                                 </div>
                                                 <label class="input-checkbox">
                                                     <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -358,36 +212,19 @@
                         <div class="buy__item-wrap">
                             <label class="input-checkbox">
                                 <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Свекла 300г</p>
+                                <p class="popup-cook-myself" @click="showRecipeAddModal=true">Соус песто 300г</p>
                             </label>
                             <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
+                            <button class="icon-button buy__item-arrow" type="button" title="Открыть">
+                                <DownIcon/>
                             </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
+                            <button class="icon-button buy__item-action" type="button" title="Действия">
+                                <ActionsIcon/>
                             </button>
                             <section class="paper actions anim-show-action">
                                 <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
+                                    <div class="actions__img">
+                                        <ClockIcon/>
                                     </div>
                                     <label class="input-checkbox">
                                         <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -395,12 +232,8 @@
                                     </label>
                                 </div>
                                 <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
+                                    <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                       <CloseIcon/>
 
                                     </div>
                                     <label class="input-checkbox">
@@ -409,3407 +242,6 @@
                                     </label>
                                 </div>
                             </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Морковь 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Картофель 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Свекла 300г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Морковь 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Картофель 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Свекла 300г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Морковь 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Картофель 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Свекла 300г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Морковь 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p>Картофель 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item disabled">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                <p>Свекла 300г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item disabled">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                <p>Морковь 200г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 257.6">
-                                <path d="M225.9,257.6c-8.1,0-16.2-3.1-22.4-9.3L9.3,54C-3.1,41.7-3.1,21.6,9.3,9.3C21.6-3.1,41.7-3.1,54,9.3l171.9,171.9L397.8,9.3
-    c12.4-12.4,32.4-12.4,44.7,0c12.4,12.4,12.4,32.4,0,44.8L248.3,248.3C242.1,254.5,234,257.6,225.9,257.6z"/>
-                            </svg>
-
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <circle cx="64" cy="256" r="64"/>
-                                <circle cx="64" cy="448" r="64"/>
-                                <circle cx="64" cy="64" r="64"/>
-                            </svg>
-
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                        <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                        <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                        <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                    </svg>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
-                        </div>
-                        <div class="buy__item-dropdown">
-                            <ul class="buy__sublist">
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item disabled">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                            <p>Оливье 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451.8 512">
-                                            <path d="M360.9,307.1c-11.6-53.6-53.3-96.1-106.5-108.8c24.5-20.6,40-51.5,40-85.9C294.4,50.4,244,0,182.1,0
-	c-62,0-112.4,50.4-112.4,112.4c0,34.4,15.6,65.3,40,85.9C46.9,213.2,0,269.9,0,337.3v111.4h254.1c15.5,37.1,52.2,63.3,94.9,63.3
-	c56.7,0,102.8-46.1,102.8-102.8C451.8,356.5,412,313,360.9,307.1z M100.1,112.4c0-45.2,36.8-82,82-82c45.2,0,82,36.8,82,82
-	s-36.8,82-82,82C136.9,194.4,100.1,157.6,100.1,112.4z M246.2,409.2c0,3.1,0.1,6.2,0.4,9.2H30.4v-81.1
-	c0-62.1,50.5-112.6,112.6-112.6h78.3c52,0,95.9,35.4,108.7,83.4C282.3,317.1,246.2,359,246.2,409.2z M349,481.6
-	c-40,0-72.5-32.5-72.5-72.5s32.5-72.5,72.5-72.5s72.5,32.5,72.5,72.5S389,481.6,349,481.6z"/>
-                                            <path d="M364.2,366.7h-30.4V394h-27.3v30.4h27.3v27.3h30.4v-27.3h27.3V394h-27.3V366.7z"/>
-                                        </svg>
-
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия"><svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                            <circle cx="64" cy="256" r="64"/>
-                                            <circle cx="64" cy="448" r="64"/>
-                                            <circle cx="64" cy="64" r="64"/>
-                                        </svg>
-
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-                                                    <path d="M587.6,186.9c-32.3-75.2-87.1-129.9-162.9-162.3C386.7,8.4,347,0.2,305.5,0.2c-41.5,0-80.9,8.2-118.8,24.4
-    C111.5,56.9,56.4,111.5,24.1,186.9C7.9,224.6,0,264.2,0,305.7c0,41.5,7.9,81.4,24.1,119.1c32.3,75.3,87.4,130.3,162.6,162.6
-    c37.9,16.2,77.3,24.4,118.8,24.4s81.2-8.3,119.1-24.4c75.9-32.4,130.7-87.4,163-162.6c16.2-37.9,24.4-77.6,24.4-119.1
-    C612,264.2,603.8,224.8,587.6,186.9z M538.7,440.9c-24,41.2-56.9,73.9-98.4,98c-41.2,24-86.3,36.1-134.8,36.1
-    c-36.5,0-71.3-7-104.4-21.4c-33.1-14.4-61.7-33.3-85.7-57.2c-23.9-23.9-43-52.8-57.2-86C44,377.3,37.1,342.1,37.1,305.7
-    c0-48.5,11.9-93.4,35.8-134.5c24-41.2,56.9-73.9,98-98C212.1,49,257,37,305.5,37c48.5,0,93.6,12.1,134.8,36.1
-    c41.4,24.2,74.3,56.9,98.4,98c24.1,41.2,36.1,86,36.1,134.5C574.9,354.2,562.9,399.4,538.7,440.9z"/>
-                                                    <path d="M324.9,303V129.7c0-10.4-9-18.7-19.4-18.7c-9.7,0-18.4,8.4-18.4,18.7v176c0,0.3,0.7,1.7,0.7,2.7c-0.7,6,1,11,5,15.1
-    l100.1,100c6.7,6.7,19.1,6.7,25.8,0c7.7-7.7,7.2-18.9,0-26.1L324.9,303z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
-                                                    <path d="M294.111,256.001L504.109,46.003c10.523-10.524,10.523-27.586,0-38.109c-10.524-10.524-27.587-10.524-38.11,0L256,217.892
-    L46.002,7.894c-10.524-10.524-27.586-10.524-38.109,0s-10.524,27.586,0,38.109l209.998,209.998L7.893,465.999
-    c-10.524,10.524-10.524,27.586,0,38.109c10.524,10.524,27.586,10.523,38.109,0L256,294.11l209.997,209.998
-    c10.524,10.524,27.587,10.523,38.11,0c10.523-10.524,10.523-27.586,0-38.109L294.111,256.001z"/>
-                                                </svg>
-
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </li>
                     <li class="buy__add">
@@ -3819,20 +251,436 @@
                         </div>
                     </li>
                 </ul>
+                <section class="scheduler-food" v-else-if="picked==='recipe'">
+                    <div class="paper scheduler-food__day"  v-for="item in getSubList" :key="item.id">
+                        <p class="scheduler-food__caption">{{ showDateFormat(item.date) }}</p>
+                        <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typed==='second'">
+                            <button class="tabs__btn active" type="button">Завтрак</button>
+                            <button class="tabs__btn" type="button">Перекус</button>
+                            <button class="tabs__btn" type="button">Обед</button>
+                            <button class="tabs__btn" type="button">Ужин</button>
+                        </div>
+                        <ul class="scheduler-food__list">
+                            <li class="scheduler-food__item">
+                                <div class="scheduler-food__item-wrap">
+                                    <label class="input-checkbox">
+                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                        <p>{{ item.recipe.title }}</p>
+                                    </label>
+                                    <button  :class="['icon-button scheduler-food__btn-submenu',{'open':item.open}]"  class="" type="button" title="Открыть" @click="openItem(item.id)">
+                                     <DownIcon/>
+                                    </button>
+                                    <button class="icon-button icon-button--big modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
+                                        <ProfileAddIcon/>
+                                    </button>
+                                    <button :class="['icon-button buy__item-action',{'show':item.show}]" type="button" title="Действия" @click="showItem(item.id)">
+                                        <ActionsIcon/>
+                                    </button>
+                                    <section :class="['paper actions anim-show-action',{'show':item.show}]">
+                                        <div class="actions__item">
+                                            <div class="actions__img">
+                                                <ClockIcon/>
+                                            </div>
+                                            <label class="input-checkbox">
+                                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                <p>Отложить на 24 часа</p>
+                                            </label>
+                                        </div>
+                                        <div class="actions__item">
+                                            <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                <CloseIcon/>
+                                            </div>
+                                            <label class="input-checkbox">
+                                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                <p>Скрыть</p>
+                                            </label>
+                                        </div>
+                                    </section>
+                                    <div class="scheduler-food__meta">
+                                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                                        <p class="scheduler-food__weight">{{item.weight}} г</p>
+                                        <p class="scheduler-food__ccal">89 Кал</p>
+                                        <p class="scheduler-food__item-date">Завтрак: <b>11.11.2018</b></p>
+                                    </div>
+                                </div>
+                                <div  :class="['scheduler-food__item-dropdown',{'open':item.open}]">
+                                    <ul class="scheduler-food__sublist">
+                                        <li class="scheduler-food__item">
+                                            <div class="scheduler-food__item-wrap">
+                                                <label class="input-checkbox">
+                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                    <p>Свекла  300 г</p>
+                                                </label>
+                                                <button class="icon-button buy__item-action" type="button" title="Действия">
+                                                   <ActionsIcon/>
+                                                </button>
+                                                <section class="paper actions anim-show-action">
+                                                    <div class="actions__item">
+                                                        <div class="actions__img">
+                                                       <ClockIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Отложить на 24 часа</p>
+                                                        </label>
+                                                    </div>
+                                                    <div class="actions__item">
+                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                            <CloseIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Скрыть</p>
+                                                        </label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </li>
+                                        <li class="scheduler-food__item">
+                                            <div class="scheduler-food__item-wrap">
+                                                <label class="input-checkbox">
+                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                    <p class="popup-cook-myself" @click="showRecipeAddModal=true">Соус песто 300г</p>
+                                                </label>
+                                                <button class="icon-button buy__item-action" type="button" title="Действия">
+                                                    <ActionsIcon/>
+                                                </button>
+                                                <section class="paper actions anim-show-action">
+                                                    <div class="actions__item">
+                                                        <div class="actions__img">
+                                                         <ClockIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Отложить на 24 часа</p>
+                                                        </label>
+                                                    </div>
+                                                    <div class="actions__item">
+                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                          <CloseIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Скрыть</p>
+                                                        </label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </li>
+                                        <li class="scheduler-food__item disabled">
+                                            <div class="scheduler-food__item-wrap">
+                                                <label class="input-checkbox">
+                                                    <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
+                                                    <p>Оливье 200г</p>
+                                                </label>
+                                                <button class="icon-button buy__item-action" type="button" title="Действия">
+                                                   <ActionsIcon/>
+                                                </button>
+                                                <section class="paper actions anim-show-action">
+                                                    <div class="actions__item">
+                                                        <div class="actions__img">
+                                                            <ClockIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Отложить на 24 часа</p>
+                                                        </label>
+                                                    </div>
+                                                    <div class="actions__item">
+                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
+                                                            <CloseIcon/>
+                                                        </div>
+                                                        <label class="input-checkbox">
+                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                                            <p>Скрыть</p>
+                                                        </label>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                            <li class="buy__add">
+                                <div class="buy__input">
+                                    <input type="text" placeholder="Добавить еще покупку">
+                                    <button class="button-add button-add--green buy__btn-add" type="button">Добавить</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
             </div>
+            <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
+                <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
+                    <CloseIcon/>
+                </button>
+                <div class="modal__container">
+                    <h2 class="modal__title">Купить ещё</h2>
+                    <div class="counter">
+                        <button class="counter__btn counter__btn--min" type="button"></button>
+                        <input type="text" value="300 г">
+                        <button class="counter__btn counter__btn--plus" type="button"></button>
+                    </div>
+                    <button class="button modal__btn" type="button">Купить ещё</button>
+                </div>
+            </div>
+            <div :class="['modal modal--add-user',{'show':showAddUserModal}]">
+                <button class="icon-button modal__btn-close" type="button" @click="showAddUserModal=false">
+                    <CloseIcon/>
+                </button>
+                <div class="modal__container">
+                    <h2 class="modal__title">Для кого готовим?</h2>
+                    <ul class="user__list">
+                        <li>
+                            <label class="user__profile">
+                                <input class="visually-hidden" type="checkbox" name="profile" checked>
+                                <div class="user__avatar">
+                                    <!--img(src="./images/jpg/avatar-1.jpg", alt="avatar")-->
+                                </div>
+                                <p class="user__name">Александр</p>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="user__profile">
+                                <input class="visually-hidden" type="checkbox" name="profile">
+                                <div class="user__avatar"><img src="@/assets/images/jpg/avatar-1.jpg" alt="avatar"></div>
+                                <p class="user__name">Иван</p>
+                            </label>
+                        </li>
+                        <li class="user__main">
+                            <label class="user__profile">
+                                <input class="visually-hidden" type="checkbox" name="profile" checked>
+                                <div class="user__avatar"><img src="@/assets/images/jpg/avatar.jpg" alt="avatar"></div>
+                                <p class="user__name">Ольга</p>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="user__profile">
+                                <input class="visually-hidden" type="checkbox" name="profile">
+                                <div class="user__avatar"><img src="@/assets/images/jpg/avatar-2.jpg" alt="avatar"></div>
+                                <p class="user__name">Степан</p>
+                            </label>
+                        </li>
+                        <li class="user__btn-add">
+                            <button class="button-add button-add--green button-add--big" type="button">Добавить профиль</button>
+                        </li>
+                    </ul>
+                    <h3 class="modal__title">Хотите добавить гостя?</h3>
+                    <div class="counter">
+                        <button class="counter__btn counter__btn--min" type="button"></button>
+                        <input type="text" value="1 гость">
+                        <button class="counter__btn counter__btn--plus" type="button"></button>
+                    </div>
+                    <div class="modal__separator"></div>
+                    <h3 class="modal__title">Количество порций</h3>
+                    <div class="counter">
+                        <button class="counter__btn counter__btn--min" type="button"></button>
+                        <input type="text" value="2 порции">
+                        <button class="counter__btn counter__btn--plus" type="button"></button>
+                    </div>
+                </div>
+            </div>
+            <div :class="['modal modal--recipe',{'show':showRecipeAddModal}]">
+                <button class="icon-button modal__btn-close" type="button" @click="showRecipeAddModal=false">
+                <CloseIcon/>
+                </button>
+                <div class="modal__container">
+                    <button class="button modal__btn-title" @click="cookBySelf=true">Пригтовлю сам(а)</button>
+                    <div class="modal__wrap-hidden" v-show="cookBySelf===true">
+                        <p class="modal__text">Добавить все ингредиенты<br> «Соус-песто» в Свои покупки?</p>
+                        <div class="modal__btn-group">
+                            <button class="button button--no-fill" type="button">
+                                <CheckMarkIcon/>
+                                <span>Добавить</span>
+                            </button>
+                            <button class="button button--no-fill modal__btn-close-wrap-hidden" type="button" @click="cookBySelf=false">
+
+                               <CloseIcon/>
+                                <span>Отменить</span>
+                            </button>
+                        </div>
+                    </div>
+                    <h2 class="modal__caption">Соус песто</h2>
+                    <ul class="modal__group">
+                        <li>
+                            <label class="input-checkbox">
+                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                <p>Соус песто 300г</p>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="input-checkbox">
+                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                <p>Петрушка 100г</p>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="input-checkbox">
+                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                                <p>Базилик 100г</p>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </section>
+        <div :class="['overlay',{'show show-modal':showOverlay()}]"></div>
     </main>
-    </body>
 </template>
 
 <script>
     import AppProfile from "../components/AppProfile";
-    import AppHeader from "../components/AppHeader";
+    import BreadCrumbs from "../components/BreadCrumbs";
+    import ShareIcon from "../components/icons/ShareIcon";
+    import DownIcon from "../components/icons/DownIcon";
+    import ActionsIcon from "../components/icons/ActionsIcon";
+    import ClockIcon from "../components/icons/ClockIcon";
+    import CloseIcon from "../components/icons/CloseIcon";
+    import ProfileAddIcon from "../components/icons/ProfileAddIcon";
+    import PreviousIcon from "../components/icons/PreviousIcon";
+    import NextIcon from "../components/icons/NextIcon";
+    import ResetIcon from "../components/icons/ResetIcon";
+    import CheckMarkIcon from "../components/icons/CheckMarkIcon";
     export default {
         name: "UserPurchases",
         components:{
+            CheckMarkIcon,
             AppProfile,
-            AppHeader
+            BreadCrumbs,
+            ShareIcon,
+            DownIcon,
+            ActionsIcon,
+            ClockIcon,
+            CloseIcon,
+            ProfileAddIcon,
+            PreviousIcon,
+            NextIcon,
+            ResetIcon
+        },
+        data(){
+            return{
+                picked:'ingredient',
+                typed:'first',
+                showBuyMoreModal: false,
+                showAddUserModal: false,
+                showRecipeAddModal: false,
+                fromDate: '2019-11-01',
+                toDate: '2019-11-30',
+                sortType: 'asc',
+                cookBySelf: false
+            }
+        },
+        methods: {
+            getFilteredDate(){
+                let fromDate = this.fromDate
+                let toDate = this.toDate
+                let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c?dateFrom='+fromDate+'&dateTo='+toDate
+                this.$store.dispatch('subscription/getShopListAction',profile)
+            },
+            showDateFormat(str){
+                let date = new Date(str)
+                let day = date.getDay()
+                let data = date.getDate();
+                let month = date.getMonth();
+                let year = date.getFullYear();
+                let weekday = new Array(7);
+                weekday[0] = "Воскресенье";
+                weekday[1] = "Понедельник";
+                weekday[2] = "Вторник";
+                weekday[3] = "Среда";
+                weekday[4] = "Четверг";
+                weekday[5] = "Пятница";
+                weekday[6] = "Суббота";
+
+                return weekday[day]+" "+data+"-"+month+"-"+year;
+            },
+            showItem(id){
+                let shopList = this.$store.getters['subscription/getShopList']
+                shopList = shopList.map(function (value){
+                    if (value.id === id){
+                        value.show = !value.show
+                    }
+                    return value;
+                })
+                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
+            }
+        ,openItem(id){
+                let shopList = this.$store.getters['subscription/getShopList']
+                shopList = shopList.map(function (value){
+                    if (value.id === id){
+                        value.open = !value.open
+                    }
+                    return value;
+                })
+                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
+        },
+            showOverlay(){
+                return this.showAddUserModal || this.showBuyMoreModal || this.showRecipeAddModal
+            },
+            sorting(){
+                let shopList = this.$store.getters['subscription/getShopList']
+               if (this.picked ==='ingredient'){
+                   if (this.sortType==='asc'){
+                       shopList = shopList.sort(function(x, y) {
+                           let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
+                           if (nameA < nameB)
+                               return -1
+                           if (nameA > nameB)
+                               return 1
+                           return 0
+                       });
+                       shopList.reverse()
+                   }else if(this.sortType==='desc'){
+                       shopList = shopList.sort(function(x, y) {
+                           let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
+                           if (nameA < nameB)
+                               return -1
+                           if (nameA > nameB)
+                               return 1
+                           return 0
+                       });
+                   }
+               }else if (this.picked ==='recipe'){
+                   if(this.sortType==='asc'){
+                       shopList = shopList.sort(function(x, y) {
+                           let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                           if (nameA < nameB)
+                               return -1
+                           if (nameA > nameB)
+                               return 1
+                           return 0
+                       });
+                       shopList.reverse()
+                   }else if(this.sortType==='desc'){
+                       shopList = shopList.sort(function(x, y) {
+                           let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                           if (nameA < nameB)
+                               return -1
+                           if (nameA > nameB)
+                               return 1
+                           return 0
+                       });
+                   }
+               }
+       // eslint-disable-next-line no-console
+                console.log(shopList)
+                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
+            }
+        },
+        computed:{
+            getSubList(){
+                return this.$store.getters['subscription/getShopList']
+            }
+        },
+        created() {
+            let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c?dateFrom=2019-11-01&dateTo=2019-11-31';
+            this.$store.dispatch('subscription/getShopListAction',profile)
+        },
+        mounted() {
+            this.sorting();
         }
     }
 </script>

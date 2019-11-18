@@ -49,9 +49,9 @@
 
 <script>
     import AppLogo from "./AppLogo";
-    import LogoutIcon from "./LogoutIcon";
-    import NotificationIcon from "./NotificationIcon";
-    import InformationIcon from "./InformationIcon";
+    import LogoutIcon from "./icons/LogoutIcon";
+    import NotificationIcon from "./icons/NotificationIcon";
+    import InformationIcon from "./icons/InformationIcon";
     export default {
         name: "Header",
         components:{
@@ -78,6 +78,10 @@
             staticScript.setAttribute('id', 'main-js')
             staticScript.async = true
             document.head.appendChild(staticScript)
+        },
+        beforeDestroy() {
+            let src = document.getElementById('main-js')
+            document.head.removeChild(src)
         }
         }
 </script>

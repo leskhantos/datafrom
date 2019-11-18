@@ -18,7 +18,7 @@ const loginConfirm = ({commit}, payload) => {
       VueCookies.set('Authorization', token, {expires: 1})
     })
     .catch((error) => {
-      // eslint-disable-next-line
+      commit('SET_ERROR',error)// eslint-disable-next-line
       console.error(error);
       throw "Неверный номер или код";
     })
@@ -32,13 +32,14 @@ const logout = ({commit}) => {
   })
 }
 
-const registrationConfirm = (non, payload) => {
+const registrationConfirm = ({commit}, payload) => {
   return Registration(payload)
     .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
     })
     .catch((error) => {
+            commit('SET_ERROR',error)
       // eslint-disable-next-line
       console.error(error);
       throw "Регистрация не прошла";
@@ -46,25 +47,26 @@ const registrationConfirm = (non, payload) => {
 }
 
 
-const sendSMSRegistration = (non, phone) => {
+const sendSMSRegistration = ({commit}, phone) => {
   return SendSMSRegistration(phone)
     .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
     })
     .catch((error) => {
-      throw "Ошибка в заполнении формы"
+      commit('SET_ERROR',error)
       // eslint-disable-next-line
-      console.error(error);
+      console.log(error.response.data.status);
     })
 }
-const sendSMSLogin = (non, phone) => {
+const sendSMSLogin = ({commit}, phone) => {
   return SendSMSLogin(phone)
     .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
     })
     .catch((error) => {
+            commit('SET_ERROR',error)
       throw "Ошибка в заполнении формы"
       // eslint-disable-next-line
       console.error(error);

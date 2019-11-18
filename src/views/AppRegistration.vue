@@ -21,7 +21,7 @@
                             </div>
                             <p class="input-field__error-text"> Фамилия более 20 сим.</p>
                         </div>
-                        <div class="input-field input-field--error form__input">
+                        <div class="input-field input-field form__input">
                             <div class="input-field__wrapper">
                                 <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" v-model="$v.email.$model" :class="status($v.email)" required>
                                 <MailIcon/>
@@ -42,16 +42,14 @@
                 </form>
             </section>
         </div>
-    <SnackBar/>
     </main>
 
 </template>
 
 <script>
     import AppLogo from "../components/AppLogo";
-    import UserIcon from "../components/UserIcon";
-    import MailIcon from "../components/MailIcon";
-    import SnackBar from "../components/SnackBar";
+    import UserIcon from "../components/icons/UserIcon";
+    import MailIcon from "../components/icons/MailIcon";
     import { required, minLength,alpha,email } from 'vuelidate/lib/validators'
 
     export default {
@@ -68,8 +66,7 @@
         components:{
           AppLogo,
             UserIcon,
-            MailIcon,
-            SnackBar
+            MailIcon
         },
         methods: {
             onSubmit(e) {

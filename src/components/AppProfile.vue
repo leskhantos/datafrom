@@ -73,12 +73,12 @@
 </template>
 
 <script>
-  import UserIcon from "./UserIcon";
-  import DiaryIcon from "./DiaryIcon";
-  import PurchasesIcon from "./PurchasesIcon";
-  import MenuIcon from "./MenuIcon";
-  import BlogIcon from "./BlogIcon";
-  import StatisticsIcon from "./StatisticsIcon";
+  import UserIcon from "./icons/UserIcon";
+  import DiaryIcon from "./icons/DiaryIcon";
+  import PurchasesIcon from "./icons/PurchasesIcon";
+  import MenuIcon from "./icons/MenuIcon";
+  import BlogIcon from "./icons/BlogIcon";
+  import StatisticsIcon from "./icons/StatisticsIcon";
 
   export default {
     name: "AppProfile",

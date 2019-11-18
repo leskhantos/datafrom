@@ -1,17 +1,20 @@
 <template>
-  <div>
+  <body>
     <AppHeader/>
     <router-view></router-view>
-  </div>
+    <SnackBar/>
+  </body>
 </template>
 
 <script>
   import AppHeader from "./components/AppHeader";
   import axios from 'axios'
+  import SnackBar from "./components/SnackBar";
   export default {
     name: 'app',
     components:{
-      AppHeader
+      AppHeader,
+      SnackBar
     },
     created: function () {
       axios.interceptors.response.use(response => {
