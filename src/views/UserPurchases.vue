@@ -91,10 +91,10 @@
                     </div>
                     <div class="filter__col span-2" v-if="typed==='first' && picked==='recipe'">
                         <div class="tabs__buttons">
-                            <button class="tabs__btn active" type="button">Завтрак</button>
-                            <button class="tabs__btn" type="button">Перекус</button>
-                            <button class="tabs__btn" type="button">Обед</button>
-                            <button class="tabs__btn" type="button">Ужин</button>
+                            <button class="tabs__btn" v-bind:class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast')">Завтрак</button>
+                            <button class="tabs__btn" v-bind:class="{ active: type==='snack' }" type="button" @click="getFilteredByMealOfDay('snack')">Перекус</button>
+                            <button class="tabs__btn" v-bind:class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch')">Обед</button>
+                            <button class="tabs__btn" v-bind:class="{ active: type==='dinner' }"  type="button" @click="getFilteredByMealOfDay('dinner')">Ужин</button>
                         </div>
                     </div>
                 </div>
@@ -139,15 +139,15 @@
                                     <div class="buy__item-wrap">
                                         <label class="input-checkbox">
                                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Картофель 200г</p>
+                                            <p @click="showRecipeAddModal=true"> {{item.recipe.title+" "+item.weight+"г"}}</p>
                                         </label>
                                         <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
                                             <ProfileAddIcon/>
                                         </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия">
+                                        <button :class="['icon-button buy__item-action',{'show':item.ingredient.show}]" type="button" title="Действия" @click="showItem(item.ingredient.id)">
                                             <ActionsIcon/>
                                         </button>
-                                        <section class="paper actions anim-show-action">
+                                        <section :class="['paper actions anim-show-action',{'show':item.ingredient.show}]">
                                             <div class="actions__item">
                                                 <div class="actions__img">
                                                    <ClockIcon/>
@@ -167,81 +167,10 @@
                                                 </label>
                                             </div>
                                         </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
-                                    </div>
-                                </li>
-                                <li class="buy__item">
-                                    <div class="buy__item-wrap">
-                                        <label class="input-checkbox">
-                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                            <p>Солянка 200г</p>
-                                        </label>
-                                        <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
-                                            <ProfileAddIcon/>
-                                        </button>
-                                        <button class="icon-button buy__item-action" type="button" title="Действия">
-                                            <ActionsIcon/>
-                                        </button>
-                                        <section class="paper actions anim-show-action">
-                                            <div class="actions__item">
-                                                <div class="actions__img">
-                                                    <ClockIcon/>
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Отложить на 24 часа</p>
-                                                </label>
-                                            </div>
-                                            <div class="actions__item">
-                                                <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                                    <CloseIcon/>
-                                                </div>
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Скрыть</p>
-                                                </label>
-                                            </div>
-                                        </section>
-                                        <p class="buy__item-meta">Обед: 10.11.2018</p>
+                                        <p class="buy__item-meta">{{item.mealType}}: {{dateFormat(item.date)}}</p>
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-                    </li>
-                    <li class="buy__item">
-                        <div class="buy__item-wrap">
-                            <label class="input-checkbox">
-                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                <p class="popup-cook-myself" @click="showRecipeAddModal=true">Соус песто 300г</p>
-                            </label>
-                            <button class="button-add buy__item-add" type="button" title="Купить ещё"></button>
-                            <button class="icon-button buy__item-arrow" type="button" title="Открыть">
-                                <DownIcon/>
-                            </button>
-                            <button class="icon-button buy__item-action" type="button" title="Действия">
-                                <ActionsIcon/>
-                            </button>
-                            <section class="paper actions anim-show-action">
-                                <div class="actions__item">
-                                    <div class="actions__img">
-                                        <ClockIcon/>
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Отложить на 24 часа</p>
-                                    </label>
-                                </div>
-                                <div class="actions__item">
-                                    <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                       <CloseIcon/>
-
-                                    </div>
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>Скрыть</p>
-                                    </label>
-                                </div>
-                            </section>
                         </div>
                     </li>
                     <li class="buy__add">
@@ -252,7 +181,7 @@
                     </li>
                 </ul>
                 <section class="scheduler-food" v-else-if="picked==='recipe'">
-                    <div class="paper scheduler-food__day"  v-for="item in getSubList" :key="item.id">
+                    <div class="paper scheduler-food__day"  v-for="item in getFilteredSubList" :key="item.id">
                         <p class="scheduler-food__caption">{{ showDateFormat(item.date) }}</p>
                         <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typed==='second'">
                             <button class="tabs__btn active" type="button">Завтрак</button>
@@ -300,7 +229,7 @@
                                         <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
                                         <p class="scheduler-food__weight">{{item.weight}} г</p>
                                         <p class="scheduler-food__ccal">89 Кал</p>
-                                        <p class="scheduler-food__item-date">Завтрак: <b>11.11.2018</b></p>
+                                        <p class="scheduler-food__item-date">{{item.mealType}}: <b>{{dateFormat(item.date)}}</b></p>
                                     </div>
                                 </div>
                                 <div  :class="['scheduler-food__item-dropdown',{'open':item.open}]">
@@ -309,77 +238,15 @@
                                             <div class="scheduler-food__item-wrap">
                                                 <label class="input-checkbox">
                                                     <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>Свекла  300 г</p>
+                                                    <p>{{item.ingredient.title+" "+item.weight+"г"}}</p>
                                                 </label>
-                                                <button class="icon-button buy__item-action" type="button" title="Действия">
+                                                <button  :class="['icon-button buy__item-action',{'show':item.recipe.show}]" type="button" title="Действия" @click="showItem(item.recipe.id)">
                                                    <ActionsIcon/>
                                                 </button>
-                                                <section class="paper actions anim-show-action">
+                                                <section :class="['paper actions anim-show-action',{'show':item.recipe.show}]">
                                                     <div class="actions__item">
                                                         <div class="actions__img">
                                                        <ClockIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Отложить на 24 часа</p>
-                                                        </label>
-                                                    </div>
-                                                    <div class="actions__item">
-                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                                            <CloseIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Скрыть</p>
-                                                        </label>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </li>
-                                        <li class="scheduler-food__item">
-                                            <div class="scheduler-food__item-wrap">
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p class="popup-cook-myself" @click="showRecipeAddModal=true">Соус песто 300г</p>
-                                                </label>
-                                                <button class="icon-button buy__item-action" type="button" title="Действия">
-                                                    <ActionsIcon/>
-                                                </button>
-                                                <section class="paper actions anim-show-action">
-                                                    <div class="actions__item">
-                                                        <div class="actions__img">
-                                                         <ClockIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Отложить на 24 часа</p>
-                                                        </label>
-                                                    </div>
-                                                    <div class="actions__item">
-                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                                          <CloseIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Скрыть</p>
-                                                        </label>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </li>
-                                        <li class="scheduler-food__item disabled">
-                                            <div class="scheduler-food__item-wrap">
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox" checked><span class="input-checkbox__custom"></span>
-                                                    <p>Оливье 200г</p>
-                                                </label>
-                                                <button class="icon-button buy__item-action" type="button" title="Действия">
-                                                   <ActionsIcon/>
-                                                </button>
-                                                <section class="paper actions anim-show-action">
-                                                    <div class="actions__item">
-                                                        <div class="actions__img">
-                                                            <ClockIcon/>
                                                         </div>
                                                         <label class="input-checkbox">
                                                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
@@ -532,6 +399,7 @@
 </template>
 
 <script>
+
     import AppProfile from "../components/AppProfile";
     import BreadCrumbs from "../components/BreadCrumbs";
     import ShareIcon from "../components/icons/ShareIcon";
@@ -570,15 +438,33 @@
                 fromDate: '2019-11-01',
                 toDate: '2019-11-30',
                 sortType: 'asc',
-                cookBySelf: false
+                cookBySelf: false,
+                mealOfDay: "breakfast",
+                type: ''
             }
         },
         methods: {
+            getFilteredByMealOfDay(type){
+                let shopLists = this.$store.getters['subscription/getShopList']
+                this.type = type;
+
+                let shopList = shopLists.filter(function (elem) {
+                    return elem.mealType === type;
+                })
+                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopList)
+            },
             getFilteredDate(){
                 let fromDate = this.fromDate
                 let toDate = this.toDate
                 let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c?dateFrom='+fromDate+'&dateTo='+toDate
                 this.$store.dispatch('subscription/getShopListAction',profile)
+            },
+            dateFormat(str){
+                let date = new Date(str)
+                let data = date.getDate();
+                let month = date.getMonth()+1;
+                let year = date.getFullYear();
+                return data+"."+month+"."+year
             },
             showDateFormat(str){
                 let date = new Date(str)
@@ -602,10 +488,16 @@
                 shopList = shopList.map(function (value){
                     if (value.id === id){
                         value.show = !value.show
+                    }else if (value.recipe.id === id){
+                        value.recipe.show = !value.recipe.show
+                    }else if(value.ingredient.id === id){
+                        value.ingredient.show = !value.ingredient.show
                     }
                     return value;
                 })
                 this.$store.commit('subscription/SET_SHOP_LIST',shopList)
+                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopList)
+
             }
         ,openItem(id){
                 let shopList = this.$store.getters['subscription/getShopList']
@@ -616,13 +508,13 @@
                     return value;
                 })
                 this.$store.commit('subscription/SET_SHOP_LIST',shopList)
-        },
+                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopList)
+            },
             showOverlay(){
                 return this.showAddUserModal || this.showBuyMoreModal || this.showRecipeAddModal
             },
             sorting(){
                 let shopList = this.$store.getters['subscription/getShopList']
-               if (this.picked ==='ingredient'){
                    if (this.sortType==='asc'){
                        shopList = shopList.sort(function(x, y) {
                            let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
@@ -632,7 +524,7 @@
                                return 1
                            return 0
                        });
-                       shopList.reverse()
+                       shopList = shopList.reverse()
                    }else if(this.sortType==='desc'){
                        shopList = shopList.sort(function(x, y) {
                            let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
@@ -643,36 +535,38 @@
                            return 0
                        });
                    }
-               }else if (this.picked ==='recipe'){
-                   if(this.sortType==='asc'){
-                       shopList = shopList.sort(function(x, y) {
-                           let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
-                           if (nameA < nameB)
-                               return -1
-                           if (nameA > nameB)
-                               return 1
-                           return 0
-                       });
-                       shopList.reverse()
-                   }else if(this.sortType==='desc'){
-                       shopList = shopList.sort(function(x, y) {
-                           let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
-                           if (nameA < nameB)
-                               return -1
-                           if (nameA > nameB)
-                               return 1
-                           return 0
-                       });
-                   }
-               }
-       // eslint-disable-next-line no-console
-                console.log(shopList)
                 this.$store.commit('subscription/SET_SHOP_LIST',shopList)
+
+                let shopListRecipes = this.$store.getters['subscription/getFilteredShopList']
+                if (this.sortType==='asc'){
+                        shopListRecipes = shopListRecipes.sort(function(x, y) {
+                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                        if (nameA < nameB)
+                            return -1
+                        if (nameA > nameB)
+                            return 1
+                        return 0
+                    });
+                    shopListRecipes = shopListRecipes.reverse()
+                }else if(this.sortType==='desc'){
+                        shopListRecipes = shopListRecipes.sort(function(x, y) {
+                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                        if (nameA < nameB)
+                            return -1
+                        if (nameA > nameB)
+                            return 1
+                        return 0
+                    });
+                }
+                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopListRecipes)
             }
         },
         computed:{
             getSubList(){
                 return this.$store.getters['subscription/getShopList']
+            },
+            getFilteredSubList(){
+                return this.$store.getters['subscription/getFilteredShopList']
             }
         },
         created() {
@@ -681,6 +575,7 @@
         },
         mounted() {
             this.sorting();
+            this.getFilteredByMealOfDay('breakfast');
         }
     }
 </script>
