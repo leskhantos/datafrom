@@ -1,0 +1,47 @@
+<template>
+    <div class="paper settings__container">
+        <h2 class="settings__title">Укажите ваш рост</h2>
+        <div class="settings__height">
+            <input type="number" placeholder="180" v-model="height"><span>см</span>
+        </div>
+        <a class="button settings__btn" href=""
+           @click="nextStep">Далее
+        </a>
+    </div>
+</template>
+
+<script>
+
+  export default {
+    props: {
+      profile: {
+        type: Object,
+        default: () => ({}),
+      }
+    },
+    name: "FormStep3",
+    data() {
+      return {
+        height: ''
+      }
+    },
+    methods: {
+      nextStep(e) {
+        e.preventDefault()
+
+        let profile = this.$store.getters['user/getProfileInfo']
+        profile['height'] = this.height
+        this.$store.commit('user/PROFILE_INFO', profile);
+
+        this.$emit('next-step')
+      }
+    },
+    mounted() {
+      this.height = this.$store.getters['user/getProfileInfo'].height
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

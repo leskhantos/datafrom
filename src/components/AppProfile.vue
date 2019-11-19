@@ -23,9 +23,10 @@
                             </label>
                         </li>
                         <li class="user__btn-add">
-                            <button class="button-add button-add--green button-add--big" type="button">Добавить
+                            <router-link class="button-add button-add--green button-add--big" type="button"
+                                         :to="{ name: 'profile_create'}">Добавить
                                 профиль
-                            </button>
+                            </router-link>
                         </li>
                     </ul>
                 </div>

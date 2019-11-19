@@ -5,7 +5,8 @@ import {
   SendSMSLogin,
   SendSMSRegistration,
   ListProfiles,
-  GetProfile
+  GetProfile,
+  CreateProfile
 } from '@/api'
 import VueCookies from 'vue-cookies'
 
@@ -18,7 +19,7 @@ const loginConfirm = ({commit}, payload) => {
       VueCookies.set('Authorization', token, {expires: 1})
     })
     .catch((error) => {
-      commit('SET_ERROR',error)// eslint-disable-next-line
+      commit('SET_ERROR', error)// eslint-disable-next-line
       console.error(error);
       throw "Неверный номер или код";
     })
@@ -28,6 +29,7 @@ const logout = ({commit}) => {
   return new Promise((resolve) => {
     VueCookies.remove('Authorization')
     commit('TOKEN_UPDATED', null)
+    commit('HAS_PROFILES', 0);
     resolve()
   })
 }
@@ -35,11 +37,25 @@ const logout = ({commit}) => {
 const registrationConfirm = ({commit}, payload) => {
   return Registration(payload)
     .then((response) => {
+      const token = response.data.accessToken
+      commit('TOKEN_UPDATED', token)
+      SetTokenHeaders(token)
+      VueCookies.set('Authorization', token, {expires: 1})
+    })
+    .catch((error) => {
+      commit('SET_ERROR', error)
+      throw "Регистрация не прошла";
+    })
+}
+
+const createProfile = ({commit}, payload) => {
+  return CreateProfile(payload)
+    .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
     })
     .catch((error) => {
-            commit('SET_ERROR',error)
+      commit('SET_ERROR', error)
       // eslint-disable-next-line
       console.error(error);
       throw "Регистрация не прошла";
@@ -54,7 +70,7 @@ const sendSMSRegistration = ({commit}, phone) => {
       console.log(response.data)
     })
     .catch((error) => {
-      commit('SET_ERROR',error)
+      commit('SET_ERROR', error)
       // eslint-disable-next-line
       console.log(error.response.data.status);
     })
@@ -66,7 +82,7 @@ const sendSMSLogin = ({commit}, phone) => {
       console.log(response.data)
     })
     .catch((error) => {
-            commit('SET_ERROR',error)
+      commit('SET_ERROR', error)
       throw "Ошибка в заполнении формы"
       // eslint-disable-next-line
       console.error(error);
@@ -121,5 +137,6 @@ export default {
   sendSMSRegistration,
   getListProfiles,
   getMainProfile,
-  getProfile
+  getProfile,
+  createProfile
 }
