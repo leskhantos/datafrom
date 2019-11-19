@@ -91,10 +91,10 @@
                     </div>
                     <div class="filter__col span-2" v-if="typed==='first' && picked==='recipe'">
                         <div class="tabs__buttons">
-                            <button class="tabs__btn" v-bind:class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast')">Завтрак</button>
-                            <button class="tabs__btn" v-bind:class="{ active: type==='brunch' }" type="button" @click="getFilteredByMealOfDay('brunch')">Перекус</button>
-                            <button class="tabs__btn" v-bind:class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch')">Обед</button>
-                            <button class="tabs__btn" v-bind:class="{ active: type==='dinner' }"  type="button" @click="getFilteredByMealOfDay('dinner')">Ужин</button>
+                            <button class="tabs__btn" :class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast')">Завтрак</button>
+                            <button class="tabs__btn" :class="{ active: type==='brunch' }" type="button" @click="getFilteredByMealOfDay('brunch')">Перекус</button>
+                            <button class="tabs__btn" :class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch')">Обед</button>
+                            <button class="tabs__btn" :class="{ active: type==='dinner' }"  type="button" @click="getFilteredByMealOfDay('dinner')">Ужин</button>
                         </div>
                     </div>
                 </div>
