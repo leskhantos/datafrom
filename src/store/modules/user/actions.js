@@ -43,8 +43,7 @@ const registrationConfirm = ({commit}, payload) => {
       SetTokenHeaders(token)
       VueCookies.set('Authorization', token, {expires: 1})
     })
-    .catch((error) => {
-      commit('SET_ERROR', error)
+    .catch(() => {
       throw "Регистрация не прошла";
     })
 }

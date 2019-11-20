@@ -27,7 +27,7 @@
                 </ul>
 
                 <component
-                        v-bind:is="currentStep"
+                        :is="currentStep"
                         v-on:next-step="childNextStep"
                         v-on:create="createProfile"
                 >
@@ -38,8 +38,8 @@
 </template>
 
 <script>
-  import BreadCrumbs from "../components/BreadCrumbs";
-  import AppProfile from "../components/AppProfile";
+  import BreadCrumbs from "@/components/BreadCrumbs";
+  import AppProfile from "@/components/AppProfile";
   import FormStep1 from '@/components/profile/FormStep1'
   import FormStep2 from '@/components/profile/FormStep2'
   import FormStep3 from '@/components/profile/FormStep3'
@@ -78,6 +78,8 @@
         profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
         this.$store.dispatch('user/createProfile', profile).then(() => {
           this.$router.push({name: 'home'})
+        }).catch((error) => {
+          this.$store.commit('error/SET_ERROR', error);
         })
       },
     }
