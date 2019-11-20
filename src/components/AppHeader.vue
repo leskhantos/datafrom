@@ -72,17 +72,6 @@
                 return this.$store.getters['user/isAuthenticated']
             }
         },
-        mounted() {
-            let staticScript = document.createElement('script')
-            staticScript.setAttribute('src', '/static/js/main.js')
-            staticScript.setAttribute('id', 'main-js')
-            staticScript.async = true
-            document.head.appendChild(staticScript)
-        },
-        beforeDestroy() {
-            let src = document.getElementById('main-js')
-            document.head.removeChild(src)
-        }
         }
 </script>
 

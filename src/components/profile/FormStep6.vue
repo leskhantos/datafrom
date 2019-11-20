@@ -5,16 +5,9 @@
             их изменить.</p>
         <div class="settings__input">
             <p>Калорийность</p>
-            <input type="number" v-model="calories"><span>кал</span>
+            <input type="number" disabled v-model="calories"><span>кал</span>
         </div>
-        <div class="range settings__range">
-            <div class="range__container">
-                <div class="range__line"></div>
-                <button class="range__btn" style="transform: translateX(30%);"></button>
-            </div>
-            <div class="range__values"><span>1500</span><span>2000</span><span>2500</span><span>3000</span>
-            </div>
-        </div>
+        <CaloriesRange v-model="calories" :range="[1500, 2000, 2500, 3000]"/>
         <div class="chart settings__chart">
             <p class="chart__caption">Суточная норма БЖУ</p>
             <div class="chart__container">
@@ -70,8 +63,10 @@
 
 <script>
 
+  import CaloriesRange from "./CaloriesRange";
   export default {
     name: "FormStep6",
+    components: {CaloriesRange},
     data() {
       return {
         calories: 1700,
