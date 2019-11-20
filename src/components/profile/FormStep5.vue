@@ -20,12 +20,12 @@
                     <p>Поддержание текущей формы</p>
                 </div>
             </label>
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target">
-                <div><img src="/static/images/png/weight-4.png" alt="weight">
-                    <p>Быстрая потеря веса</p>
-                </div>
-            </label>
+<!--            <label class="settings__target">-->
+<!--                <input class="visually-hidden" type="radio" name="target">-->
+<!--                <div><img src="/static/images/png/weight-4.png" alt="weight">-->
+<!--                    <p>Быстрая потеря веса</p>-->
+<!--                </div>-->
+<!--            </label>-->
         </div>
         <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
