@@ -21,7 +21,7 @@
                         <a>Цель</a>
                     </li>
                     <!--                    <li><a>Аллергены</a></li>-->
-                    <li :сlass="{'done':step>=6}" v-on:click="step=6">
+                    <li :class="{'done':step>=6}" v-on:click="step=6">
                         <a>Расчёт калорий и БЖУ</a>
                     </li>
                 </ul>
