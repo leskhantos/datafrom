@@ -7,8 +7,20 @@ const PHONE = (state, phone) => {
 const REGISTRATION_INFO = (state, registration_info) => {
   state.registration_info = registration_info
 }
+const LIST_PROFILES = (state, list_profiles) => {
+  state.list_profiles = list_profiles
+}
+const MAIN_PROFILE = (state, main_profile) => {
+  state.main_profile = main_profile
+}
+const PROFILE = (state, profile) => {
+  state.profile = profile
+}
 export default {
   TOKEN_UPDATED,
   PHONE,
-  REGISTRATION_INFO
+  REGISTRATION_INFO,
+  LIST_PROFILES,
+  MAIN_PROFILE,
+  PROFILE
 }

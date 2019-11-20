@@ -7,6 +7,7 @@ import UserPurchases from "../views/UserPurchases";
 import LoginConfirm from "../views/LoginConfirm";
 import AppRegistration from "../views/AppRegistration";
 import RegistrationConfirm from "../views/RegistrationConfirm";
+import Profile from "../views/Profile";
 
 Vue.use(VueRouter)
 
@@ -62,6 +63,13 @@ export default new VueRouter({
             path: '/purchases',
             name: 'purchases',
             component: UserPurchases,
+            beforeEnter: ifAuthenticated
+        },
+        {
+            path: '/profile/:id',
+            name: 'profile',
+            props: true,
+            component: Profile,
             beforeEnter: ifAuthenticated
         },
     ],
