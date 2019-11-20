@@ -27,6 +27,7 @@
                 </div>
             </label>
         </div>
+        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
            @click="nextStep">Далее
         </a>
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+
   export default {
     props: {
       profile: {
@@ -44,6 +46,7 @@
     name: "FormStep5",
     data() {
       return {
+        error: '',
         target: ''
       }
     },
@@ -52,10 +55,15 @@
         e.preventDefault()
 
         let profile = this.$store.getters['user/getProfileInfo']
-        profile['target'] = this.target
-        this.$store.commit('user/PROFILE_INFO', profile);
 
-        this.$emit('next-step')
+        profile['target'] = this.target
+        if (!this.target) {
+          this.error = 'Выберите цель';
+        }else {
+          this.$store.commit('user/PROFILE_INFO', profile)
+          this.$emit('next-step')
+        }
+
       }
     },
     mounted() {
@@ -65,5 +73,9 @@
 </script>
 
 <style scoped>
-
+    b, strong {
+        margin-top: 16px;
+        text-align: center;
+        color: red;
+    }
 </style>

@@ -7,6 +7,7 @@
                 <div class="settings__weight">
                     <input type="number" placeholder="105" v-model="weight"><span>кг</span>
                 </div>
+                <b :class="{'active':error!==''}">{{ this.error }}</b>
             </div>
             <div class="settings__col">
                 <h2 class="settings__title settings__title--small">Укажите ваш<br> желаемый вес</h2>
@@ -33,6 +34,7 @@
     name: "FormStep4",
     data() {
       return {
+        error: '',
         weight: ''
       }
     },
@@ -41,10 +43,15 @@
         e.preventDefault()
 
         let profile = this.$store.getters['user/getProfileInfo']
-        profile['weight'] = this.weight
-        this.$store.commit('user/PROFILE_INFO', profile);
 
-        this.$emit('next-step')
+        profile['weight'] = this.weight
+        if (!this.weight) {
+          this.error = 'Заполните это поле';
+        } else {
+          this.$store.commit('user/PROFILE_INFO', profile)
+          this.$emit('next-step')
+        }
+
       }
     },
     mounted() {
@@ -54,5 +61,9 @@
 </script>
 
 <style scoped>
-
+    b, strong {
+        margin-top: 16px;
+        text-align: center;
+        color: red;
+    }
 </style>

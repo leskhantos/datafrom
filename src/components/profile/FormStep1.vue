@@ -20,6 +20,7 @@
                 </label>
             </div>
         </div>
+        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
            @click="nextStep">Далее
         </a>
@@ -27,7 +28,6 @@
 </template>
 
 <script>
-
   export default {
     props: {
       profile: {
@@ -38,7 +38,8 @@
     name: "FormStep1",
     data() {
       return {
-        gender: ''
+        gender: '',
+        error: ''
       }
     },
     methods: {
@@ -47,9 +48,13 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
         profile['gender'] = this.gender
-        this.$store.commit('user/PROFILE_INFO', profile);
+        if (!this.gender) {
+          this.error = 'Выберите пол';
+        } else {
+          this.$store.commit('user/PROFILE_INFO', profile)
+          this.$emit('next-step')
+        }
 
-        this.$emit('next-step')
       }
     },
     mounted() {
@@ -59,5 +64,9 @@
 </script>
 
 <style scoped>
-
+    b, strong {
+        margin-top: 16px;
+        text-align: center;
+        color: red;
+    }
 </style>

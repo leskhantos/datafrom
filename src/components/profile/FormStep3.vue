@@ -4,6 +4,7 @@
         <div class="settings__height">
             <input type="number" placeholder="180" v-model="height"><span>см</span>
         </div>
+        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
            @click="nextStep">Далее
         </a>
@@ -22,6 +23,7 @@
     name: "FormStep3",
     data() {
       return {
+        error: '',
         height: ''
       }
     },
@@ -30,10 +32,15 @@
         e.preventDefault()
 
         let profile = this.$store.getters['user/getProfileInfo']
-        profile['height'] = this.height
-        this.$store.commit('user/PROFILE_INFO', profile);
 
-        this.$emit('next-step')
+        profile['height'] = this.height
+        if (!this.height) {
+          this.error = 'Заполните это поле';
+        } else {
+          this.$store.commit('user/PROFILE_INFO', profile)
+          this.$emit('next-step')
+        }
+
       }
     },
     mounted() {
@@ -43,5 +50,9 @@
 </script>
 
 <style scoped>
-
+    b, strong {
+        margin-top: 16px;
+        text-align: center;
+        color: red;
+    }
 </style>

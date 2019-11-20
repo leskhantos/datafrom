@@ -4,24 +4,24 @@
         <div class="centered">
             <section>
                 <ul class="settings__list">
-                    <li v-bind:class="{'done':step>=1}" v-on:click="step=1">
+                    <li :class="{'done':step>=1}" v-on:click="step=1">
                         <a>Пол</a>
                     </li>
-                    <li v-bind:class="{'done':step>=2}" v-on:click="step=2">
+                    <li :class="{'done':step>=2}" v-on:click="step=2">
                         <a>Дата рождения</a>
                     </li>
-                    <li v-bind:class="{'done':step>=3}" v-on:click="step=3">
+                    <li :class="{'done':step>=3}" v-on:click="step=3">
                         <a>Рост</a>
                     </li>
-                    <li v-bind:class="{'done':step>=4}" v-on:click="step=4">
+                    <li :class="{'done':step>=4}" v-on:click="step=4">
                         <a>Вес</a>
                     </li>
                     <!--                    <li><a>Активность</a></li>-->
-                    <li v-bind:class="{'done':step>=5}" v-on:click="step=5">
+                    <li :class="{'done':step>=5}" v-on:click="step=5">
                         <a>Цель</a>
                     </li>
                     <!--                    <li><a>Аллергены</a></li>-->
-                    <li v-bind:class="{'done':step>=6}" v-on:click="step=6">
+                    <li :сlass="{'done':step>=6}" v-on:click="step=6">
                         <a>Расчёт калорий и БЖУ</a>
                     </li>
                 </ul>
