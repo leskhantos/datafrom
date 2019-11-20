@@ -50,7 +50,7 @@
     import AppLogo from "../components/AppLogo";
     import UserIcon from "../components/icons/UserIcon";
     import MailIcon from "../components/icons/MailIcon";
-    import { required, minLength,alpha,email } from 'vuelidate/lib/validators'
+    import { required, minLength, email } from 'vuelidate/lib/validators'
 
     export default {
         name: "AppRegistration",
@@ -104,10 +104,10 @@
             fname: {
                 required,
                 minLength: minLength(2),
-                alpha
+                alpha: /^[а-яё]*$/
             },
             lname: {
-                alpha
+                alpha: /^[а-яё]*$/
             },
             email: {
                 email
