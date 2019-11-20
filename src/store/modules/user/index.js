@@ -8,9 +8,13 @@ const state = {
   token: VueCookies.get('Authorization') || '',
   phone: '',
   registration_info: {},
-  list_profiles: [],
+  profile_info: {},
+  list_profiles: {items: []},
   main_profile: [],
-  profile: {}
+  profile: {},
+  user_info: {},
+  has_profiles: 0,
+  nutrients: []
 }
 
 export default {

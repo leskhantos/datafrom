@@ -23,9 +23,9 @@
                             </label>
                         </li>
                         <li class="user__btn-add">
-                            <button class="button-add button-add--green button-add--big" type="button">Добавить
-                                профиль
-                            </button>
+                            <a class="button-add button-add--green button-add--big" type="button">
+                                Добавить профиль
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -33,5 +33,19 @@ export function GetProfile(id) {
 }
 
 export function GetShopList(profile) {
-    return axios.get(Settings.host + '/api/v1/subscription/shop_list/'+profile)
+  return axios.get(Settings.host + '/api/v1/subscription/shop_list/' + profile)
+}
+
+export function GetUserInfo() {
+  return axios.get(Settings.host + '/api/v1/accounts/self')
+}
+
+export function CreateProfile(profile) {
+  return axios.post(Settings.host + '/api/v1/profiles', profile)
+}
+
+export function GetNutrients(weight, height, age, gender, target, fatsPercentage, proteinsPercentage, carbohydratesPercentage) {
+  return axios.get(Settings.host + '/api/v1/nutrients/calculate?weight=' + weight + '&height=' + height + '&age=' + age
+    + '&gender=' + gender + '&target=' + target + '&fatsPercentage=' + fatsPercentage + '&proteinsPercentage=' + proteinsPercentage
+    + '&carbohydratesPercentage=' + carbohydratesPercentage)
 }

@@ -8,6 +8,7 @@ import LoginConfirm from "../views/LoginConfirm";
 import AppRegistration from "../views/AppRegistration";
 import RegistrationConfirm from "../views/RegistrationConfirm";
 import Profile from "../views/Profile";
+import RegistrationProfile from "../views/RegistrationProfile";
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,31 @@ const ifNotAuthenticated = (to, from, next) => {
     next('/')
 }
 const ifAuthenticated = (to, from, next) => {
+    if (store.getters['user/isAuthenticated']) {
+        let hasProfiles = store.getters['user/hasProfiles']
+        if (hasProfiles === 0) {
+            store.dispatch('user/getListProfiles').then(()=>{
+                if(store.getters['user/getListProfiles'].items.length !== 0){
+                    hasProfiles = 2
+                    store.commit('user/HAS_PROFILES', hasProfiles);
+                    next()
+                }else{
+                    hasProfiles = 1
+                    store.commit('user/HAS_PROFILES', hasProfiles);
+                    next('/profile_create')
+                }
+            })
+        }else if(hasProfiles === 1){
+            next('/profile_create')
+
+        }else{
+            next()
+        }
+    }else{
+        next('/login')
+    }
+}
+const ifAuthenticatedFirst = (to, from, next) => {
     if (store.getters['user/isAuthenticated']) {
         next()
         return
@@ -71,6 +97,13 @@ export default new VueRouter({
             props: true,
             component: Profile,
             beforeEnter: ifAuthenticated
+        },
+        {
+            path: '/profile_create',
+            name: 'profile_create',
+            props: true,
+            component: RegistrationProfile,
+            beforeEnter: ifAuthenticatedFirst
         },
     ],
     mode: 'history'
