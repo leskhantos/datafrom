@@ -5,7 +5,7 @@
             их изменить.</p>
         <div class="settings__input">
             <p>Калорийность</p>
-            <input type="number" value="1700"><span>кал</span>
+            <input type="number" v-model="Calories" value="1700"><span>кал</span>
         </div>
         <div class="range settings__range">
             <div class="range__container">
@@ -25,7 +25,7 @@
                             <div class="chart__range-fill red" style="height: 20%"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
-                            <input type="number" value="20">
+                            <input type="number" v-model="PercentProteins">
                         </label>
                     </div>
                     <div class="chart__item">
@@ -34,7 +34,7 @@
                             <div class="chart__range-fill yellow" style="height: 30%"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
-                            <input type="number" value="30">
+                            <input type="number" v-model="PercentFats">
                         </label>
                     </div>
                     <div class="chart__item">
@@ -43,21 +43,21 @@
                             <div class="chart__range-fill green" style="height: 50%"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
-                            <input type="number" value="50">
+                            <input type="number" v-model="PercentCarbohydrates">
                         </label>
                     </div>
                 </div>
                 <div class="chart__meta">
                     <div class="chart__meta-item">
-                        <p><span class="red">Б</span> 350г</p>
+                        <p><span class="red">Б</span> {{ Math.round(((Calories*PercentProteins)/100)/4) }}г</p>
                         <p>1г = 4 кал</p>
                     </div>
                     <div class="chart__meta-item">
-                        <p><span class="yellow">Ж</span> 350г</p>
+                        <p><span class="yellow">Ж</span> {{ Math.round(((Calories*PercentFats)/100)/9) }}г</p>
                         <p>1г = 9 кал</p>
                     </div>
                     <div class="chart__meta-item">
-                        <p><span class="green">У</span> 350г</p>
+                        <p><span class="green">У</span> {{ Math.round(((Calories*PercentCarbohydrates)/100)/4) }}г</p>
                         <p>1г = 4 кал</p>
                     </div>
                 </div>
@@ -71,16 +71,13 @@
 <script>
 
   export default {
-    props: {
-      profile: {
-        type: Object,
-        default: () => ({}),
-      }
-    },
     name: "FormStep6",
     data() {
       return {
-        target: ''
+        Calories: 1700,
+        PercentFats: 20,
+        PercentProteins: 30,
+        PercentCarbohydrates: 50
       }
     },
     methods: {
