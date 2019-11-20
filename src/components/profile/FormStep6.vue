@@ -108,10 +108,10 @@
       profile['carbohydratesPercentage'] = this.percentCarbohydrates;
       this.$store.dispatch('user/getNutrients', profile).then(() => {
         let nutrients = this.$store.getters['user/getNutrients'];
-        this.calories = nutrients.calories;
-        this.fats = nutrients.fats;
-        this.proteins = nutrients.proteins;
-        this.carbohydrates = nutrients.carbohydrates;
+        this.calories = Math.round(nutrients.calories);
+        this.fats = Math.round(nutrients.fats);
+        this.proteins = Math.round(nutrients.proteins);
+        this.carbohydrates = Math.round(nutrients.carbohydrates);
       })
     },
     watch: {
