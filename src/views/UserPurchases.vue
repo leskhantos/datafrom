@@ -233,21 +233,11 @@
                                 <p class="user__name">Степан</p>
                             </label>
                         </li>
-                        <li class="user__btn-add">
-                            <button class="button-add button-add--green button-add--big" type="button">Добавить профиль</button>
-                        </li>
                     </ul>
                     <h3 class="modal__title">Хотите добавить гостя?</h3>
                     <div class="counter">
                         <button class="counter__btn counter__btn--min" type="button"></button>
                         <input type="text" value="1 гость">
-                        <button class="counter__btn counter__btn--plus" type="button"></button>
-                    </div>
-                    <div class="modal__separator"></div>
-                    <h3 class="modal__title">Количество порций</h3>
-                    <div class="counter">
-                        <button class="counter__btn counter__btn--min" type="button"></button>
-                        <input type="text" value="2 порции">
                         <button class="counter__btn counter__btn--plus" type="button"></button>
                     </div>
                 </div>
