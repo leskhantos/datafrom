@@ -63,7 +63,7 @@
         methods: {
             logout: function () {
                 this.$store.dispatch('user/logout').then(() => {
-                    this.$router.replace('login')
+                    this.$router.replace('/login')
                 })
             }
         },
