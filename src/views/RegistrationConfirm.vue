@@ -72,6 +72,7 @@
                 }
 
                 this.$store.dispatch('user/registrationConfirm', data).then(()=>{
+                  this.$store.dispatch('user/getUserInfo', data)
                   this.$router.push({ name: 'profile_create'})
                 }).catch((error) => {
                     this.$store.commit('error/SET_ERROR', error);

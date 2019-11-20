@@ -12,6 +12,7 @@ const state = {
   list_profiles: {items: []},
   main_profile: [],
   profile: {},
+  user_info: {},
   has_profiles: 0
 }
 

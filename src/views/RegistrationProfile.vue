@@ -75,12 +75,12 @@
       },
       createProfile() {
         const profile = this.$store.getters['user/getProfileInfo']
-        profile['fullName'] = {'firstName': 'test'}
+        profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
         this.$store.dispatch('user/createProfile', profile).then(() => {
           this.$router.push({name: 'home'})
         })
       },
-    },
+    }
   }
 </script>
 

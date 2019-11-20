@@ -19,6 +19,9 @@ const MAIN_PROFILE = (state, main_profile) => {
 const PROFILE = (state, profile) => {
   state.profile = profile
 }
+const USER_INFO = (state, user_info) => {
+  state.user_info = user_info
+}
 const HAS_PROFILES = (state, has_profiles) => {
   state.has_profiles = has_profiles
 }
@@ -29,6 +32,7 @@ export default {
   LIST_PROFILES,
   MAIN_PROFILE,
   PROFILE,
+  USER_INFO,
   PROFILE_INFO,
   HAS_PROFILES
 }

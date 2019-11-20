@@ -6,6 +6,7 @@ import {
   SendSMSRegistration,
   ListProfiles,
   GetProfile,
+  GetUserInfo,
   CreateProfile
 } from '@/api'
 import VueCookies from 'vue-cookies'
@@ -128,6 +129,17 @@ const getProfile = async ({commit}, id) => {
       console.log(error);
     })
 }
+const getUserInfo = async ({commit}) => {
+  await GetUserInfo()
+    .then((response) => {
+      const data = response.data
+      commit('USER_INFO', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
 
 export default {
   loginConfirm,
@@ -138,5 +150,6 @@ export default {
   getListProfiles,
   getMainProfile,
   getProfile,
+  getUserInfo,
   createProfile
 }
