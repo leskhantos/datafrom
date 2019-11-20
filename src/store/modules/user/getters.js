@@ -6,6 +6,7 @@ const getListProfiles = state => state.list_profiles
 const getMainProfile = state => state.main_profile
 const getProfile = state => state.profile
 const getUserInfo = state => state.user_info
+const getNutrients = state => state.nutrients
 const hasProfiles = state => state.has_profiles
 
 export default {
@@ -17,5 +18,6 @@ export default {
   getProfile,
   getUserInfo,
   getProfileInfo,
-  hasProfiles
+  hasProfiles,
+  getNutrients
 }

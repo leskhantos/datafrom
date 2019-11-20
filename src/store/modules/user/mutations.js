@@ -22,6 +22,9 @@ const PROFILE = (state, profile) => {
 const USER_INFO = (state, user_info) => {
   state.user_info = user_info
 }
+const NUTRIENTS = (state, nutrients) => {
+  state.nutrients = nutrients
+}
 const HAS_PROFILES = (state, has_profiles) => {
   state.has_profiles = has_profiles
 }
@@ -34,5 +37,6 @@ export default {
   PROFILE,
   USER_INFO,
   PROFILE_INFO,
-  HAS_PROFILES
+  HAS_PROFILES,
+  NUTRIENTS
 }

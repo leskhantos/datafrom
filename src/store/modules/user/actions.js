@@ -7,7 +7,8 @@ import {
   ListProfiles,
   GetProfile,
   GetUserInfo,
-  CreateProfile
+  CreateProfile,
+  GetNutrients
 } from '@/api'
 import VueCookies from 'vue-cookies'
 
@@ -139,6 +140,19 @@ const getUserInfo = async ({commit}) => {
       console.error(error);
     })
 }
+const getNutrients = async ({commit}, profile) => {
+  await GetNutrients(profile.weight, profile.height, profile.age,
+    profile.gender, profile.target, profile.fatsPercentage,
+    profile.proteinsPercentage, profile.carbohydratesPercentage)
+    .then((response) => {
+      const data = response.data
+      commit('NUTRIENTS', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
 
 export default {
   loginConfirm,
@@ -150,5 +164,6 @@ export default {
   getMainProfile,
   getProfile,
   getUserInfo,
-  createProfile
+  createProfile,
+  getNutrients
 }

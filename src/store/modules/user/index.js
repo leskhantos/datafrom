@@ -13,7 +13,8 @@ const state = {
   main_profile: [],
   profile: {},
   user_info: {},
-  has_profiles: 0
+  has_profiles: 0,
+  nutrients: []
 }
 
 export default {

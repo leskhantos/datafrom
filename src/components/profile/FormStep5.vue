@@ -59,9 +59,9 @@
         profile['target'] = this.target
         if (!this.target) {
           this.error = 'Выберите цель';
-        }else {
+        } else {
           this.$store.commit('user/PROFILE_INFO', profile)
-          this.$emit('next-step')
+          this.$emit('create')
         }
 
       }

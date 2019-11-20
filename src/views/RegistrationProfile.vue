@@ -30,6 +30,7 @@
                         :is="currentStep"
                         v-on:next-step="childNextStep"
                         v-on:create="createProfile"
+                        v-on:finish="finishRegistration"
                 >
                 </component>
             </section>
@@ -76,11 +77,15 @@
       createProfile() {
         const profile = this.$store.getters['user/getProfileInfo']
         profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
+        profile['fullName'] = {'firstName': 'test'}
         this.$store.dispatch('user/createProfile', profile).then(() => {
-          this.$router.push({name: 'home'})
+          this.step += 1
         }).catch((error) => {
           this.$store.commit('error/SET_ERROR', error);
         })
+      },
+      finishRegistration() {
+        this.$router.push({name: 'home'})
       },
     }
   }

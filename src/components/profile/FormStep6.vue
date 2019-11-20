@@ -5,7 +5,7 @@
             их изменить.</p>
         <div class="settings__input">
             <p>Калорийность</p>
-            <input type="number" v-model="calories" value="1700"><span>кал</span>
+            <input type="number" v-model="calories"><span>кал</span>
         </div>
         <div class="range settings__range">
             <div class="range__container">
@@ -49,15 +49,15 @@
                 </div>
                 <div class="chart__meta">
                     <div class="chart__meta-item">
-                        <p><span class="red">Б</span> {{ Math.round(((calories*percentProteins)/100)/4) }}г</p>
+                        <p><span class="red">Б</span> {{ Math.round(proteins) }}г</p>
                         <p>1г = 4 кал</p>
                     </div>
                     <div class="chart__meta-item">
-                        <p><span class="yellow">Ж</span> {{ Math.round(((calories*percentFats)/100)/9) }}г</p>
+                        <p><span class="yellow">Ж</span> {{ Math.round(fats) }}г</p>
                         <p>1г = 9 кал</p>
                     </div>
                     <div class="chart__meta-item">
-                        <p><span class="green">У</span> {{ Math.round(((calories*percentCarbohydrates)/100)/4) }}г</p>
+                        <p><span class="green">У</span> {{ Math.round(carbohydrates) }}г</p>
                         <p>1г = 4 кал</p>
                     </div>
                 </div>
@@ -77,14 +77,57 @@
         calories: 1700,
         percentFats: 20,
         percentProteins: 30,
-        percentCarbohydrates: 50
+        percentCarbohydrates: 50,
+        fats: 0,
+        proteins: 0,
+        carbohydrates: 0
       }
     },
     methods: {
       createProfile(e) {
         e.preventDefault()
 
-        this.$emit('create')
+        this.$emit('finish')
+      },
+      getAge(dateString) {
+        let today = new Date();
+        let birthDate = new Date(dateString);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age;
+      }
+    },
+    mounted() {
+      let profile = this.$store.getters['user/getProfileInfo']
+      profile['age'] = this.getAge(profile['birthDate']);
+      profile['fatsPercentage'] = this.percentFats;
+      profile['proteinsPercentage'] = this.percentProteins;
+      profile['carbohydratesPercentage'] = this.percentCarbohydrates;
+      this.$store.dispatch('user/getNutrients', profile).then(() => {
+        let nutrients = this.$store.getters['user/getNutrients'];
+        this.calories = nutrients.calories;
+        this.fats = nutrients.fats;
+        this.proteins = nutrients.proteins;
+        this.carbohydrates = nutrients.carbohydrates;
+      })
+    },
+    watch: {
+      calories: function () {
+        this.proteins = Math.round(((this.calories * this.percentProteins) / 100) / 4),
+          this.fats = Math.round(((this.calories * this.percentFats) / 100) / 9),
+          this.carbohydrates = Math.round(((this.calories * this.percentCarbohydrates) / 100) / 4)
+      },
+      percentProteins: function () {
+        this.proteins = Math.round(((this.calories * this.percentProteins) / 100) / 4)
+      },
+      percentFats: function () {
+        this.fats = Math.round(((this.calories * this.percentFats) / 100) / 4)
+      },
+      percentCarbohydrates: function () {
+        this.carbohydrates = Math.round(((this.calories * this.percentCarbohydrates) / 100) / 4)
       }
     }
   }
