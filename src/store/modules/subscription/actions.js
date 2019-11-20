@@ -8,6 +8,7 @@ const getShopListAction = async ({commit}, profile) => {
             const data = response.data
             commit('SET_SHOP_LIST', data.items)
             commit('SET_FILTERED_SHOP_LIST',data.items)
+            commit('SHOP_LIST',data.items)
         })
         .catch(() => {
             commit('SET_ERROR','Ошибка при получении данных')

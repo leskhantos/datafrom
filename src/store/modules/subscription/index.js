@@ -4,7 +4,8 @@ import mutations from './mutations'
 
 const state = {
   shopList:[],
-  filteredShopList:[]
+  filteredShopList:[],
+  list:[]
 }
 
 export default {

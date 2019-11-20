@@ -18,15 +18,15 @@
                             <p class="filter__label">По алфавиту:</p>
                             <div class="filter__item-wrap">
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="alphabet" value="asc" v-model="sortType" @click="sorting"><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="alphabet" value="asc" v-model="sortType" @click="sorting(false)"><span class="input-radio__custom"></span>
                                     <p>А - Я</p>
                                 </label>
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="alphabet" value="desc" v-model="sortType" @click="sorting"><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="alphabet" value="desc" v-model="sortType" @click="sorting(true)"><span class="input-radio__custom"></span>
                                     <p>Я - А</p>
                                 </label>
                             </div>
-                            <button class="icon-button filter__reset-item" type="reset">
+                            <button class="icon-button filter__reset-item" type="reset" @click="resetShopList">
                                 <ResetIcon/>
                             </button>
                         </form>
@@ -52,7 +52,7 @@
                                     <p>1 вид</p>
                                 </label>
                                 <label class="input-radio">
-                                    <input class="visually-hidden" type="radio" name="type" value="second" v-model="typed" ><span class="input-radio__custom"></span>
+                                    <input class="visually-hidden" type="radio" name="type" value="second" v-model="typed" @click="resetShopList"><span class="input-radio__custom"></span>
                                     <p>2 вид</p>
                                 </label>
                             </div>
@@ -91,10 +91,10 @@
                     </div>
                     <div class="filter__col span-2" v-if="typed==='first' && picked==='recipe'">
                         <div class="tabs__buttons">
-                            <button class="tabs__btn" :class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast')">Завтрак</button>
-                            <button class="tabs__btn" :class="{ active: type==='brunch' }" type="button" @click="getFilteredByMealOfDay('brunch')">Перекус</button>
-                            <button class="tabs__btn" :class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch')">Обед</button>
-                            <button class="tabs__btn" :class="{ active: type==='dinner' }"  type="button" @click="getFilteredByMealOfDay('dinner')">Ужин</button>
+                            <button class="tabs__btn" :class="{ active: type==='breakfast'}"  type="button" @click="getFilteredByMealOfAll('breakfast')">Завтрак</button>
+                            <button class="tabs__btn" :class="{ active: type==='dinner' }" type="button" @click="getFilteredByMealOfAll('dinner')">Перекус</button>
+                            <button class="tabs__btn" :class="{ active: type==='lunch' }"  type="button" @click="getFilteredByMealOfAll('lunch')">Обед</button>
+                            <button class="tabs__btn" :class="{ active: type==='supper' }"  type="button" @click="getFilteredByMealOfAll('supper')">Ужин</button>
                         </div>
                     </div>
                 </div>
@@ -180,104 +180,7 @@
                         </div>
                     </li>
                 </ul>
-                <section class="scheduler-food" v-else-if="picked==='recipe'">
-                    <div class="paper scheduler-food__day"  v-for="item in getFilteredSubList" :key="item.id">
-                        <p class="scheduler-food__caption">{{ showDateFormat(item.date) }}</p>
-                        <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typed==='second'">
-                            <button class="tabs__btn active" type="button">Завтрак</button>
-                            <button class="tabs__btn" type="button">Перекус</button>
-                            <button class="tabs__btn" type="button">Обед</button>
-                            <button class="tabs__btn" type="button">Ужин</button>
-                        </div>
-                        <ul class="scheduler-food__list">
-                            <li class="scheduler-food__item">
-                                <div class="scheduler-food__item-wrap">
-                                    <label class="input-checkbox">
-                                        <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>{{ item.recipe.title }}</p>
-                                    </label>
-                                    <button  :class="['icon-button scheduler-food__btn-submenu',{'open':item.open}]"  class="" type="button" title="Открыть" @click="openItem(item.id)">
-                                     <DownIcon/>
-                                    </button>
-                                    <button class="icon-button icon-button--big modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
-                                        <ProfileAddIcon/>
-                                    </button>
-                                    <button :class="['icon-button buy__item-action',{'show':item.show}]" type="button" title="Действия" @click="showItem(item.id)">
-                                        <ActionsIcon/>
-                                    </button>
-                                    <section :class="['paper actions anim-show-action',{'show':item.show}]">
-                                        <div class="actions__item">
-                                            <div class="actions__img">
-                                                <ClockIcon/>
-                                            </div>
-                                            <label class="input-checkbox">
-                                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                <p>Отложить на 24 часа</p>
-                                            </label>
-                                        </div>
-                                        <div class="actions__item">
-                                            <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                                <CloseIcon/>
-                                            </div>
-                                            <label class="input-checkbox">
-                                                <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                <p>Скрыть</p>
-                                            </label>
-                                        </div>
-                                    </section>
-                                    <div class="scheduler-food__meta">
-                                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
-                                        <p class="scheduler-food__weight">{{item.weight}} г</p>
-                                        <p class="scheduler-food__ccal">89 Кал</p>
-                                        <p class="scheduler-food__item-date">{{getTranslatedMealType(item.mealType)}}: <b>{{dateFormat(item.date)}}</b></p>
-                                    </div>
-                                </div>
-                                <div  :class="['scheduler-food__item-dropdown',{'open':item.open}]">
-                                    <ul class="scheduler-food__sublist">
-                                        <li class="scheduler-food__item">
-                                            <div class="scheduler-food__item-wrap">
-                                                <label class="input-checkbox">
-                                                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                    <p>{{item.ingredient.title+" "+item.weight+"г"}}</p>
-                                                </label>
-                                                <button  :class="['icon-button buy__item-action',{'show':item.recipe.show}]" type="button" title="Действия" @click="showItem(item.recipe.id)">
-                                                   <ActionsIcon/>
-                                                </button>
-                                                <section :class="['paper actions anim-show-action',{'show':item.recipe.show}]">
-                                                    <div class="actions__item">
-                                                        <div class="actions__img">
-                                                       <ClockIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Отложить на 24 часа</p>
-                                                        </label>
-                                                    </div>
-                                                    <div class="actions__item">
-                                                        <div class="actions__img" style="width: 20px; margin-left: 18px;">
-                                                            <CloseIcon/>
-                                                        </div>
-                                                        <label class="input-checkbox">
-                                                            <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                                            <p>Скрыть</p>
-                                                        </label>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </li>
-                            <li class="buy__add">
-                                <div class="buy__input">
-                                    <input type="text" placeholder="Добавить еще покупку">
-                                    <button class="button-add button-add--green buy__btn-add" type="button">Добавить</button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+                <PurchaseRecipe v-else-if="picked==='recipe'" :typed="typed" :type="type" :showAddUserModal="showAddUserModal"/>
             </div>
             <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
                 <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
@@ -412,9 +315,11 @@
     import NextIcon from "../components/icons/NextIcon";
     import ResetIcon from "../components/icons/ResetIcon";
     import CheckMarkIcon from "../components/icons/CheckMarkIcon";
+    import PurchaseRecipe from "../components/PurchaseRecipe";
     export default {
         name: "UserPurchases",
         components:{
+            PurchaseRecipe,
             CheckMarkIcon,
             AppProfile,
             BreadCrumbs,
@@ -437,27 +342,32 @@
                 showRecipeAddModal: false,
                 fromDate: '2019-11-01',
                 toDate: '2019-11-30',
-                sortType: 'asc',
+                sortType: '',
                 cookBySelf: false,
                 mealOfDay: "breakfast",
                 type: ''
             }
         },
         methods: {
+            resetShopList(){
+                this.type=''
+                let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c?dateFrom=2019-11-01&dateTo=2019-11-31';
+                this.$store.dispatch('subscription/getShopListAction',profile)
+            },
             getTranslatedMealType(type){
                 let rusMealType
                 if(type==="breakfast"){
                     rusMealType="Завтрак"
-                }else if(type==="dinner"){
+                }else if(type==="supper"){
                     rusMealType="Ужин"
-                }else if(type==="brunch"){
+                }else if(type==="dinner"){
                     rusMealType="Перекус"
                 }else if(type==="lunch"){
                     rusMealType="Обед"
                 }
                 return rusMealType
             },
-            getFilteredByMealOfDay(type){
+            getFilteredByMealOfAll(type){
                 let shopLists = this.$store.getters['subscription/getShopList']
                 this.type = type;
 
@@ -478,23 +388,6 @@
                 let month = date.getMonth()+1;
                 let year = date.getFullYear();
                 return data+"."+month+"."+year
-            },
-            showDateFormat(str){
-                let date = new Date(str)
-                let day = date.getDay()
-                let data = date.getDate();
-                let month = date.getMonth()+1;
-                let year = date.getFullYear();
-                let weekday = new Array(7);
-                weekday[0] = "Воскресенье";
-                weekday[1] = "Понедельник";
-                weekday[2] = "Вторник";
-                weekday[3] = "Среда";
-                weekday[4] = "Четверг";
-                weekday[5] = "Пятница";
-                weekday[6] = "Суббота";
-
-                return weekday[day]+" "+data+"-"+month+"-"+year;
             },
             showItem(id){
                 let shopList = this.$store.getters['subscription/getShopList']
@@ -526,69 +419,65 @@
             showOverlay(){
                 return this.showAddUserModal || this.showBuyMoreModal || this.showRecipeAddModal
             },
-            sorting(){
+            sorting(reverse){
                 let shopList = this.$store.getters['subscription/getShopList']
-                   if (this.sortType==='asc'){
-                       shopList = shopList.sort(function(x, y) {
-                           let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
-                           if (nameA < nameB)
-                               return -1
-                           if (nameA > nameB)
-                               return 1
-                           return 0
-                       });
-                       shopList = shopList.reverse()
-                   }else if(this.sortType==='desc'){
-                       shopList = shopList.sort(function(x, y) {
-                           let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
-                           if (nameA < nameB)
-                               return -1
-                           if (nameA > nameB)
-                               return 1
-                           return 0
-                       });
-                   }
-                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
-
                 let shopListRecipes = this.$store.getters['subscription/getFilteredShopList']
-                if (this.sortType==='asc'){
-                        shopListRecipes = shopListRecipes.sort(function(x, y) {
-                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+
+                if (reverse){
+                    shopList.sort(function(x, y) {
+                        let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
                         if (nameA < nameB)
                             return -1
                         if (nameA > nameB)
                             return 1
                         return 0
                     });
-                    shopListRecipes = shopListRecipes.reverse()
-                }else if(this.sortType==='desc'){
-                        shopListRecipes = shopListRecipes.sort(function(x, y) {
-                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                }else{
+                    shopList.sort(function(x, y) {
+                        let nameA=x.ingredient.title.toLowerCase(), nameB=y.ingredient.title.toLowerCase()
                         if (nameA < nameB)
-                            return -1
-                        if (nameA > nameB)
                             return 1
+                        if (nameA > nameB)
+                            return -1
                         return 0
                     });
                 }
+
+                if (reverse){
+                    shopListRecipes.sort(function(x, y) {
+                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                        if (nameA < nameB)
+                            return -1
+                        if (nameA > nameB)
+                            return 1
+                        return 0
+                    });
+                }else{
+                    shopListRecipes.sort(function(x, y) {
+                        let nameA=x.recipe.title.toLowerCase(), nameB=y.recipe.title.toLowerCase()
+                        if (nameA < nameB)
+                            return 1
+                        if (nameA > nameB)
+                            return -1
+                        return 0
+                    });
+                }
+                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
                 this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopListRecipes)
-            }
+
+            },
+
         },
         computed:{
             getSubList(){
                 return this.$store.getters['subscription/getShopList']
             },
-            getFilteredSubList(){
-                return this.$store.getters['subscription/getFilteredShopList']
-            }
         },
         created() {
             let profile = '3aa5e0ab-00d6-4d88-99fd-ae58e152cc3c?dateFrom=2019-11-01&dateTo=2019-11-31';
             this.$store.dispatch('subscription/getShopListAction',profile)
         },
         mounted() {
-            this.sorting();
-            this.getFilteredByMealOfDay('breakfast');
         }
     }
 </script>
