@@ -5,7 +5,7 @@
                 <div class="user__profiles">
                     <label v-if="mainProfile.fullName != null" class="user__profile user__profile--main">
                         <input class="visually-hidden" type="radio" name="profile" checked>
-                        <div v-if="mainProfile.avatar != null" class="user__avatar user__avatar--big"><img
+                        <div class="user__avatar user__avatar--big"><img
                                 :src="mainProfile.avatar.path"
                                 alt="avatar"></div>
                         <p v-if="mainProfile.fullName.firstName != null" class="user__name">
@@ -15,8 +15,8 @@
                         <li v-for="(item, key) in listProfiles" :key="key">
                             <label class="user__profile" v-if="item.isMain == false">
                                 <input class="visually-hidden" type="radio" name="profile">
-                                <div v-if="item.avatar != null" class="user__avatar"><img :src="item.avatar.path"
-                                                                                          alt="avatar">
+                                <div class="user__avatar"><img :src="item.avatar.path"
+                                                               alt="avatar">
                                 </div>
                                 <p v-if="item.fullName.firstName != null" class="user__name">
                                     {{item.fullName.firstName}}</p>
@@ -41,7 +41,7 @@
                                         <router-link class="user__menu-link"
                                                      href=""
                                                      :to="{ name: 'profile', params: { id: item.id }}">
-                                            <div v-if="item.avatar != null" class="user__avatar"><img
+                                            <div class="user__avatar"><img
                                                     :src="item.avatar.path"
                                                     alt="avatar"></div>
                                             <p v-if="item.fullName.firstName != null" class="user__name">
