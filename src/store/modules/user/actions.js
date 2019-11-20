@@ -5,7 +5,10 @@ import {
   SendSMSLogin,
   SendSMSRegistration,
   ListProfiles,
-  GetProfile
+  GetProfile,
+  GetUserInfo,
+  CreateProfile,
+  GetNutrients
 } from '@/api'
 import VueCookies from 'vue-cookies'
 
@@ -28,12 +31,26 @@ const logout = ({commit}) => {
   return new Promise((resolve) => {
     VueCookies.remove('Authorization')
     commit('TOKEN_UPDATED', null)
+    commit('HAS_PROFILES', 0);
     resolve()
   })
 }
 
 const registrationConfirm = ({commit}, payload) => {
   return Registration(payload)
+    .then((response) => {
+      const token = response.data.accessToken
+      commit('TOKEN_UPDATED', token)
+      SetTokenHeaders(token)
+      VueCookies.set('Authorization', token, {expires: 1})
+    })
+    .catch(() => {
+      throw "Регистрация не прошла";
+    })
+}
+
+const createProfile = ({commit}, payload) => {
+  return CreateProfile(payload)
     .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
@@ -120,6 +137,30 @@ const getProfile = async ({commit}, id) => {
       console.log(error);
     })
 }
+const getUserInfo = async ({commit}) => {
+  await GetUserInfo()
+    .then((response) => {
+      const data = response.data
+      commit('USER_INFO', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
+const getNutrients = async ({commit}, profile) => {
+  await GetNutrients(profile.weight, profile.height, profile.age,
+    profile.gender, profile.target, profile.fatsPercentage,
+    profile.proteinsPercentage, profile.carbohydratesPercentage)
+    .then((response) => {
+      const data = response.data
+      commit('NUTRIENTS', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
 
 export default {
   loginConfirm,
@@ -129,5 +170,8 @@ export default {
   sendSMSRegistration,
   getListProfiles,
   getMainProfile,
-  getProfile
+  getProfile,
+  getUserInfo,
+  createProfile,
+  getNutrients
 }
