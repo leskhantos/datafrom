@@ -49,3 +49,7 @@ export function GetNutrients(weight, height, age, gender, target, fatsPercentage
     + '&gender=' + gender + '&target=' + target + '&fatsPercentage=' + fatsPercentage + '&proteinsPercentage=' + proteinsPercentage
     + '&carbohydratesPercentage=' + carbohydratesPercentage)
 }
+
+export function ListMenus() {
+  return axios.get(Settings.host + '/api/v1/menus')
+}
