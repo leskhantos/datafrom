@@ -23,20 +23,20 @@
                                 <p class="profile__label" slot="item">Имя</p>
                                 <span slot="label">{{this.firstName}}</span>
                             </paragraph-profile>
-<!--                            <paragraph-profile>-->
-<!--                                <div slot="icon">-->
-<!--                                    <EmailIcon />-->
-<!--                                </div>-->
-<!--                                <p class="profile__label" slot="item">E-mail</p>-->
-<!--                                <span slot="label">mail@mail.ru</span>-->
-<!--                            </paragraph-profile>-->
-<!--                            <paragraph-profile>-->
-<!--                                <div slot="icon">-->
-<!--                                    <PhoneIcon />-->
-<!--                                </div>-->
-<!--                                <p class="profile__label" slot="item">Телефон</p>-->
-<!--                                <span slot="label">+7 (921) 315-57-75</span>-->
-<!--                            </paragraph-profile>-->
+                            <!--                            <paragraph-profile>-->
+                            <!--                                <div slot="icon">-->
+                            <!--                                    <EmailIcon />-->
+                            <!--                                </div>-->
+                            <!--                                <p class="profile__label" slot="item">E-mail</p>-->
+                            <!--                                <span slot="label">mail@mail.ru</span>-->
+                            <!--                            </paragraph-profile>-->
+                            <!--                            <paragraph-profile>-->
+                            <!--                                <div slot="icon">-->
+                            <!--                                    <PhoneIcon />-->
+                            <!--                                </div>-->
+                            <!--                                <p class="profile__label" slot="item">Телефон</p>-->
+                            <!--                                <span slot="label">+7 (921) 315-57-75</span>-->
+                            <!--                            </paragraph-profile>-->
                         </div>
                         <a class="profile__edit" href="">
                             <EditIcon />
@@ -202,6 +202,13 @@
             this.height = Math.round(profile.height)
             this.weight = Math.round(profile.weight)
             this.target = profile.target
+            if (this.target === "gain_weight") {
+              this.target = "Набор мышечной массы"
+            } else if (this.target === "lose_weight") {
+              this.target = "Медленная потеря веса"
+            } else if (this.target === "hold_weight") {
+              this.target = "Поддержание текущей формы"
+            }
           })
         }
       }
