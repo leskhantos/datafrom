@@ -23,20 +23,20 @@
                                 <p class="profile__label" slot="item">Имя</p>
                                 <span slot="label">{{this.firstName}}</span>
                             </paragraph-profile>
-                            <paragraph-profile>
-                                <div slot="icon">
-                                    <EmailIcon />
-                                </div>
-                                <p class="profile__label" slot="item">E-mail</p>
-                                <span slot="label">mail@mail.ru</span>
-                            </paragraph-profile>
-                            <paragraph-profile>
-                                <div slot="icon">
-                                    <PhoneIcon />
-                                </div>
-                                <p class="profile__label" slot="item">Телефон</p>
-                                <span slot="label">+7 (921) 315-57-75</span>
-                            </paragraph-profile>
+<!--                            <paragraph-profile>-->
+<!--                                <div slot="icon">-->
+<!--                                    <EmailIcon />-->
+<!--                                </div>-->
+<!--                                <p class="profile__label" slot="item">E-mail</p>-->
+<!--                                <span slot="label">mail@mail.ru</span>-->
+<!--                            </paragraph-profile>-->
+<!--                            <paragraph-profile>-->
+<!--                                <div slot="icon">-->
+<!--                                    <PhoneIcon />-->
+<!--                                </div>-->
+<!--                                <p class="profile__label" slot="item">Телефон</p>-->
+<!--                                <span slot="label">+7 (921) 315-57-75</span>-->
+<!--                            </paragraph-profile>-->
                         </div>
                         <a class="profile__edit" href="">
                             <EditIcon />
@@ -132,8 +132,8 @@
   import ParagraphProfile from '../components/ParagraphProfile'
   import BreadCrumbs from "../components/BreadCrumbs";
   import AppProfile from "../components/AppProfile";
-  import EmailIcon from "../components/icons/EmailIcon";
-  import PhoneIcon from "../components/icons/PhoneIcon";
+  // import EmailIcon from "../components/icons/EmailIcon";
+  // import PhoneIcon from "../components/icons/PhoneIcon";
   import ActivityIcon from "../components/icons/ActivityIcon";
   import AllergIcon from "../components/icons/AllergIcon";
   import FaceIcon from "../components/icons/FaceIcon";
@@ -151,8 +151,8 @@
     components: {
       BreadCrumbs,
       AppProfile,
-      EmailIcon,
-      PhoneIcon,
+      // EmailIcon,
+      // PhoneIcon,
       ActivityIcon,
       AllergIcon,
       FaceIcon,
