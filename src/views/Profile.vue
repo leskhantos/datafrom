@@ -1,6 +1,4 @@
 <template>
-    <body>
-    <AppHeader />
     <main class="page">
         <BreadCrumbs />
         <section class="grid">
@@ -128,12 +126,10 @@
             </div>
         </section>
     </main>
-    </body>
 </template>
 
 <script>
   import ParagraphProfile from '../components/ParagraphProfile'
-  import AppHeader from "../components/AppHeader";
   import BreadCrumbs from "../components/BreadCrumbs";
   import AppProfile from "../components/AppProfile";
   import EmailIcon from "../components/icons/EmailIcon";
@@ -153,7 +149,6 @@
 
     props: ['id'],
     components: {
-      AppHeader,
       BreadCrumbs,
       AppProfile,
       EmailIcon,
