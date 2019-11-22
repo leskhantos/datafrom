@@ -4,6 +4,9 @@ import mutations from './mutations'
 
 const state = {
   list_menus: [],
+  menu: {},
+  meals: [],
+  ingredients: []
 }
 
 export default {

@@ -59,10 +59,4 @@
 </script>
 
 <style scoped>
-    /*.title__wrapper{*/
-    /*    max-width: 1364px;*/
-    /*}*/
-    /*.grid__column{*/
-    /*    max-width: 1364px;*/
-    /*}*/
 </style>

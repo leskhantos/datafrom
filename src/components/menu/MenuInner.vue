@@ -40,7 +40,7 @@
                 <p class="filter__name">Выбор недели:</p>
                 <div class="filter__item">
                     <button class="icon-button filter__btn-arrow filter__btn-arrow--prev" type="button"
-                            @click.prevent="changeStartDate">
+                            @click.prevent="minusWeek">
                         <ArrowLeftIcon />
                     </button>
                     <div class="datepicker filter__datepicker">
@@ -51,7 +51,7 @@
                         <input type="date" v-model="finishDate">
                     </div>
                     <button class="icon-button filter__btn-arrow filter__btn-arrow--next" type="button"
-                            @click.prevent="changeFinishDate">
+                            @click.prevent="plusWeek">
                         <ArrowRightIcon />
                     </button>
                 </div>
@@ -80,15 +80,27 @@
             </div>
             <div class="filter__col span-2" v-if="typeOfMenu===1">
                 <div class="tabs__buttons">
-                    <button class="tabs__btn active" type="button">Завтрак</button>
-                    <button class="tabs__btn" type="button">Перекус</button>
-                    <button class="tabs__btn" type="button">Обед</button>
-                    <button class="tabs__btn" type="button">Ужин</button>
+                    <button :class="['tabs__btn', { 'active':typeOfMeals === 'breakfast' }]" type="button"
+                            @click.prevent="typeOfMeals='breakfast'">Завтрак
+                    </button>
+                    <button :class="['tabs__btn', { 'active':typeOfMeals === 'brunch' }]" type="button"
+                            @click.prevent="typeOfMeals='brunch'">Перекус
+                    </button>
+                    <button :class="['tabs__btn', { 'active':typeOfMeals === 'dinner' }]" type="button"
+                            @click.prevent="typeOfMeals='dinner'">Обед
+                    </button>
+                    <button :class="['tabs__btn', { 'active':typeOfMeals === 'supper' }]" type="button"
+                            @click.prevent="typeOfMeals='supper'">Ужин
+                    </button>
                 </div>
             </div>
         </div>
         <component
                 :is="currentMenu"
+                :startDate="startDate"
+                :finishDate="finishDate"
+                :menuId="activeMenuId"
+                :typeOfMeals="typeOfMeals"
         >
         </component>
     </div>
@@ -122,10 +134,15 @@
         typeOfMenu: 1,
         startDate: '',
         finishDate: '',
+        menus: {},
+        activeMenuId: '',
+        typeOfMeals: 'breakfast'
       }
     },
     computed: {
       listMenus() {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.menus = this.$store.getters['menu/getListMenus']
         return this.$store.getters['menu/getListMenus'];
       },
       currentMenu() {
@@ -147,45 +164,60 @@
           this.activeMenu -= 1
         }
       },
+      getStringDate(date) {
 
+        let month = '' + (date.getMonth() + 1)
+        let day = '' + (date.getDate())
+        let year = date.getFullYear()
 
-      changeStartDate() {
+        if (month.length < 2)
+          month = '0' + month;
+        if (day.length < 2)
+          day = '0' + day;
 
+        return ([year, month, day].join('-'));
+      },
+      minusWeek() {
         let startDate = new Date(this.startDate)
 
-        startDate.setDate(startDate.getDate() - 1)
-
-        let month = '' + (startDate.getMonth() + 1)
-        let day = '' + (startDate.getDate())
-        let year = startDate.getFullYear()
-
-        if (month.length < 2)
-          month = '0' + month;
-        if (day.length < 2)
-          day = '0' + day;
-
-        this.startDate = [year, month, day].join('-');
-      },
-      changeFinishDate() {
+        startDate.setDate(startDate.getDate() - 7)
+        this.startDate = this.getStringDate(startDate);
         let finishDate = new Date(this.finishDate)
 
-        finishDate.setDate(finishDate.getDate() + 1)
+        finishDate.setDate(finishDate.getDate() - 7)
+        this.finishDate = this.getStringDate(finishDate);
+      },
+      plusWeek() {
+        let startDate = new Date(this.startDate)
 
-        let month = '' + (finishDate.getMonth() + 1)
-        let day = '' + (finishDate.getDate())
-        let year = finishDate.getFullYear()
+        startDate.setDate(startDate.getDate() + 7)
+        this.startDate = this.getStringDate(startDate);
+        let finishDate = new Date(this.finishDate)
 
-        if (month.length < 2)
-          month = '0' + month;
-        if (day.length < 2)
-          day = '0' + day;
-
-        this.finishDate = [year, month, day].join('-');
+        finishDate.setDate(finishDate.getDate() + 7)
+        this.finishDate = this.getStringDate(finishDate);
       }
     },
     mounted() {
       this.typeOfMenu = 1
-      this.$store.dispatch('menu/getListMenus')
+
+      let startDate = new Date()
+      this.startDate = this.getStringDate(startDate);
+
+      let finishDate = new Date()
+      finishDate.setDate(startDate.getDate() + 7)
+      this.finishDate = this.getStringDate(finishDate);
+
+      this.$store.dispatch('menu/getListMenus').then(() => {
+        this.activeMenuId = this.menus[this.activeMenu].id
+      })
+
+      this.typeOfMeals = 'breakfast'
+    },
+    watch: {
+      activeMenu: function () {
+        this.activeMenuId = this.menus[this.activeMenu].id
+      },
     }
   }
 </script>

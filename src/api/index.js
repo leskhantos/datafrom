@@ -53,3 +53,15 @@ export function GetNutrients(weight, height, age, gender, target, fatsPercentage
 export function ListMenus() {
   return axios.get(Settings.host + '/api/v1/menus')
 }
+
+export function GetMenu(id) {
+  return axios.get(Settings.host + '/api/v1/menus/' + id)
+}
+
+export function GetMeals(menuId, menuProportionId) {
+  return axios.get(Settings.host + '/api/v1/menus/'+menuId+'/proportions/'+menuProportionId+'/meals')
+}
+
+export function GetIngredients(recipe, weight) {
+  return axios.get(Settings.host + '/api/v1/recipe/calculate-weight?recipe='+recipe+'&weight='+weight)
+}

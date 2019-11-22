@@ -12,8 +12,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -22,7 +24,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -30,8 +33,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -50,8 +55,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -60,7 +67,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -68,8 +76,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -88,8 +98,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -98,7 +110,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -106,8 +119,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -126,8 +141,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -136,7 +153,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -144,8 +162,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -164,8 +184,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -174,7 +196,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -182,8 +205,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -202,8 +227,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -212,7 +239,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -220,8 +248,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -240,8 +270,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -250,7 +282,8 @@
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
                         <p class="menu__scheduler-desc">Карбонара с креветками</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -258,8 +291,10 @@
                 <li class="menu__scheduler-dish-item">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-3.jpg" alt="dish"></div>
                     <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и капперсами</p>
-                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span class="green">30</span></p>
+                        <p class="menu__scheduler-desc">Индейка с яблочный соусом под маринадом с анчоусами и
+                            капперсами</p>
+                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
+                                class="green">30</span></p>
                         <p class="menu__scheduler-calories"><span>200г.</span>89 Кал</p>
                         <button class="button" type="button">Съел(а)</button>
                     </div>
@@ -271,7 +306,8 @@
 
 <script>
   export default {
-    name: "Menu2"
+    name: "Menu2",
+    props: ['startDate', 'finishDate', 'menuId']
   }
 </script>
 

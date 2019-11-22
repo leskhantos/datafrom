@@ -54,14 +54,16 @@
                             <DiaryIcon />
                             <span>Дневник</span></a></li>
                         <li>
-                            <router-link class="user__menu-link active" to="/purchases">
+                            <router-link to="/purchases"
+                                         :class="['user__menu-link', { 'active':this.$route.name === 'purchases' }]">
                                 <PurchasesIcon />
                                 <span>Покупки</span></router-link>
                         </li>
-                        <li>
-                            <router-link class="user__menu-link"
-                                         href=""
-                                         :to="{ name: 'menu'}">
+                        <li @click.prevent="activeMenu='Меню'">
+                            <router-link
+                                    href=""
+                                    :to="{ name: 'menu'}"
+                                    :class="['user__menu-link', { 'active':this.$route.name === 'menu' }]">
                                 <MenuIcon />
                                 <span>Меню</span></router-link>
                         </li>
@@ -90,7 +92,7 @@
     name: "AppProfile",
     data() {
       return {
-        open_menu: false,
+        open_menu: false
       }
     },
     components: {
