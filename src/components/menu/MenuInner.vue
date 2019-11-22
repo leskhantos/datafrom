@@ -205,7 +205,7 @@
       this.startDate = this.getStringDate(startDate);
 
       let finishDate = new Date()
-      finishDate.setDate(startDate.getDate() + 7)
+      finishDate.setDate(startDate.getDate() + 6)
       this.finishDate = this.getStringDate(finishDate);
 
       this.$store.dispatch('menu/getListMenus').then(() => {

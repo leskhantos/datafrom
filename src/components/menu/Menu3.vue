@@ -1,32 +1,103 @@
 <template>
-    <ul class="menu__scheduler-list">
-        <li class="paper menu__scheduler-item" v-for="(item,key) in listMeals" :key="key">
-            <p class="menu__scheduler-caption">{{item.mealTypeLocal}} {{item.stringDate}}</p>
-            <ul class="menu__scheduler-dish-list">
-                <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item.recipeWeights" :key="keyRecipe">
-                    <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                    <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
-                        <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
-                                class="green">33</span></p>
-                        <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
-                            Кал</p>
-                        <!--p.status Не доступно-->
-                    </div>
-                </li>
-                <!--                <li class="menu__scheduler-dish-item disabled">-->
-                <!--                    <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>-->
-                <!--                    <div class="menu__scheduler-content">-->
-                <!--                        <p class="menu__scheduler-desc">Карбонара с креветками</p>-->
-                <!--                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span-->
-                <!--                                class="green">30</span></p>-->
-                <!--                        <p class="menu__scheduler-calories">89 Кал</p>-->
-                <!--                        <p class="status">Не доступно</p>-->
-                <!--                    </div>-->
-                <!--                </li>-->
-            </ul>
-        </li>
-    </ul>
+    <div>
+        <ul class="menu__scheduler-list" v-for="(item,key) in listMeals" :key="key">
+            <li class="paper menu__scheduler-item">
+                <p class="menu__scheduler-caption">{{item[0].mealTypeLocal}} {{item[0].stringDate}}</p>
+                <ul class="menu__scheduler-dish-list">
+                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[0].recipeWeights"
+                        :key="keyRecipe">
+                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                        <div class="menu__scheduler-content">
+                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                            <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
+                                    class="green">33</span></p>
+                            <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
+                                Кал</p>
+                            <!--p.status Не доступно-->
+                        </div>
+                    </li>
+                    <!--                <li class="menu__scheduler-dish-item disabled">-->
+                    <!--                    <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>-->
+                    <!--                    <div class="menu__scheduler-content">-->
+                    <!--                        <p class="menu__scheduler-desc">Карбонара с креветками</p>-->
+                    <!--                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span-->
+                    <!--                                class="green">30</span></p>-->
+                    <!--                        <p class="menu__scheduler-calories">89 Кал</p>-->
+                    <!--                        <p class="status">Не доступно</p>-->
+                    <!--                    </div>-->
+                    <!--                </li>-->
+                </ul>
+            </li>
+            <li class="paper menu__scheduler-item">
+                <p class="menu__scheduler-caption">{{item[1].mealTypeLocal}} {{item[1].stringDate}}</p>
+                <ul class="menu__scheduler-dish-list">
+                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[1].recipeWeights"
+                        :key="keyRecipe">
+                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                        <div class="menu__scheduler-content">
+                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                            <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
+                                    class="green">33</span></p>
+                            <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
+                                Кал</p>
+                            <!--p.status Не доступно-->
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="paper menu__scheduler-item">
+                <p class="menu__scheduler-caption">{{item[2].mealTypeLocal}} {{item[2].stringDate}}</p>
+                <ul class="menu__scheduler-dish-list">
+                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[2].recipeWeights"
+                        :key="keyRecipe">
+                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                        <div class="menu__scheduler-content">
+                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                            <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
+                                    class="green">33</span></p>
+                            <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
+                                Кал</p>
+                            <!--p.status Не доступно-->
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="paper menu__scheduler-item">
+                <p class="menu__scheduler-caption">{{item[3].mealTypeLocal}} {{item[3].stringDate}}</p>
+                <ul class="menu__scheduler-dish-list">
+                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[3].recipeWeights"
+                        :key="keyRecipe">
+                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                        <div class="menu__scheduler-content">
+                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                            <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
+                                    class="green">33</span></p>
+                            <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
+                                Кал</p>
+                            <!--p.status Не доступно-->
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="paper menu__scheduler-item">
+                <p class="menu__scheduler-caption">{{item[4].mealTypeLocal}} {{item[4].stringDate}}</p>
+                <ul class="menu__scheduler-dish-list">
+                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[4].recipeWeights"
+                        :key="keyRecipe">
+                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                        <div class="menu__scheduler-content">
+                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                            <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
+                                    class="green">33</span></p>
+                            <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
+                                Кал</p>
+                            <!--p.status Не доступно-->
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </template>
 
 
@@ -116,7 +187,49 @@
           resultWithDates.push(resultArrayRow)
         })
 
-        return resultMeals
+        let newResultWithDates = []
+
+        resultWithDates.forEach((row) => {
+
+          let breakfast = {}
+          let lunch = {}
+          let brunch = {}
+          let dinner = {}
+          let supper = {}
+
+          row.forEach((array) => {
+
+            if (array.mealType === 'breakfast') {
+              breakfast = array
+            }
+            if (array.mealType === 'lunch') {
+              lunch = array
+            }
+            if (array.mealType === 'brunch') {
+              brunch = array
+            }
+            if (array.mealType === 'dinner') {
+              dinner = array
+            }
+            if (array.mealType === 'supper') {
+              supper = array
+            }
+
+          })
+
+          row = []
+          row.push(breakfast)
+          row.push(lunch)
+          row.push(brunch)
+          row.push(dinner)
+          row.push(supper)
+          newResultWithDates.push(row)
+        })
+        resultWithDates = newResultWithDates
+        // eslint-disable-next-line no-console
+        console.log(resultWithDates)
+
+        return resultWithDates
       }
     }, methods: {
       onlyUnique(value, index, self) {
