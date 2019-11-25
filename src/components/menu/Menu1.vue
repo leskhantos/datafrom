@@ -10,6 +10,9 @@
                             {{recipe.recipe._embedded.proportions[0].description}}</p>
                         <p slot="calories" class="menu__scheduler-calories">
                             {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
+                        <span slot="proteins" class="orange">33</span>
+                        <span slot="fats" class="yellow">33</span>
+                        <span slot="carbohydrates" class="green">33</span>
                     </recipe>
                 </li>
             </ul>

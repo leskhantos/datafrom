@@ -1,81 +1,27 @@
 <template>
     <div>
-        <ul class="menu__scheduler-list" v-for="(item,key) in listMeals" :key="key">
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{item[0].mealTypeLocal}} {{item[0].stringDate}}</p>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[0].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p slot="calories" class="menu__scheduler-calories">
-                                {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        </recipe>
-                    </li>
-                </ul>
-            </li>
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{item[1].mealTypeLocal}} {{item[1].stringDate}}</p>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[1].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p slot="calories" class="menu__scheduler-calories">
-                                {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        </recipe>
-                    </li>
-                </ul>
-            </li>
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{item[2].mealTypeLocal}} {{item[2].stringDate}}</p>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[2].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p slot="calories" class="menu__scheduler-calories">
-                                {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        </recipe>
-                    </li>
-                </ul>
-            </li>
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{item[3].mealTypeLocal}} {{item[3].stringDate}}</p>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[3].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p slot="calories" class="menu__scheduler-calories">
-                                {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        </recipe>
-                    </li>
-                </ul>
-            </li>
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{item[4].mealTypeLocal}} {{item[4].stringDate}}</p>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item[4].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p slot="calories" class="menu__scheduler-calories">
-                                {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        </recipe>
-                    </li>
-                </ul>
-            </li>
+        <ul class="menu__scheduler-list" v-for="(dayOfMeal,key) in listMeals" :key="key">
+            <div v-for="(meal,keyMeal) in dayOfMeal" :key="keyMeal">
+                <li class="paper menu__scheduler-item">
+                    <p class="menu__scheduler-caption">{{meal.mealTypeLocal}} {{meal.stringDate}}</p>
+                    <ul class="menu__scheduler-dish-list">
+                        <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in meal.recipeWeights"
+                            :key="keyRecipe">
+                            <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish">
+                            </div>
+                            <recipe>
+                                <p slot="description" class="menu__scheduler-desc">
+                                    {{recipe.recipe._embedded.proportions[0].description}}</p>
+                                <p slot="calories" class="menu__scheduler-calories">
+                                    {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
+                                <span slot="proteins" class="orange">33</span>
+                                <span slot="fats" class="yellow">33</span>
+                                <span slot="carbohydrates" class="green">33</span>
+                            </recipe>
+                        </li>
+                    </ul>
+                </li>
+            </div>
         </ul>
     </div>
 </template>
@@ -204,9 +150,9 @@
 
           row = []
           row.push(breakfast)
-          row.push(lunch)
           row.push(brunch)
           row.push(dinner)
+          row.push(lunch)
           row.push(supper)
           newResultWithDates.push(row)
         })
