@@ -99,13 +99,35 @@
           this.$store.dispatch('menu/getMeals', menu).then(() => {
             let meals = this.$store.getters['menu/getMeals']._embedded.items;
             this.meals = meals
+            this.meals.forEach((meal) => {
+
+              meal.recipeWeights.forEach((recipe) => {
+                let recipeSelf = {}
+                recipeSelf['recipe'] = recipe.recipe.id
+                recipeSelf['weight'] = recipe.weight
+                this.$store.dispatch('menu/getIngredients', recipeSelf).then(() => {
+                  let nutrients = this.$store.getters['menu/getIngredients'];
+                  let sumProteins = 0
+                  let sumFats = 0
+                  let sumCarbohydrates = 0
+                  nutrients.forEach((nutrient) => {
+                    sumProteins += nutrient.nutrients[0].weight
+                    sumFats += nutrient.nutrients[1].weight
+                    sumCarbohydrates += nutrient.nutrients[2].weight
+                  })
+                  recipe['proteins'] = Math.round(sumProteins)
+                  recipe['fats'] = Math.round(sumFats)
+                  recipe['carbohydrates'] = Math.round(sumCarbohydrates)
+                })
+              })
+            })
           })
 
         })
 
       }
     },
-    created() {
+    mounted() {
       this.typeOfMeals = 'breakfast'
       this.$store.dispatch('menu/getMenu', this.menuId).then(() => {
         this.proportions = this.$store.getters['menu/getMenu']._embedded.proportions
@@ -118,9 +140,10 @@
           let meals = this.$store.getters['menu/getMeals']._embedded.items;
           this.meals = meals
           this.meals.forEach((meal) => {
+
             meal.recipeWeights.forEach((recipe) => {
               let recipeSelf = {}
-              recipeSelf['recipe'] = recipe.recipe._embedded.proportions[0].id
+              recipeSelf['recipe'] = recipe.recipe.id
               recipeSelf['weight'] = recipe.weight
               this.$store.dispatch('menu/getIngredients', recipeSelf).then(() => {
                 let nutrients = this.$store.getters['menu/getIngredients'];

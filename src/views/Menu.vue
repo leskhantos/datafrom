@@ -38,25 +38,27 @@
     data() {
       return {
         open_menu: true,
+        currentMenu: "MenuInner",
         title: 'Меню',
       }
     },
-    computed: {
-      currentMenu() {
+    watch: {
+      open_menu: function () {
         if (this.open_menu) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.title = 'Меню'
-          return 'MenuInner'
+          this.currentMenu = 'MenuInner'
         } else {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.title = 'Подписки'
-          return 'Subscriptions'
+          this.currentMenu = 'Subscriptions'
         }
-      },
+      }
     },
   }
 
 </script>
 
 <style scoped>
+    body {
+        overflow-x: hidden;
+    }
 </style>
