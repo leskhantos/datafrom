@@ -8,20 +8,23 @@
                         <a>Пол</a>
                     </li>
                     <li :class="{'done':step>=2}" v-on:click="step=2">
-                        <a>Дата рождения</a>
+                        <a>Имя</a>
                     </li>
                     <li :class="{'done':step>=3}" v-on:click="step=3">
-                        <a>Рост</a>
+                        <a>Дата рождения</a>
                     </li>
                     <li :class="{'done':step>=4}" v-on:click="step=4">
+                        <a>Рост</a>
+                    </li>
+                    <li :class="{'done':step>=5}" v-on:click="step=5">
                         <a>Вес</a>
                     </li>
                     <!--                    <li><a>Активность</a></li>-->
-                    <li :class="{'done':step>=5}" v-on:click="step=5">
+                    <li :class="{'done':step>=6}" v-on:click="step=6">
                         <a>Цель</a>
                     </li>
                     <!--                    <li><a>Аллергены</a></li>-->
-                    <li :class="{'done':step>=6}" v-on:click="step=6">
+                    <li :class="{'done':step>=7}" v-on:click="step=7">
                         <a>Расчёт калорий и БЖУ</a>
                     </li>
                 </ul>
@@ -47,6 +50,7 @@
   import FormStep4 from '@/components/profile/FormStep4'
   import FormStep5 from '@/components/profile/FormStep5'
   import FormStep6 from '@/components/profile/FormStep6'
+  import FormStep7 from '@/components/profile/FormStep7'
 
   export default {
     components: {
@@ -56,6 +60,7 @@
       FormStep4,
       FormStep5,
       FormStep6,
+      FormStep7,
       BreadCrumbs,
       AppProfile
     },
@@ -77,7 +82,6 @@
       createProfile() {
         const profile = this.$store.getters['user/getProfileInfo']
         profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
-        profile['fullName'] = {'firstName': 'test'}
         this.$store.dispatch('user/createProfile', profile).then(() => {
           this.step += 1
         }).catch((error) => {

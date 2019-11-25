@@ -1,21 +1,10 @@
 <template>
-
     <div class="paper settings__container">
-        <div class="settings__wrapper">
-            <div class="settings__col" style="margin-right: 180px;">
-                <h2 class="settings__title settings__title--small">Укажите ваш<br> текущий вес</h2>
-                <div class="settings__weight">
-                    <input type="number" placeholder="105" v-model="weight"><span>кг</span>
-                </div>
-                <b :class="{'active':error!==''}">{{ this.error }}</b>
-            </div>
-            <div class="settings__col">
-                <h2 class="settings__title settings__title--small">Укажите ваш<br> желаемый вес</h2>
-                <div class="settings__weight">
-                    <input type="number" placeholder="55"><span>кг</span>
-                </div>
-            </div>
+        <h2 class="settings__title">Укажите ваш рост</h2>
+        <div class="settings__height">
+            <input type="number" placeholder="180" v-model="height"><span>см</span>
         </div>
+        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
            @click="nextStep">Далее
         </a>
@@ -35,7 +24,7 @@
     data() {
       return {
         error: '',
-        weight: ''
+        height: ''
       }
     },
     methods: {
@@ -44,8 +33,8 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['weight'] = this.weight
-        if (!this.weight) {
+        profile['height'] = this.height
+        if (!this.height) {
           this.error = 'Заполните это поле';
         } else {
           this.$store.commit('user/PROFILE_INFO', profile)
@@ -55,7 +44,7 @@
       }
     },
     mounted() {
-      this.weight = this.$store.getters['user/getProfileInfo'].weight
+      this.height = this.$store.getters['user/getProfileInfo'].height
     }
   }
 </script>

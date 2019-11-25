@@ -1,33 +1,21 @@
 <template>
+
     <div class="paper settings__container">
-        <h2 class="settings__title">Ваша цель</h2>
-        <div class="settings__group">
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="gain_weight">
-                <div><img src="/static/images/png/weight-1.png" alt="weight">
-                    <p>Набор мышечной массы</p>
+        <div class="settings__wrapper">
+            <div class="settings__col" style="margin-right: 180px;">
+                <h2 class="settings__title settings__title--small">Укажите ваш<br> текущий вес</h2>
+                <div class="settings__weight">
+                    <input type="number" placeholder="105" v-model="weight"><span>кг</span>
                 </div>
-            </label>
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="lose_weight">
-                <div><img src="/static/images/png/weight-2.png" alt="weight">
-                    <p>Медленная потеря веса</p>
+                <b :class="{'active':error!==''}">{{ this.error }}</b>
+            </div>
+            <div class="settings__col">
+                <h2 class="settings__title settings__title--small">Укажите ваш<br> желаемый вес</h2>
+                <div class="settings__weight">
+                    <input type="number" placeholder="55"><span>кг</span>
                 </div>
-            </label>
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="hold_weight">
-                <div><img src="/static/images/png/weight-3.png" alt="weight">
-                    <p>Поддержание текущей формы</p>
-                </div>
-            </label>
-<!--            <label class="settings__target">-->
-<!--                <input class="visually-hidden" type="radio" name="target">-->
-<!--                <div><img src="/static/images/png/weight-4.png" alt="weight">-->
-<!--                    <p>Быстрая потеря веса</p>-->
-<!--                </div>-->
-<!--            </label>-->
+            </div>
         </div>
-        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
            @click="nextStep">Далее
         </a>
@@ -47,7 +35,7 @@
     data() {
       return {
         error: '',
-        target: ''
+        weight: ''
       }
     },
     methods: {
@@ -56,18 +44,18 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['target'] = this.target
-        if (!this.target) {
-          this.error = 'Выберите цель';
+        profile['weight'] = this.weight
+        if (!this.weight) {
+          this.error = 'Заполните это поле';
         } else {
           this.$store.commit('user/PROFILE_INFO', profile)
-          this.$emit('create')
+          this.$emit('next-step')
         }
 
       }
     },
     mounted() {
-      this.target = this.$store.getters['user/getProfileInfo'].target
+      this.weight = this.$store.getters['user/getProfileInfo'].weight
     }
   }
 </script>
