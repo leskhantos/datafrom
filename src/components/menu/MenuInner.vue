@@ -7,16 +7,18 @@
         </div>
         <div class="menu__slider">
             <ul class="menu__slides">
-                <li :class="['paper','slider', { 'active':activeMenu == key }]"
-                    v-for="(item, key) in listMenus" :key="key"
-                    style="left: 0%;">
+                <li :class="['paper','slider']">
                     <div class="menu__slide">
                         <div class="menu__slide-image"><img src="/static/images/jpg/image-1.jpg" alt="slider-image">
                         </div>
                         <div class="menu__slide-content">
-                            <h2 class="menu__slide-caption">{{item.title}}</h2>
+                            <transition name="fade" mode="out-in">
+                                <h2 class="menu__slide-caption" :key="activeMenuTitle">{{activeMenuTitle}}</h2>
+                            </transition>
                             <p class="menu__slide-calories">1500 – 2500 калорий</p>
-                            <p class="menu__slide-description">{{item.description}}</p>
+                            <transition name="fade" mode="out-in">
+                                <p class="menu__slide-description" :key="activeMenuDescription">
+                                    {{activeMenuDescription}}</p></transition>
                             <button class="button menu__slide-btn" type="button"><span>Попробовать БЕСПЛАТНО!</span>
                                 <GiftIcon />
                             </button>
@@ -136,15 +138,12 @@
         finishDate: '',
         menus: {},
         activeMenuId: '',
+        activeMenuTitle: '',
+        activeMenuDescription: '',
         typeOfMeals: 'breakfast'
       }
     },
     computed: {
-      listMenus() {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.menus = this.$store.getters['menu/getListMenus']
-        return this.$store.getters['menu/getListMenus'];
-      },
       currentMenu() {
         return 'Menu' + this.typeOfMenu
       },
@@ -209,6 +208,9 @@
       this.finishDate = this.getStringDate(finishDate);
 
       this.$store.dispatch('menu/getListMenus').then(() => {
+        this.menus = this.$store.getters['menu/getListMenus']
+        this.activeMenuTitle = this.menus[this.activeMenu].title
+        this.activeMenuDescription = this.menus[this.activeMenu].description
         this.activeMenuId = this.menus[this.activeMenu].id
       })
 
@@ -216,6 +218,8 @@
     },
     watch: {
       activeMenu: function () {
+        this.activeMenuTitle = this.menus[this.activeMenu].title
+        this.activeMenuDescription = this.menus[this.activeMenu].description
         this.activeMenuId = this.menus[this.activeMenu].id
       },
     }
@@ -223,26 +227,16 @@
 </script>
 
 <style scoped>
-    .paper.slider {
-        padding: 0;
-        max-width: 0;
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s, opacity .2s linear;
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .1s ease;
     }
 
-    .paper.slider.active {
-        padding: 20px;
-        min-width: 100%;
-        visibility: visible;
-        opacity: 1;
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    {
+        opacity: 0;
     }
 
     .menu__arrows {
         top: 50%;
-    }
-
-    .menu__slides {
-        display: flex;
     }
 </style>

@@ -58,7 +58,4 @@
 </script>
 
 <style scoped>
-    body {
-        overflow-x: hidden;
-    }
 </style>
