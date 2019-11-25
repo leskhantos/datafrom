@@ -32,6 +32,6 @@ export function GetProfile(id) {
   return axios.get(Settings.host + '/api/v1/profiles/' + id)
 }
 
-export function GetShopList(profile) {
-    return axios.get(Settings.host + '/api/v1/subscription/shop_list/'+profile)
+export function GetShopList(date) {
+    return axios.get(Settings.host + '/api/v1/subscription/shop_list'+date)
 }

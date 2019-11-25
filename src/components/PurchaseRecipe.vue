@@ -1,30 +1,30 @@
 <template>
     <section class="scheduler-food">
-        <div class="paper scheduler-food__day"  v-for="list in getFilteredSubList" :key="list.id">
-            <p class="scheduler-food__caption">{{ showDateFormat(list.date) }}</p>
-            <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typed==='second'">
-                <button class="tabs__btn"  type="button" >Завтрак</button>
-                <button class="tabs__btn"  type="button" >Перекус</button>
-                <button class="tabs__btn"  type="button"  >Обед</button>
-                <button class="tabs__btn"  type="button" >Ужин</button>
+        <div class="paper scheduler-food__day"  v-for="recipe in recipes" :key="recipe.id">
+            <p class="scheduler-food__caption">{{ showTitleDateFormat(recipe.date) }}</p>
+            <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typeOfView==='second'">
+                <button class="tabs__btn" :class="{ active: typeOfMealForDay === 'breakfast'}"  type="button" @click="getFilteredByMealOfDay('breakfast',recipe.date)">Завтрак</button>
+                <button class="tabs__btn" :class="{ active: typeOfMealForDay === 'brunch' }" type="button" @click="getFilteredByMealOfDay('brunch',recipe.date)">Перекус</button>
+                <button class="tabs__btn" :class="{ active: typeOfMealForDay === 'lunch' }"  type="button" @click="getFilteredByMealOfDay('lunch',recipe.date)">Обед</button>
+                <button class="tabs__btn" :class="{ active: typeOfMealForDay === 'supper' }"  type="button" @click="getFilteredByMealOfDay('supper',recipe.date)">Ужин</button>
             </div>
             <ul class="scheduler-food__list">
                 <li class="scheduler-food__item">
                     <div class="scheduler-food__item-wrap">
                         <label class="input-checkbox">
                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                            <p>{{ list.recipe.title }}</p>
+                            <p>{{ recipe.title }}</p>
                         </label>
-                        <button  :class="['icon-button scheduler-food__btn-submenu',{'open':list.open}]"  class="" type="button" title="Открыть" @click="openItem(list.id)">
+                        <button  :class="['icon-button scheduler-food__btn-submenu',{'open':recipe.open}]"  class="" type="button" title="Открыть" @click="openItem(recipe.id)">
                             <DownIcon/>
                         </button>
-                        <button class="icon-button icon-button--big modal-add-user" type="button" title="Добавить профиль" @click="showAddUserModal=true">
+                        <button class="icon-button icon-button--big modal-add-user" type="button" title="Добавить профиль">
                             <ProfileAddIcon/>
                         </button>
-                        <button :class="['icon-button buy__item-action',{'show':list.show}]" type="button" title="Действия" @click="showItem(list.id)">
+                        <button :class="['icon-button buy__item-action',{'show':recipe.show}]" type="button" title="Действия" @click="showItem(recipe.id)">
                             <ActionsIcon/>
                         </button>
-                        <section :class="['paper actions anim-show-action',{'show':list.show}]">
+                        <section :class="['paper actions anim-show-action',{'show':recipe.show}]">
                             <div class="actions__item">
                                 <div class="actions__img">
                                     <ClockIcon/>
@@ -45,24 +45,24 @@
                             </div>
                         </section>
                         <div class="scheduler-food__meta">
-                            <p class="composed"><span class="orange">{{list.ingredient.nutrients[0].amountPerHundredGrams}}</span><span class="yellow">{{list.ingredient.nutrients[1].amountPerHundredGrams}}</span><span class="green">{{list.ingredient.nutrients[2].amountPerHundredGrams}}</span></p>
-                            <p class="scheduler-food__weight">{{list.weight}} г</p>
-                            <p class="scheduler-food__ccal">{{list.ingredient.kilocaloriesPerHundredGrams}} Кал</p>
-                            <p class="scheduler-food__item-date">{{getTranslatedMealType(list.mealType)}}: <b>{{dateFormat(list.date)}}</b></p>
+                            <p class="composed"><span class="orange">{{(recipe.proteins).toFixed(2)}}</span><span class="yellow">{{(recipe.fats).toFixed(2)}}</span><span class="green">{{(recipe.carboHydrates).toFixed(2)}}</span></p>
+                            <p class="scheduler-food__weight">{{ recipe.weight }} г</p>
+                            <p class="scheduler-food__ccal">{{ recipe.calories }} Кал</p>
+                            <p class="scheduler-food__item-date">{{getTranslatedMealType(recipe.mealType)}}: <b>{{showDateFormat(recipe.date)}}</b></p>
                         </div>
                     </div>
-                    <div  :class="['scheduler-food__item-dropdown',{'open':list.open}]">
+                    <div  :class="['scheduler-food__item-dropdown',{'open':recipe.open}]">
                         <ul class="scheduler-food__sublist">
-                            <li class="scheduler-food__item">
+                            <li class="scheduler-food__item" v-for="ingredient in recipe.ingredients" :key="ingredient.id">
                                 <div class="scheduler-food__item-wrap">
                                     <label class="input-checkbox">
                                         <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
-                                        <p>{{list.ingredient.title+" "+list.weight+"г"}}</p>
+                                        <p> {{ingredient.title}} {{ingredient.weight}} г</p>
                                     </label>
-                                    <button  :class="['icon-button buy__item-action',{'show':list.recipe.show}]" type="button" title="Действия" @click="showItem(list.recipe.id)">
+                                    <button  :class="['icon-button buy__item-action',{'show':ingredient.show}]" type="button" title="Действия" @click="showChildItem(recipe.id,ingredient.id)">
                                         <ActionsIcon/>
                                     </button>
-                                    <section :class="['paper actions anim-show-action',{'show':list.recipe.show}]">
+                                    <section :class="['paper actions anim-show-action',{'show':ingredient.show}]">
                                         <div class="actions__item">
                                             <div class="actions__img">
                                                 <ClockIcon/>
@@ -97,7 +97,6 @@
             </ul>
         </div>
     </section>
-
 </template>
 
 <script>
@@ -109,13 +108,63 @@
     export default {
         name: "PurchaseRecipe",
         components: {CloseIcon, ClockIcon, ActionsIcon, ProfileAddIcon, DownIcon},
-        props: ['typed','type','showAddUserModal'],
+        props: ['typeOfView','typeOfMeal','sortType'],
         data(){
             return{
+                recipes: [],
+                typeOfMealForDay:'',
+                mealDate: ''
             }
         },
         methods:{
-            showDateFormat(str){
+            getFilteredByMealOfDay(type,date){
+                this.typeOfMealForDay = type
+                this.mealDate = date
+            },
+            getTranslatedMealType(type){
+                let rusMealType
+                if(type==="breakfast"){
+                    rusMealType="Завтрак"
+                }else if(type==="supper"){
+                    rusMealType="Ужин"
+                }else if(type==="dinner"){
+                    rusMealType="Перекус"
+                }else if(type==="lunch"){
+                    rusMealType="Обед"
+                }else if(type==="brunch"){
+                    rusMealType="Перекус"
+                }
+                return rusMealType
+            },
+            showChildItem(id,ingr_id){
+                this.recipes=this.recipes.map(function (value){
+                    if (value.id === id){
+                        value.ingredients.map(function (val) {
+                            if(val.id === ingr_id){
+                                val.show = !val.show
+                            }
+                        })
+                    }
+                    return value;
+                })
+            },
+            showItem(id){
+                this.recipes=this.recipes.map(function (value){
+                    if (value.id === id){
+                        value.show = !value.show
+                    }
+                    return value;
+                })
+            }
+            ,openItem(id){
+                this.recipes=this.recipes.map(function (value){
+                    if (value.id === id){
+                        value.open = !value.open
+                    }
+                    return value;
+                })
+            },
+            showTitleDateFormat(str){
                 let date = new Date(str)
                 let day = date.getDay()
                 let data = date.getDate();
@@ -132,60 +181,59 @@
 
                 return weekday[day]+" "+data+"-"+month+"-"+year;
             },
-            getTranslatedMealType(type){
-                let rusMealType
-                if(type==="breakfast"){
-                    rusMealType="Завтрак"
-                }else if(type==="supper"){
-                    rusMealType="Ужин"
-                }else if(type==="dinner"){
-                    rusMealType="Перекус"
-                }else if(type==="lunch"){
-                    rusMealType="Обед"
-                }else if(type==="brunch"){
-                    rusMealType="Полдник"
-                }
-                return rusMealType
-            },
-            dateFormat(str){
+            showDateFormat(str){
                 let date = new Date(str)
                 let data = date.getDate();
                 let month = date.getMonth()+1;
                 let year = date.getFullYear();
                 return data+"."+month+"."+year
-            }
-            ,openItem(id){
-                let shopList = this.$store.getters['subscription/getShopList']
-                shopList = shopList.map(function (value){
-                    if (value.id === id){
-                        value.open = !value.open
-                    }
-                    return value;
-                })
-                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
-                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopList)
             },
-            showItem(id){
-                let shopList = this.$store.getters['subscription/getShopList']
-                shopList = shopList.map(function (value){
-                    if (value.id === id){
-                        value.show = !value.show
-                    }else if (value.recipe.id === id){
-                        value.recipe.show = !value.recipe.show
-                    }else if(value.ingredient.id === id){
-                        value.ingredient.show = !value.ingredient.show
-                    }
-                    return value;
-                })
-                this.$store.commit('subscription/SET_SHOP_LIST',shopList)
-                this.$store.commit('subscription/SET_FILTERED_SHOP_LIST',shopList)
-
-            }
         },
         computed:{
-            getFilteredSubList(){
-                return this.$store.getters['subscription/getFilteredShopList']
-            }
+        },
+        mounted() {
+            let arr =  Object.values(this.$store.getters['subscription/getRecipes'])
+            let ingredients = this.$store.getters['subscription/getIngredients']
+            arr.map((value)=> {
+                value.date = this.$store.getters['subscription/getDate'](value)
+                value.weight = this.$store.getters['subscription/getWeight'](value)
+                value.calories = this.$store.getters['subscription/getCalories'](value,ingredients)
+                value.proteins = this.$store.getters['subscription/getProteins'](value,ingredients)
+                value.fats = this.$store.getters['subscription/getFats'](value,ingredients)
+                value.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](value,ingredients)
+                value.mealType = this.$store.getters['subscription/getMealType'](value)
+                value.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](value, ingredients)
+                return value
+            })
+            this.recipes = arr
+        },
+        watch: {
+                 'sortType':  function () {
+                        this.recipes = this.$store.getters['subscription/getSortedRecipes'](this.sortType)
+                    },
+                 'typeOfMeal': function () {
+                        this.recipes = this.$store.getters['subscription/getByTypeOfAllMeal'](this.typeOfMeal)
+                    },
+                 'typeOfMealForDay': function () {
+                     this.recipes = this.$store.getters['subscription/getByTypeOfMealForDay'](this.typeOfMealForDay,this.mealDate)
+                 },
+                 'typeOfView': function () {
+                     let arr =  Object.values(this.$store.getters['subscription/getRecipes'])
+                     let ingredients = this.$store.getters['subscription/getIngredients']
+                     arr.map((value)=> {
+                         value.date = this.$store.getters['subscription/getDate'](value)
+                         value.weight = this.$store.getters['subscription/getWeight'](value)
+                         value.calories = this.$store.getters['subscription/getCalories'](value,ingredients)
+                         value.proteins = this.$store.getters['subscription/getProteins'](value,ingredients)
+                         value.fats = this.$store.getters['subscription/getFats'](value,ingredients)
+                         value.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](value,ingredients)
+                         value.mealType = this.$store.getters['subscription/getMealType'](value)
+                         value.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](value, ingredients)
+                         return value
+                     })
+                     this.typeOfMealForDay=''
+                     this.recipes = arr
+                 }
         }
     }
 </script>
