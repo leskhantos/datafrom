@@ -5,31 +5,21 @@
             <ul class="menu__scheduler-dish-list">
                 <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item.recipeWeights" :key="keyRecipe">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                    <div class="menu__scheduler-content">
-                        <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
-                        <p class="composed"><span class="orange">33</span><span class="yellow">33</span><span
-                                class="green">33</span></p>
-                        <p class="menu__scheduler-calories">{{recipe.recipe._embedded.proportions[0].kilocalories}}
-                            Кал</p>
-                        <!--p.status Не доступно-->
-                    </div>
+                    <recipe>
+                        <p slot="description" class="menu__scheduler-desc">
+                            {{recipe.recipe._embedded.proportions[0].description}}</p>
+                        <p slot="calories" class="menu__scheduler-calories">
+                            {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
+                    </recipe>
                 </li>
-                <!--                <li class="menu__scheduler-dish-item disabled">-->
-                <!--                    <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-2.jpg" alt="dish"></div>-->
-                <!--                    <div class="menu__scheduler-content">-->
-                <!--                        <p class="menu__scheduler-desc">Карбонара с креветками</p>-->
-                <!--                        <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span-->
-                <!--                                class="green">30</span></p>-->
-                <!--                        <p class="menu__scheduler-calories">89 Кал</p>-->
-                <!--                        <p class="status">Не доступно</p>-->
-                <!--                    </div>-->
-                <!--                </li>-->
             </ul>
         </li>
     </ul>
 </template>
 
 <script>
+  import Recipe from "./Recipe";
+
   export default {
     name: "Menu1",
     props: ['startDate', 'finishDate', 'menuId', 'typeOfMeals'],
@@ -38,6 +28,9 @@
         proportions: {},
         meals: []
       }
+    },
+    components: {
+      "recipe": Recipe
     },
     computed: {
       listMeals() {

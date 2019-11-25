@@ -1,8 +1,15 @@
 <template>
     <div class="paper settings__container">
-        <h2 class="settings__title">Укажите дату рождения</h2>
-        <div class="datepicker settings__datepicker">
-            <input type="date" v-model="birthDate">
+        <div class="settings__upload-avatar">
+            <input type="file" @change="processFile($event)">
+            <div class="settings__upload-avatar-image">
+                <!--img(src="./images/jpg/avatar-1.jpg", alt="avatar")-->
+            </div>
+            <p>+ Добвить фото</p>
+        </div>
+        <h2 class="settings__title">Укажите имя</h2>
+        <div class="settings__input settings__input--center">
+            <input type="text" placeholder="Ваше имя" v-model="title">
         </div>
         <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href=""
@@ -24,17 +31,21 @@
     data() {
       return {
         error: '',
-        birthDate: ''
+        title: '',
+        avatar: null
       }
     },
     methods: {
+      processFile(event) {
+        this.avatar = event.target.files[0]
+      },
       nextStep(e) {
         e.preventDefault()
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['birthDate'] = this.birthDate
-        if (!this.birthDate) {
+        profile['title'] = this.title
+        if (!this.title) {
           this.error = 'Заполните это поле';
         } else {
           this.$store.commit('user/PROFILE_INFO', profile)
@@ -44,7 +55,8 @@
       }
     },
     mounted() {
-      this.birthDate = this.$store.getters['user/getProfileInfo'].birthDate
+      this.title = this.$store.getters['user/getProfileInfo'].title
+      this.avatar = this.$store.getters['user/getProfileInfo'].avatar
     }
   }
 </script>
