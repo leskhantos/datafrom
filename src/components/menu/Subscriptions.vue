@@ -15,13 +15,13 @@
                     <p>Описание меню</p>
                     <p>{{item.description}}</p>
                 </div>
-                <button :class="['subscriptions-inner__btn', { 'open':open_menu === key }]" type="button"
-                        @click.prevent="openMenu(key)">
+                <button :class="['subscriptions-inner__btn', { 'open':openMenu === key }]" type="button"
+                        @click.prevent="openMenuMethod(key)">
                     <span>Оформить подписку</span>
                     <ArrowDownIcon />
                 </button>
             </div>
-            <div :class="['subscriptions-inner__wrapper', { 'open':open_menu === key }]">
+            <div :class="['subscriptions-inner__wrapper', { 'open':openMenu === key }]">
                 <div class="subscriptions-inner__container">
                     <h3 class="subscriptions-inner__subtitle">Настройка меню</h3>
                     <div class="subscriptions-inner__step">
@@ -161,12 +161,13 @@
 
 <script>
   import ArrowDownIcon from "../icons/ArrowDownIcon";
+
   export default {
     name: "Subscriptions",
     components: {ArrowDownIcon},
     data() {
       return {
-        open_menu: -1
+        openMenu: -1
       }
     },
     computed: {
@@ -177,12 +178,12 @@
         return this.$store.getters['menu/getListMenus'];
       }
     },
-    methods:{
-      openMenu(active_key){
-        if(this.open_menu===active_key){
-          this.open_menu=-1
-        }else{
-          this.open_menu=active_key
+    methods: {
+      openMenuMethod(activeKey) {
+        if (this.openMenu === activeKey) {
+          this.openMenu = -1
+        } else {
+          this.openMenu = activeKey
         }
       }
     },

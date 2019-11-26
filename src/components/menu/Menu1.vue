@@ -3,16 +3,17 @@
         <li class="paper menu__scheduler-item" v-for="(item,key) in listMeals" :key="key">
             <p class="menu__scheduler-caption">{{item.dayOfWeek}} {{item.stringDate}}</p>
             <ul class="menu__scheduler-dish-list">
-                <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in item.recipeWeights" :key="keyRecipe">
+                <li class="menu__scheduler-dish-item" v-for="(recipe) in item.recipeWeights" :key="recipe.recipe.id">
                     <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                     <recipe>
                         <p slot="description" class="menu__scheduler-desc">
                             {{recipe.recipe._embedded.proportions[0].description}}</p>
-                        <p slot="calories" class="menu__scheduler-calories">
-                            {{recipe.recipe._embedded.proportions[0].kilocalories}} Кал</p>
-                        <span slot="proteins" class="orange">33</span>
-                        <span slot="fats" class="yellow">33</span>
-                        <span slot="carbohydrates" class="green">33</span>
+                        <p v-if="recipe.kilocalories" slot="calories" class="menu__scheduler-calories">
+                            {{recipe.kilocalories}} Кал</p>
+                        <span v-if="recipe.proteins" slot="proteins" class="orange">{{recipe.proteins}}</span>
+                        <span v-if="recipe.fats" slot="fats" class="yellow">{{recipe.fats}}</span>
+                        <span v-if="recipe.carbohydrates" slot="carbohydrates"
+                              class="green">{{recipe.carbohydrates}}</span>
                     </recipe>
                 </li>
             </ul>
@@ -29,14 +30,16 @@
     data() {
       return {
         proportions: {},
-        meals: []
+        meals: [],
+        listMeals: [],
+        isRecipe: false
       }
     },
     components: {
       "recipe": Recipe
     },
-    computed: {
-      listMeals() {
+    methods: {
+      filterMeals() {
         let resultMeals = []
 
         this.meals.forEach((value) => {
@@ -79,10 +82,8 @@
           }
 
         });
-        return resultMeals
-      }
-    },
-    methods: {
+        this.listMeals = resultMeals
+      },
       getMeals() {
 
         this.$store.dispatch('menu/getMenu', this.menuId).then(() => {
@@ -94,10 +95,8 @@
 
           this.$store.dispatch('menu/getMeals', menu).then(() => {
             let meals = this.$store.getters['menu/getMeals']._embedded.items;
-            this.meals = meals
-            this.meals.forEach((meal) => {
-
-              meal.recipeWeights.forEach((recipe) => {
+            this.meals = meals.map((meal) => {
+              meal.recipeWeights = meal.recipeWeights.map((recipe) => {
                 let recipeSelf = {}
                 recipeSelf['recipe'] = recipe.recipe.id
                 recipeSelf['weight'] = recipe.weight
@@ -106,16 +105,22 @@
                   let sumProteins = 0
                   let sumFats = 0
                   let sumCarbohydrates = 0
+                  let kilocalories = 0
                   nutrients.forEach((nutrient) => {
                     sumProteins += nutrient.nutrients[0].weight
                     sumFats += nutrient.nutrients[1].weight
                     sumCarbohydrates += nutrient.nutrients[2].weight
+                    kilocalories += nutrient.kilocalories
                   })
-                  recipe['proteins'] = Math.round(sumProteins)
-                  recipe['fats'] = Math.round(sumFats)
-                  recipe['carbohydrates'] = Math.round(sumCarbohydrates)
+                  recipe.proteins = Math.round(sumProteins)
+                  recipe.fats = Math.round(sumFats)
+                  recipe.carbohydrates = Math.round(sumCarbohydrates)
+                  recipe.kilocalories = Math.round(kilocalories)
+                  this.isRecipe = !this.isRecipe
                 })
+                return recipe
               })
+              return meal
             })
           })
 
@@ -126,7 +131,22 @@
     watch: {
       menuId: function () {
         this.getMeals()
-      }
+      },
+      meals: function () {
+        this.filterMeals()
+      },
+      typeOfMeals: function () {
+        this.filterMeals()
+      },
+      isRecipe: function () {
+        this.filterMeals()
+      },
+      startDate: function () {
+        this.filterMeals()
+      },
+      finishDate: function () {
+        this.filterMeals()
+      },
     },
     mounted() {
       this.typeOfMeals = 'breakfast'

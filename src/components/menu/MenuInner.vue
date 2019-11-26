@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="menu__btn-group">
-            <button class="button active" type="button">Регулярное</button>
-            <button class="button" type="button">Специальное</button>
-            <button class="button" type="button">Лечебный план</button>
-        </div>
+        <!--        <div class="menu__btn-group">-->
+        <!--            <button class="button active" type="button">Регулярное</button>-->
+        <!--            <button class="button" type="button">Специальное</button>-->
+        <!--            <button class="button" type="button">Лечебный план</button>-->
+        <!--        </div>-->
         <div class="menu__slider">
             <ul class="menu__slides">
                 <li :class="['paper','slider']">
@@ -15,10 +15,14 @@
                             <transition name="fade" mode="out-in">
                                 <h2 class="menu__slide-caption" :key="activeMenuTitle">{{activeMenuTitle}}</h2>
                             </transition>
-                            <p class="menu__slide-calories">1500 – 2500 калорий</p>
+                            <transition name="fade" mode="out-in">
+                                <p class="menu__slide-calories" :key="activeMenuMaxCalories">{{activeMenuMinCalories}} –
+                                    {{activeMenuMaxCalories}} калорий</p>
+                            </transition>
                             <transition name="fade" mode="out-in">
                                 <p class="menu__slide-description" :key="activeMenuDescription">
-                                    {{activeMenuDescription}}</p></transition>
+                                    {{activeMenuDescription}}</p>
+                            </transition>
                             <button class="button menu__slide-btn" type="button"><span>Попробовать БЕСПЛАТНО!</span>
                                 <GiftIcon />
                             </button>
@@ -91,6 +95,9 @@
                     <button :class="['tabs__btn', { 'active':typeOfMeals === 'dinner' }]" type="button"
                             @click.prevent="typeOfMeals='dinner'">Обед
                     </button>
+                    <button :class="['tabs__btn', { 'active':typeOfMeals === 'lunch' }]" type="button"
+                            @click.prevent="typeOfMeals='lunch'">Ланч
+                    </button>
                     <button :class="['tabs__btn', { 'active':typeOfMeals === 'supper' }]" type="button"
                             @click.prevent="typeOfMeals='supper'">Ужин
                     </button>
@@ -140,6 +147,8 @@
         activeMenuId: '',
         activeMenuTitle: '',
         activeMenuDescription: '',
+        activeMenuMinCalories: '',
+        activeMenuMaxCalories: '',
         typeOfMeals: 'breakfast'
       }
     },
@@ -212,6 +221,8 @@
         this.activeMenuTitle = this.menus[this.activeMenu].title
         this.activeMenuDescription = this.menus[this.activeMenu].description
         this.activeMenuId = this.menus[this.activeMenu].id
+        this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
+        this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
       })
 
       this.typeOfMeals = 'breakfast'
@@ -221,6 +232,8 @@
         this.activeMenuTitle = this.menus[this.activeMenu].title
         this.activeMenuDescription = this.menus[this.activeMenu].description
         this.activeMenuId = this.menus[this.activeMenu].id
+        this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
+        this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
       },
     }
   }

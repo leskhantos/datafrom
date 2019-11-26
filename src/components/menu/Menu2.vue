@@ -1,43 +1,16 @@
 <template>
     <div>
-        <ul class="menu__scheduler-list" v-for="(dayOfMeal,key) in listMeals" :key="key">
-            <li class="paper menu__scheduler-item">
-                <p class="menu__scheduler-caption">{{dayOfMeal[0].dayOfWeek}} {{dayOfMeal[0].stringDate}}</p>
-                <div class="tabs__buttons tabs__buttons--separate menu__scheduler-tabs-btn">
-                    <button :class="['tabs__btn', { 'active':typeOfMeals === 0 }]" type="button"
-                            @click.prevent="typeOfMeals=0">Завтрак
-                    </button>
-                    <button :class="['tabs__btn', { 'active':typeOfMeals === 1 }]" type="button"
-                            @click.prevent="typeOfMeals=1">Перекус
-                    </button>
-                    <button :class="['tabs__btn', { 'active':typeOfMeals === 2 }]" type="button"
-                            @click.prevent="typeOfMeals=2">Обед
-                    </button>
-                    <button :class="['tabs__btn', { 'active':typeOfMeals === 4 }]" type="button"
-                            @click.prevent="typeOfMeals=4">Ужин
-                    </button>
-                </div>
-                <ul class="menu__scheduler-dish-list">
-                    <li class="menu__scheduler-dish-item"
-                        v-for="(recipe,keyRecipe) in dayOfMeal[typeOfMeals].recipeWeights"
-                        :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
-                        <div class="menu__scheduler-content">
-                            <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
-                            <p class="composed"><span class="orange">62</span><span class="yellow">70</span><span
-                                    class="green">30</span></p>
-                            <p class="menu__scheduler-calories"><span>200г.</span>{{recipe.recipe._embedded.proportions[0].kilocalories}}
-                                Кал</p>
-                            <button class="button" type="button">Съел(а)</button>
-                        </div>
-                    </li>
-                </ul>
-            </li>
+        <ul class="menu__scheduler-list">
+            <meal-type-2 v-for="(dayOfMeal,key) in listMeals" :key="key"
+                         :dayOfMeal="dayOfMeal"
+                         :typesOfMeals="typesOfMeals"></meal-type-2>
         </ul>
     </div>
 </template>
 
 <script>
+
+  import MealType2 from "./MealType2";
 
   export default {
     name: "Menu2",
@@ -46,14 +19,23 @@
       return {
         proportions: {},
         meals: [],
-        typeOfMeals: 0
+        typesOfMeals: 0,
+        profileId: '',
+        listMeals: [],
+        isRecipe: false
       }
     },
-    computed: {
-      listMeals() {
-        let resultMeals = []
-        let dateArray = []
-        let resultWithDates = []
+    components: {
+      "meal-type-2": MealType2
+    },
+    methods: {
+      onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      },
+      filterMeals() {
+        let mealsFilteredByDate = []
+        let datesOfMeals = []
+        let mealsFilteredByDateAndSortedByType = []
 
         this.meals.forEach((value) => {
           let dateMeals = new Date(value.date);
@@ -97,7 +79,7 @@
           } else if (value['mealType'] === 'supper') {
             value['mealTypeLocal'] = 'Ужин'
           } else {
-            value['mealTypeLocal'] = 'lunch'
+            value['mealTypeLocal'] = 'Ланч'
           }
 
           value['stringDate'] = [day, month, year].join('.');
@@ -105,29 +87,30 @@
           value['dayOfWeek'] = dayOfWeek
 
           if (dateStart <= dateMeals && dateFinish >= dateMeals) {
-            resultMeals.push(value)
+            mealsFilteredByDate.push(value)
           }
 
         });
 
-        resultMeals.forEach((value) => {
-          dateArray.push(value.date)
+        mealsFilteredByDate.forEach((value) => {
+          datesOfMeals.push(value.date)
         })
-        let dateUniqueArray = dateArray.filter(this.onlyUnique);
+        let datesUniqueOfMeals = datesOfMeals.filter(this.onlyUnique);
 
-        dateUniqueArray.forEach((resultRow) => {
-          let resultArrayRow = []
-          resultMeals.forEach((value) => {
-            if (value.date === resultRow) {
-              resultArrayRow.push(value)
+        datesUniqueOfMeals.forEach((datesUniqueOfMealsRow) => {
+          let mealsFilteredByDateAndSortedByTypeRow = []
+          mealsFilteredByDate.forEach((value) => {
+            if (value.date === datesUniqueOfMealsRow) {
+              mealsFilteredByDateAndSortedByTypeRow.push(value)
             }
           })
-          resultWithDates.push(resultArrayRow)
+          mealsFilteredByDateAndSortedByType.push(mealsFilteredByDateAndSortedByTypeRow)
         })
 
-        let newResultWithDates = []
 
-        resultWithDates.forEach((row) => {
+        let mealsFilteredByDateAndSortedByTypeTemp = []
+
+        mealsFilteredByDateAndSortedByType.forEach((row) => {
 
           let breakfast = {}
           let lunch = {}
@@ -143,11 +126,11 @@
             if (array.mealType === 'lunch') {
               lunch = array
             }
-            if (array.mealType === 'brunch') {
-              brunch = array
-            }
             if (array.mealType === 'dinner') {
               dinner = array
+            }
+            if (array.mealType === 'brunch') {
+              brunch = array
             }
             if (array.mealType === 'supper') {
               supper = array
@@ -155,23 +138,29 @@
 
           })
 
-          row = []
-          row.push(breakfast)
-          row.push(lunch)
-          row.push(brunch)
-          row.push(dinner)
-          row.push(supper)
-          newResultWithDates.push(row)
-        })
-        resultWithDates = newResultWithDates
-        return resultWithDates
-      }
-    },
-    methods: {
-      onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      },
 
+          row = []
+          if (breakfast.id !== undefined) {
+            row.push(breakfast)
+          }
+          if (lunch.id !== undefined) {
+            row.push(lunch)
+          }
+          if (brunch.id !== undefined) {
+            row.push(brunch)
+          }
+          if (dinner.id !== undefined) {
+            row.push(dinner)
+          }
+          if (supper.id !== undefined) {
+            row.push(supper)
+          }
+          mealsFilteredByDateAndSortedByTypeTemp.push(row)
+        })
+        mealsFilteredByDateAndSortedByType = mealsFilteredByDateAndSortedByTypeTemp
+
+        this.listMeals = mealsFilteredByDateAndSortedByType
+      },
       getMeals() {
 
         this.$store.dispatch('menu/getMenu', this.menuId).then(() => {
@@ -183,10 +172,8 @@
 
           this.$store.dispatch('menu/getMeals', menu).then(() => {
             let meals = this.$store.getters['menu/getMeals']._embedded.items;
-            this.meals = meals
-            this.meals.forEach((meal) => {
-
-              meal.recipeWeights.forEach((recipe) => {
+            this.meals = meals.map((meal) => {
+              meal.recipeWeights = meal.recipeWeights.map((recipe) => {
                 let recipeSelf = {}
                 recipeSelf['recipe'] = recipe.recipe.id
                 recipeSelf['weight'] = recipe.weight
@@ -195,16 +182,22 @@
                   let sumProteins = 0
                   let sumFats = 0
                   let sumCarbohydrates = 0
+                  let kilocalories = 0
                   nutrients.forEach((nutrient) => {
                     sumProteins += nutrient.nutrients[0].weight
                     sumFats += nutrient.nutrients[1].weight
                     sumCarbohydrates += nutrient.nutrients[2].weight
+                    kilocalories += nutrient.kilocalories
                   })
-                  recipe['proteins'] = Math.round(sumProteins)
-                  recipe['fats'] = Math.round(sumFats)
-                  recipe['carbohydrates'] = Math.round(sumCarbohydrates)
+                  recipe.proteins = Math.round(sumProteins)
+                  recipe.fats = Math.round(sumFats)
+                  recipe.carbohydrates = Math.round(sumCarbohydrates)
+                  recipe.kilocalories = Math.round(kilocalories)
+                  this.isRecipe = !this.isRecipe
                 })
+                return recipe
               })
+              return meal
             })
           })
 
@@ -215,7 +208,22 @@
     watch: {
       menuId: function () {
         this.getMeals()
-      }
+      },
+      meals: function () {
+        this.filterMeals()
+      },
+      typeOfMeals: function () {
+        this.filterMeals()
+      },
+      isRecipe: function () {
+        this.filterMeals()
+      },
+      startDate: function () {
+        this.filterMeals()
+      },
+      finishDate: function () {
+        this.filterMeals()
+      },
     },
     mounted() {
       this.typeOfMeals = 0
@@ -225,5 +233,11 @@
 </script>
 
 <style scoped>
+    .tabs__buttons--separate .tabs__btn {
+        max-height: 50px;
+    }
 
+    .menu__scheduler-tabs-btn {
+        min-height: 115px;
+    }
 </style>
