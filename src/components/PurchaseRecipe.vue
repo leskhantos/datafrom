@@ -108,7 +108,7 @@
     export default {
         name: "PurchaseRecipe",
         components: {CloseIcon, ClockIcon, ActionsIcon, ProfileAddIcon, DownIcon},
-        props: ['typeOfView','typeOfMeal','sortType'],
+        props: ['typeOfView','typeOfMeal','sortType','fromDate','toDate'],
         data(){
             return{
                 recipes: [],
@@ -123,16 +123,25 @@
             },
             getTranslatedMealType(type){
                 let rusMealType
-                if(type==="breakfast"){
-                    rusMealType="Завтрак"
-                }else if(type==="supper"){
-                    rusMealType="Ужин"
-                }else if(type==="dinner"){
-                    rusMealType="Перекус"
-                }else if(type==="lunch"){
-                    rusMealType="Обед"
-                }else if(type==="brunch"){
-                    rusMealType="Перекус"
+                switch(type){
+                    case 'breakfast':
+                        rusMealType="Завтрак";
+                        break;
+                    case 'supper':
+                        rusMealType="Ужин";
+                        break;
+                    case 'dinner':
+                        rusMealType="Перекус";
+                        break;
+                    case 'lunch':
+                        rusMealType="Обед";
+                        break;
+                    case 'brunch':
+                        rusMealType="Перекус";
+                        break;
+                    default:
+                        rusMealType="Нужно перевести";
+                        break;
                 }
                 return rusMealType
             },
@@ -205,35 +214,46 @@
                 value.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](value, ingredients)
                 return value
             })
+            // eslint-disable-next-line no-console
+            console.log(arr)
             this.recipes = arr
         },
         watch: {
-                 'sortType':  function () {
-                        this.recipes = this.$store.getters['subscription/getSortedRecipes'](this.sortType)
-                    },
-                 'typeOfMeal': function () {
-                        this.recipes = this.$store.getters['subscription/getByTypeOfAllMeal'](this.typeOfMeal)
-                    },
-                 'typeOfMealForDay': function () {
-                     this.recipes = this.$store.getters['subscription/getByTypeOfMealForDay'](this.typeOfMealForDay,this.mealDate)
-                 },
-                 'typeOfView': function () {
-                     let arr =  Object.values(this.$store.getters['subscription/getRecipes'])
-                     let ingredients = this.$store.getters['subscription/getIngredients']
-                     arr.map((value)=> {
-                         value.date = this.$store.getters['subscription/getDate'](value)
-                         value.weight = this.$store.getters['subscription/getWeight'](value)
-                         value.calories = this.$store.getters['subscription/getCalories'](value,ingredients)
-                         value.proteins = this.$store.getters['subscription/getProteins'](value,ingredients)
-                         value.fats = this.$store.getters['subscription/getFats'](value,ingredients)
-                         value.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](value,ingredients)
-                         value.mealType = this.$store.getters['subscription/getMealType'](value)
-                         value.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](value, ingredients)
-                         return value
-                     })
-                     this.typeOfMealForDay=''
-                     this.recipes = arr
-                 }
+            'sortType':  function () {
+                this.recipes = this.$store.getters['subscription/getSortedRecipes'](this.sortType)
+            },
+            'typeOfMeal': function () {
+                let recipes = this.$store.getters['subscription/getRecipes']
+                this.recipes = this.$store.getters['subscription/getByTypeOfAllMeal'](this.typeOfMeal,recipes)
+            },
+            'typeOfMealForDay': function () {
+                this.recipes = this.$store.getters['subscription/getByTypeOfMealForDay'](this.typeOfMealForDay,this.mealDate)
+            },
+            'typeOfView': function () {
+                let arr =  Object.values(this.$store.getters['subscription/getRecipes'])
+                let ingredients = this.$store.getters['subscription/getIngredients']
+                arr.map((value)=> {
+                value.date = this.$store.getters['subscription/getDate'](value)
+                value.weight = this.$store.getters['subscription/getWeight'](value)
+                value.calories = this.$store.getters['subscription/getCalories'](value,ingredients)
+                value.proteins = this.$store.getters['subscription/getProteins'](value,ingredients)
+                value.fats = this.$store.getters['subscription/getFats'](value,ingredients)
+                value.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](value,ingredients)
+                value.mealType = this.$store.getters['subscription/getMealType'](value)
+                value.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](value, ingredients)
+                return value
+            })
+                this.typeOfMealForDay=''
+                this.recipes = arr
+            },
+            'fromDate': function () {
+                let recipes = this.$store.getters['subscription/getRecipes']
+                this.recipes = this.$store.getters['subscription/getFilteredRecipesByDate'](this.fromDate,this.toDate,recipes)
+            },
+            'toDate':function () {
+                let recipes = this.$store.getters['subscription/getRecipes']
+                this.recipes = this.$store.getters['subscription/getFilteredRecipesByDate'](this.fromDate,this.toDate,recipes)
+            }
         }
     }
 </script>

@@ -93,7 +93,7 @@
 
     export default {
         name: "PurchaseIngredient",
-        props:['sortType'],
+        props:['sortType','fromDate','toDate'],
         components: {ProfileAddIcon, CloseIcon, ClockIcon, ActionsIcon, DownIcon},
         data(){
             return{
@@ -135,8 +135,8 @@
                     }
                     return value;
                 })
-            }
-            ,openItem(id){
+            },
+            openItem(id){
                 this.ingredients=this.ingredients.map(function (value){
                     if (value.id === id){
                         value.open = !value.open
@@ -170,7 +170,15 @@
         watch: {
             'sortType': function () {
                     this.ingredients = this.$store.getters['subscription/getSortedIngredients'](this.sortType)
-                },
+            },
+            'fromDate': function () {
+                let ingredients = this.$store.getters['subscription/getIngredients']
+                this.ingredients = this.$store.getters['subscription/getFilteredIngredientsByDate'](this.fromDate,this.toDate,ingredients)
+            },
+            'toDate':function () {
+                let ingredients = this.$store.getters['subscription/getIngredients']
+                this.ingredients = this.$store.getters['subscription/getFilteredIngredientsByDate'](this.fromDate,this.toDate,ingredients)
+            }
         }
     }
 </script>

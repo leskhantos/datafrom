@@ -13,7 +13,7 @@ const getShopListAction = async ({commit}, dates) => {
                 recipe: recipe
             });
 
-            const purchase =new schema.Array( new schema.Entity('purchase', {
+            const purchase = new schema.Array( new schema.Entity('purchase', {
                 ingredient: ingredient,
                 recipe: recipe,
             }));

@@ -66,10 +66,10 @@
                                 <PreviousIcon/>
                             </button>
                             <div class="datepicker filter__datepicker">
-                                <input type="date" v-model="fromDate" @change="getFilteredDate">
+                                <input type="date" v-model="fromDate">
                             </div><span>&ndash;</span>
                             <div class="datepicker filter__datepicker">
-                                <input type="date" v-model="toDate" @change="getFilteredDate">
+                                <input type="date" v-model="toDate">
                             </div>
                             <button class="icon-button filter__btn-arrow filter__btn-arrow--next" type="button" @click="nextWeek">
                                 <NextIcon/>
@@ -92,14 +92,14 @@
                     <div class="filter__col span-2" v-if="typeOfView==='first' && picked==='recipe'">
                         <div class="tabs__buttons">
                             <button class="tabs__btn" :class="{ active: typeOfMeal === 'breakfast'}"  type="button" @click="getFilteredByMealOfAll('breakfast')">Завтрак</button>
-                            <button class="tabs__btn" :class="{ active: typeOfMeal === 'brunch' }" type="button" @click="getFilteredByMealOfAll('brunch')">Перекус</button>
+                            <button class="tabs__btn" :class="{ active: typeOfMeal === 'dinner' }" type="button" @click="getFilteredByMealOfAll('dinner')">Перекус</button>
                             <button class="tabs__btn" :class="{ active: typeOfMeal === 'lunch' }"  type="button" @click="getFilteredByMealOfAll('lunch')">Обед</button>
                             <button class="tabs__btn" :class="{ active: typeOfMeal === 'supper' }"  type="button" @click="getFilteredByMealOfAll('supper')">Ужин</button>
                         </div>
                     </div>
                 </div>
-                <PurchaseIngredient v-if="picked==='ingredient'" :sortType="sortType"/>
-                <PurchaseRecipe  v-else-if="picked==='recipe'" :typeOfView="typeOfView" :typeOfMeal="typeOfMeal" :sortType="sortType"/>
+                <PurchaseIngredient v-if="picked==='ingredient'" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
+                <PurchaseRecipe  v-else-if="picked==='recipe'" :typeOfView="typeOfView" :typeOfMeal="typeOfMeal" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
             </div>
                 <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
                     <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
@@ -259,7 +259,7 @@
             getCurrentDate(){
                 let today = new Date();
                 let dd = String(today.getDate()).padStart(2, '0');
-                let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                let mm = String(today.getMonth() + 1).padStart(2, '0');
                 let yyyy = today.getFullYear();
 
                 today = yyyy + '-' + mm + '-' + dd;

@@ -3,14 +3,14 @@ const getRecipes = state => state.recipes
 const getPurchases = state => state.purchases
 const getWeight  = state => ingredient => {
     let weight = 0
-    Object.values(state.purchases).map((value)=>{
+    Object.values(state.purchases).map((value) => {
         if (value.ingredient === ingredient.id) {
             weight += value.weight
         }
     })
     return weight
 }
-const getRecipesByIngredient = (state) => (ingredient, recipes)=>{
+const getRecipesByIngredient = (state) => (ingredient, recipes) => {
     let arr = []
     Object.values(state.purchases).map((value)=>{
         // eslint-disable-next-line no-console
@@ -26,9 +26,9 @@ const getRecipesByIngredient = (state) => (ingredient, recipes)=>{
 
     return recipes
 }
-const getIngredientsByRecipe = (state) => (recipe, ingredients)=>{
+const getIngredientsByRecipe = (state) => (recipe, ingredients) => {
     let arr=[]
-    Object.values(state.purchases).map((value)=>{
+    Object.values(state.purchases).map((value) => {
         if (value.recipe === recipe.id && !arr.includes(value.ingredient)) {
             arr.push(value.ingredient)
         }
@@ -39,10 +39,10 @@ const getIngredientsByRecipe = (state) => (recipe, ingredients)=>{
     return ingredients
 
 }
-const getCalories = (state) => (recipe,ingredients)=>{
+const getCalories = (state) => (recipe,ingredients) => {
     let arr = []
     let cal = 0
-    Object.values(state.purchases).map((value)=>{
+    Object.values(state.purchases).map((value) => {
         if (value.recipe === recipe.id && !arr.includes(value.ingredient)) {
             arr.push(value.ingredient)
         }
@@ -53,10 +53,10 @@ const getCalories = (state) => (recipe,ingredients)=>{
     return cal
 }
 
-const getProteins = (state) => (recipe,ingredients)=>{
+const getProteins = (state) => (recipe,ingredients) => {
     let arr = []
     let proteins = 0
-    Object.values(state.purchases).map((value)=>{
+    Object.values(state.purchases).map((value) => {
         if (value.recipe === recipe.id && !arr.includes(value.ingredient)) {
             arr.push(value.ingredient)
         }
@@ -66,7 +66,7 @@ const getProteins = (state) => (recipe,ingredients)=>{
     })
     return proteins
 }
-const getFats = (state) => (recipe,ingredients)=>{
+const getFats = (state) => (recipe,ingredients) => {
     let arr = []
     let fats = 0
     Object.values(state.purchases).map((value)=>{
@@ -79,10 +79,10 @@ const getFats = (state) => (recipe,ingredients)=>{
     })
     return fats
 }
-const getCarboHydrates = (state) => (recipe,ingredients)=>{
+const getCarboHydrates = (state) => (recipe,ingredients) => {
     let arr = []
     let carboHydrates = 0
-    Object.values(state.purchases).map((value)=>{
+    Object.values(state.purchases).map((value) => {
         if (value.recipe === recipe.id && !arr.includes(value.ingredient)) {
             arr.push(value.ingredient)
         }
@@ -93,30 +93,32 @@ const getCarboHydrates = (state) => (recipe,ingredients)=>{
     return carboHydrates
 }
 
-const getDate = state=>recipe=>{
+const getDate = state => purchaseType => {
     let date
-    Object.values(state.purchases).map((value)=>{
-        if (value.ingredient === recipe.id) {
+    Object.values(state.purchases).map((value) => {
+        if (value.ingredient === purchaseType.id) {
+            date = value.date
+        }else if(value.recipe === purchaseType.id){
             date = value.date
         }
     })
     return date
 }
 
-const getMealType = state=>recipe=>{
+const getMealType = state => purchaseType => {
     let mealType
-    Object.values(state.purchases).map((value)=>{
-        if (value.ingredient === recipe.id) {
+    Object.values(state.purchases).map((value) => {
+        if (value.ingredient === purchaseType.id || value.recipe === purchaseType.id ) {
             mealType = value.mealType
         }
     })
     return mealType
 }
-const getSortedIngredients = state => sortType=>{
-    let ingredients= []
-    if (sortType==='desc'){
+const getSortedIngredients = state => sortType => {
+    let ingredients = []
+    if (sortType === 'desc'){
         ingredients = Object.values(state.ingredients).sort(function(x, y) {
-            let nameA=x.title.toLowerCase(), nameB=y.title.toLowerCase()
+            let nameA = x.title.toLowerCase(), nameB = y.title.toLowerCase()
             if (nameA < nameB)
                 return 1
             if (nameA > nameB)
@@ -132,7 +134,7 @@ const getSortedRecipes = state => sortType=>{
     let recipes
     if (sortType === 'desc'){
         recipes = Object.values(state.recipes).sort(function(x, y) {
-            let nameA=x.title.toLowerCase(), nameB=y.title.toLowerCase()
+            let nameA = x.title.toLowerCase(), nameB = y.title.toLowerCase()
             if (nameA < nameB)
                 return 1
             if (nameA > nameB)
@@ -142,8 +144,6 @@ const getSortedRecipes = state => sortType=>{
     }else{
         recipes = Object.values(state.recipes).sort();
     }
-    // eslint-disable-next-line no-console
-    console.log(recipes)
     return recipes
 }
 const getByTypeOfAllMeal = state => typeOfMeal =>{
@@ -155,10 +155,41 @@ const getByTypeOfAllMeal = state => typeOfMeal =>{
 const getByTypeOfMealForDay = (state) => (typeOfMealForDay, mealDate)=>{
 
    return  Object.values(state.recipes).filter(function (elem) {
-         if (elem.date===mealDate){
+         if (elem.date === mealDate){
              return elem.mealType === typeOfMealForDay;
          }
     })
+}
+const getFilteredIngredientsByDate = (state) =>(fromDate, toDate, ingredient)=>{
+    let arr=[]
+    Object.values(state.purchases).map((value) => {
+        let from = new Date(fromDate);
+        let to   = new Date(toDate);
+        let check = new Date(value.date);
+        if (check > from && check < to && !arr.includes(value.ingredient)) {
+            arr.push(value.ingredient)
+        }
+    })
+    ingredient = arr.map((value) => {
+        return ingredient[value]
+    })
+    return ingredient
+}
+
+const getFilteredRecipesByDate = (state) =>(fromDate, toDate, recipe)=>{
+    let arr=[]
+    Object.values(state.purchases).map((value) => {
+        let from = new Date(fromDate);
+        let to   = new Date(toDate);
+        let check = new Date(value.date);
+        if (check > from && check < to && !arr.includes(value.recipe)) {
+            arr.push(value.recipe)
+        }
+    })
+    recipe = arr.map((value) => {
+        return recipe[value]
+    })
+    return recipe
 }
 
 
@@ -178,5 +209,7 @@ export default {
     getCalories,
     getProteins,
     getFats,
-    getCarboHydrates
+    getCarboHydrates,
+    getFilteredIngredientsByDate,
+    getFilteredRecipesByDate
 }
