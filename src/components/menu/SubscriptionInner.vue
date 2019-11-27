@@ -36,28 +36,28 @@
                                    checked>
                             <label class="subscriptions-inner__item" for="meals-5">
                                 <p class="subscriptions-inner__item-name">Завтрак</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
+                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
                             <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-6" v-model="dinner">
                             <label class="subscriptions-inner__item" for="meals-6">
                                 <p class="subscriptions-inner__item-name">Обед</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
+                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-7" v-model="branch">
+                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-7" v-model="brunch">
                             <label class="subscriptions-inner__item" for="meals-7">
                                 <p class="subscriptions-inner__item-name">Перекус</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
+                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
                             <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-8" v-model="supper">
                             <label class="subscriptions-inner__item" for="meals-8">
                                 <p class="subscriptions-inner__item-name">Ужин</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
+                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                     </ul>
@@ -95,39 +95,39 @@
                 </div>
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list subscriptions-inner__list--type-2">
-                        <li @click="duration=1">
+                        <li @click="durationInMonths=1">
                             <input class="visually-hidden" type="radio" name="price-2" id="price-5"
                                    checked>
                             <label class="subscriptions-inner__item" for="price-5">
                                 <p class="subscriptions-inner__item-name">Месяц</p>
-                                <p class="subscriptions-inner__price">500 &#8381;</p>
+                                <p class="subscriptions-inner__price">{{finalCostForMonth}} &#8381;</p>
                             </label>
                         </li>
-                        <li @click="duration=3">
+                        <li @click="durationInMonths=3">
                             <input class="visually-hidden" type="radio" name="price-2" id="price-6">
                             <label class="subscriptions-inner__item" for="price-6">
                                 <p class="subscriptions-inner__item-name">3 месяца</p>
-                                <p class="subscriptions-inner__price">1200 &#8381;</p>
-                                <p class="subscriptions-inner__item-text">400 &#8381; / месяц</p>
-                                <p class="subscriptions-inner__item-text green">Экономия – 20%</p>
+                                <p class="subscriptions-inner__price">{{finalCostForThreeMonths}} &#8381;</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForThreeMonths/3)}} &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text green">Экономия – {{discountForThreeMonths*100}}%</p>
                             </label>
                         </li>
-                        <li @click="duration=6">
+                        <li @click="durationInMonths=6">
                             <input class="visually-hidden" type="radio" name="price-2" id="price-7">
                             <label class="subscriptions-inner__item" for="price-7">
                                 <p class="subscriptions-inner__item-name">6 месяца</p>
-                                <p class="subscriptions-inner__price">1200 &#8381;</p>
-                                <p class="subscriptions-inner__item-text">400 &#8381; / месяц</p>
-                                <p class="subscriptions-inner__item-text green">Экономия – 20%</p>
+                                <p class="subscriptions-inner__price">{{finalCostForSixMonths}} &#8381;</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForSixMonths/6)}} &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text green">Экономия – {{discountForSixMonths*100}}%</p>
                             </label>
                         </li>
-                        <li @click="duration=12">
+                        <li @click="durationInMonths=12">
                             <input class="visually-hidden" type="radio" name="price-2" id="price-8">
                             <label class="subscriptions-inner__item" for="price-8">
                                 <p class="subscriptions-inner__item-name">Год</p>
-                                <p class="subscriptions-inner__price">1200 &#8381;</p>
-                                <p class="subscriptions-inner__item-text">400 &#8381; / месяц</p>
-                                <p class="subscriptions-inner__item-text green">Экономия – 20%</p>
+                                <p class="subscriptions-inner__price">{{finalCostForYear}} &#8381;</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForYear/12)}} &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text green">Экономия – {{discountForYear*100}}%</p>
                             </label>
                         </li>
                     </ul>
@@ -141,19 +141,97 @@
 <script>
   export default {
     name: "SubscriptionInner",
-    props: ["openMenu", 'listProfiles', 'menu', 'keySub'],
+    props: ["openMenu", 'listProfiles', 'menu', 'keySub', 'costPerDayOneMeal'],
     data() {
       return {
         breakfast: true,
         dinner: false,
-        branch: false,
+        brunch: false,
         supper: false,
         mealTypes: [],
         periodicity: 'seven_days',
-        duration: 0
+        durationInMonths: 1,
+        daysAmountForMonth: 30,
+        daysAmountForThreeMonths: 90,
+        daysAmountForSixMonths: 180,
+        daysAmountForYear: 360,
+        mealsPerDayAmount: 1,
+        startedAt: "",
+        finishedAt: "",
+        finalCostForMonth: 0,
+        finalCostForThreeMonths: 0,
+        finalCostForSixMonths: 0,
+        finalCostForYear: 0,
+        discountForMonth: 0.35,
+        discountForThreeMonths: 0.4,
+        discountForSixMonths: 0.35,
+        discountForYear: 0.5
       }
     },
     methods: {
+      calculateCost() {
+        this.countData()
+
+        let finalCost = 0
+        let discountForChoosingAfterFirstMeal = 0.05
+        let discountForChoosingAllMeals = 0.05
+
+        if (this.mealsPerDayAmount === 1) {
+          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount
+        } else {
+          finalCost = this.costPerDayOneMeal * (this.mealsPerDayAmount - (this.mealsPerDayAmount - 1) * discountForChoosingAfterFirstMeal)
+        }
+
+        if (this.mealsPerDayAmount === 4) {
+          finalCost = finalCost * (1 - discountForChoosingAllMeals)
+        }
+
+        this.finalCostForMonth = Math.round(finalCost * this.daysAmountForMonth * (1 - this.discountForMonth))
+        this.finalCostForThreeMonths = Math.round(finalCost * this.daysAmountForThreeMonths * (1 - this.discountForThreeMonths))
+        this.finalCostForSixMonths = Math.round(finalCost * this.daysAmountForSixMonths * (1 - this.discountForSixMonths))
+        this.finalCostForYear = Math.round(finalCost * this.daysAmountForYear * (1 - this.discountForYear))
+
+      },
+      countData() {
+        this.mealTypes = []
+
+        if (this.breakfast) {
+          this.mealTypes.push('breakfast')
+        }
+        if (this.dinner) {
+          this.mealTypes.push('dinner')
+        }
+        if (this.supper) {
+          this.mealTypes.push('supper')
+        }
+        if (this.brunch) {
+          this.mealTypes.push('brunch')
+        }
+
+        this.mealsPerDayAmount = this.mealTypes.length
+
+        let startedAt = new Date()
+        let finishedAt = new Date();
+        let finishInMonth = new Date();
+        let finishInThreeMonths = new Date();
+        let finishInSixMonths = new Date();
+        let finishInYear = new Date();
+
+        finishedAt.setMonth(startedAt.getMonth() + this.durationInMonths);
+        finishInMonth.setMonth(startedAt.getMonth() + 1);
+        finishInThreeMonths.setMonth(startedAt.getMonth() + 3);
+        finishInSixMonths.setMonth(startedAt.getMonth() + 6);
+        finishInYear.setMonth(startedAt.getMonth() + 12);
+
+        this.daysAmountForMonth = Math.round((finishInMonth - startedAt) / (1000 * 60 * 60 * 24))
+        this.daysAmountForThreeMonths = Math.round((finishInThreeMonths - startedAt) / (1000 * 60 * 60 * 24))
+        this.daysAmountForSixMonths = Math.round((finishInSixMonths - startedAt) / (1000 * 60 * 60 * 24))
+        this.daysAmountForYear = Math.round((finishInYear - startedAt) / (1000 * 60 * 60 * 24))
+
+        this.startedAt = this.getStringDate(startedAt)
+        this.finishedAt = this.getStringDate(finishedAt)
+
+      },
       getStringDate(date) {
         let month = '' + (date.getMonth() + 1)
         let day = '' + (date.getDate())
@@ -167,44 +245,41 @@
         return [year, month, day].join('-');
       },
       buy() {
-        this.mealTypes = []
-
-        if (this.breakfast) {
-          this.mealTypes.push('breakfast')
-        }
-        if (this.dinner) {
-          this.mealTypes.push('dinner')
-        }
-        if (this.supper) {
-          this.mealTypes.push('supper')
-        }
-        if (this.branch) {
-          this.mealTypes.push('branch')
-        }
-
-        if (this.fiveDays) {
-          this.periodicity = 'five_days'
-        } else if (this.sevenDays) {
-          this.periodicity = 'seven_days'
-        }
-
-        let startedAt = new Date()
-        let finishedAt = new Date();
-        finishedAt.setMonth(finishedAt.getMonth() + this.duration);
-
-        startedAt = this.getStringDate(startedAt)
-        finishedAt = this.getStringDate(finishedAt)
+        this.countData()
 
         let subscription = {}
 
         subscription['menu'] = this.menu
         subscription['mealTypes'] = this.mealTypes
         subscription['periodicity'] = this.periodicity
-        subscription['startedAt'] = startedAt
-        subscription['finishedAt'] = finishedAt
+        subscription['startedAt'] = this.startedAt
+        subscription['finishedAt'] = this.finishedAt
 
         this.$store.dispatch('menu/createSubscription', subscription)
       }
+    },
+    mounted() {
+      this.calculateCost()
+    },
+    watch: {
+      breakfast: function () {
+        this.calculateCost()
+      },
+      dinner: function () {
+        this.calculateCost()
+      },
+      brunch: function () {
+        this.calculateCost()
+      },
+      supper: function () {
+        this.calculateCost()
+      },
+      periodicity: function () {
+        this.calculateCost()
+      },
+      durationInMonths: function () {
+        this.calculateCost()
+      },
     }
   }
 </script>

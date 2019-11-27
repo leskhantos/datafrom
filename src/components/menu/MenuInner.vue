@@ -421,8 +421,8 @@
       finishDate.setDate(startDate.getDate() + 6)
       this.finishDate = this.getStringDate(finishDate);
 
-      this.menus = this.$store.getters['menu/getListMenus']
       this.$store.dispatch('menu/getListMenus').then(() => {
+        this.menus = this.$store.getters['menu/getListMenus']
         this.activeMenuTitle = this.menus[this.activeMenu].title
         this.activeMenuDescription = this.menus[this.activeMenu].description
         this.activeMenuId = this.menus[this.activeMenu].id

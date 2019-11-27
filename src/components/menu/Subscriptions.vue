@@ -26,6 +26,7 @@
             <subscription-inner
                     :openMenu="openMenu"
                     :keySub="keySub"
+                    :costPerDayOneMeal="item.menu.costPerDayOneMeal"
                     :listProfiles="listProfiles"
                     :menu="item.menu.id"></subscription-inner>
         </article>
