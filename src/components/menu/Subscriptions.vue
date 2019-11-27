@@ -27,7 +27,7 @@
                     :openMenu="openMenu"
                     :keySub="keySub"
                     :listProfiles="listProfiles"
-                    :menu="item.id"></subscription-inner>
+                    :menu="item.menu.id"></subscription-inner>
         </article>
     </div>
 </template>
