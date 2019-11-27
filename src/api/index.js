@@ -65,3 +65,7 @@ export function GetMeals(menuId, menuProportionId) {
 export function GetIngredients(recipe, weight) {
   return axios.get(Settings.host + '/api/v1/recipe/calculate-weight?recipe='+recipe+'&weight='+weight)
 }
+
+export function ListSubscriptions() {
+  return axios.get(Settings.host + '/api/v1/subscriptions')
+}

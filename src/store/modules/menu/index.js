@@ -4,6 +4,7 @@ import mutations from './mutations'
 
 const state = {
   list_menus: [],
+  list_subscriptions: [],
   menu: {},
   meals: [],
   ingredients: []

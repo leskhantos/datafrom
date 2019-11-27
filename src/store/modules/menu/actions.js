@@ -2,7 +2,8 @@ import {
   ListMenus,
   GetMenu,
   GetMeals,
-  GetIngredients
+  GetIngredients,
+  ListSubscriptions
 } from '@/api'
 
 
@@ -53,9 +54,22 @@ const getIngredients = async ({commit}, recipe) => {
       console.error(error);
     })
 }
+
+const getListSubscriptions = async ({commit}) => {
+  await ListSubscriptions()
+    .then((response) => {
+      const data = response.data._embedded.items
+      commit('LIST_SUBSCRIPTIONS', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    })
+}
 export default {
   getListMenus,
   getMenu,
   getMeals,
-  getIngredients
+  getIngredients,
+  getListSubscriptions
 }

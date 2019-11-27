@@ -106,10 +106,8 @@
         </div>
         <component
                 :is="currentMenu"
-                :startDate="startDate"
-                :finishDate="finishDate"
-                :menuId="activeMenuId"
-                :typeOfMeals="typeOfMeals"
+                :listMeals="listMeals"
+                :typeOfMealsNumber="typeOfMealsNumber"
         >
         </component>
     </div>
@@ -149,7 +147,12 @@
         activeMenuDescription: '',
         activeMenuMinCalories: '',
         activeMenuMaxCalories: '',
-        typeOfMeals: 'breakfast'
+        typeOfMeals: 'breakfast',
+        typeOfMealsNumber: 0,
+        proportions: {},
+        meals: [],
+        listMeals: [],
+        isRecipe: false
       }
     },
     computed: {
@@ -158,6 +161,9 @@
       },
     },
     methods: {
+      onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      },
       nextSlide() {
         if (this.activeMenu === this.$store.getters['menu/getListMenus'].length - 1) {
           this.activeMenu = 0
@@ -204,6 +210,205 @@
 
         finishDate.setDate(finishDate.getDate() + 7)
         this.finishDate = this.getStringDate(finishDate);
+      },
+      filterMeals() {
+        let resultMeals = []
+        let mealsFilteredByDate = []
+        let datesOfMeals = []
+        let datesUniqueOfMeals = []
+        let mealsFilteredByDateAndSortedByType = []
+        let mealsFilteredByDateAndSortedByTypeTemp = []
+
+        this.meals.forEach((value) => {
+          let dateMeals = new Date(value.date);
+          let dateStart = new Date(this.startDate);
+          let dateFinish = new Date(this.finishDate);
+
+          let dayOfWeek = dateMeals.getDay();
+          if (dayOfWeek === 1) {
+            dayOfWeek = 'Понедельник'
+          } else if (dayOfWeek === 2) {
+            dayOfWeek = 'Вторник'
+          } else if (dayOfWeek === 3) {
+            dayOfWeek = 'Среда'
+          } else if (dayOfWeek === 4) {
+            dayOfWeek = 'Четверг'
+          } else if (dayOfWeek === 5) {
+            dayOfWeek = 'Пятница'
+          } else if (dayOfWeek === 6) {
+            dayOfWeek = 'Суббота'
+          } else if (dayOfWeek === 7) {
+            dayOfWeek = 'Воскресенье'
+          }
+
+          let month = '' + (dateMeals.getMonth() + 1)
+          let day = '' + (dateMeals.getDate())
+          let year = dateMeals.getFullYear()
+
+          if (month.length < 2)
+            month = '0' + month;
+          if (day.length < 2)
+            day = '0' + day;
+
+          value['stringDate'] = [day, month, year].join('.');
+
+          value['dayOfWeek'] = dayOfWeek
+
+          if (value['mealType'] === 'breakfast') {
+            value['mealTypeLocal'] = 'Завтрак'
+          } else if (value['mealType'] === 'brunch') {
+            value['mealTypeLocal'] = 'Перекус'
+          } else if (value['mealType'] === 'dinner') {
+            value['mealTypeLocal'] = 'Обед'
+          } else if (value['mealType'] === 'supper') {
+            value['mealTypeLocal'] = 'Ужин'
+          } else {
+            value['mealTypeLocal'] = 'Ланч'
+          }
+
+          if (this.typeOfMenu === 1) {
+
+            if (value['mealType'] === this.typeOfMeals && dateStart <= dateMeals && dateFinish >= dateMeals) {
+              resultMeals.push(value)
+            }
+          } else {
+
+            if (dateStart <= dateMeals && dateFinish >= dateMeals) {
+              mealsFilteredByDate.push(value)
+            }
+
+          }
+        });
+
+        mealsFilteredByDate.forEach((value) => {
+          datesOfMeals.push(value.date)
+        })
+        datesUniqueOfMeals = datesOfMeals.filter(this.onlyUnique);
+
+        datesUniqueOfMeals.forEach((datesUniqueOfMealsRow) => {
+          let mealsFilteredByDateAndSortedByTypeRow = []
+          mealsFilteredByDate.forEach((value) => {
+            if (value.date === datesUniqueOfMealsRow) {
+              mealsFilteredByDateAndSortedByTypeRow.push(value)
+            }
+          })
+          mealsFilteredByDateAndSortedByType.push(mealsFilteredByDateAndSortedByTypeRow)
+        })
+
+        mealsFilteredByDateAndSortedByType.forEach((row) => {
+
+          let breakfast = {}
+          let lunch = {}
+          let brunch = {}
+          let dinner = {}
+          let supper = {}
+
+          row.forEach((array) => {
+
+            if (array.mealType === 'breakfast') {
+              breakfast = array
+            }
+            if (array.mealType === 'lunch') {
+              lunch = array
+            }
+            if (array.mealType === 'dinner') {
+              dinner = array
+            }
+            if (array.mealType === 'brunch') {
+              brunch = array
+            }
+            if (array.mealType === 'supper') {
+              supper = array
+            }
+
+          })
+
+          if (this.typeOfMenu === 2) {
+            row = []
+            if (breakfast.id !== undefined) {
+              row.push(breakfast)
+            }
+            if (brunch.id !== undefined) {
+              row.push(brunch)
+            }
+            if (dinner.id !== undefined) {
+              row.push(dinner)
+            }
+            if (lunch.id !== undefined) {
+              row.push(lunch)
+            }
+            if (supper.id !== undefined) {
+              row.push(supper)
+            }
+            mealsFilteredByDateAndSortedByTypeTemp.push(row)
+          } else {
+            if (breakfast.id !== undefined) {
+              mealsFilteredByDateAndSortedByTypeTemp.push(breakfast)
+            }
+            if (brunch.id !== undefined) {
+              mealsFilteredByDateAndSortedByTypeTemp.push(brunch)
+            }
+            if (dinner.id !== undefined) {
+              mealsFilteredByDateAndSortedByTypeTemp.push(dinner)
+            }
+            if (lunch.id !== undefined) {
+              mealsFilteredByDateAndSortedByTypeTemp.push(lunch)
+            }
+            if (supper.id !== undefined) {
+              mealsFilteredByDateAndSortedByTypeTemp.push(supper)
+            }
+          }
+        })
+        mealsFilteredByDateAndSortedByType = mealsFilteredByDateAndSortedByTypeTemp
+
+
+        if (this.typeOfMenu === 1) {
+          this.listMeals = resultMeals
+        } else {
+          this.listMeals = mealsFilteredByDateAndSortedByType
+        }
+      },
+      getMeals() {
+        this.$store.dispatch('menu/getMenu', this.activeMenuId).then(() => {
+          this.proportions = this.$store.getters['menu/getMenu']._embedded.proportions
+
+          let menu = {}
+          menu['menuId'] = this.activeMenuId
+          menu['menuProportionId'] = this.proportions[0].id
+
+          this.$store.dispatch('menu/getMeals', menu).then(() => {
+            let meals = this.$store.getters['menu/getMeals']._embedded.items;
+            this.meals = meals.map((meal) => {
+              meal.recipeWeights = meal.recipeWeights.map((recipe) => {
+                let recipeSelf = {}
+                recipeSelf['recipe'] = recipe.recipe.id
+                recipeSelf['weight'] = recipe.weight
+                this.$store.dispatch('menu/getIngredients', recipeSelf).then(() => {
+                  let nutrients = this.$store.getters['menu/getIngredients'];
+                  let sumProteins = 0
+                  let sumFats = 0
+                  let sumCarbohydrates = 0
+                  let kilocalories = 0
+                  nutrients.forEach((nutrient) => {
+                    sumProteins += nutrient.nutrients[0].weight
+                    sumFats += nutrient.nutrients[1].weight
+                    sumCarbohydrates += nutrient.nutrients[2].weight
+                    kilocalories += nutrient.kilocalories
+                  })
+                  recipe.proteins = Math.round(sumProteins)
+                  recipe.fats = Math.round(sumFats)
+                  recipe.carbohydrates = Math.round(sumCarbohydrates)
+                  recipe.kilocalories = Math.round(kilocalories)
+                  this.isRecipe = !this.isRecipe
+                })
+                return recipe
+              })
+              return meal
+            })
+          })
+
+        })
+
       }
     },
     mounted() {
@@ -223,9 +428,12 @@
         this.activeMenuId = this.menus[this.activeMenu].id
         this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
         this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
+        this.getMeals()
       })
 
+
       this.typeOfMeals = 'breakfast'
+      this.typeOfMealsNumber = 0
     },
     watch: {
       activeMenu: function () {
@@ -234,6 +442,27 @@
         this.activeMenuId = this.menus[this.activeMenu].id
         this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
         this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
+      },
+      activeMenuId: function () {
+        this.getMeals()
+      },
+      meals: function () {
+        this.filterMeals()
+      },
+      typeOfMeals: function () {
+        this.filterMeals()
+      },
+      typeOfMenu: function () {
+        this.filterMeals()
+      },
+      isRecipe: function () {
+        this.filterMeals()
+      },
+      startDate: function () {
+        this.filterMeals()
+      },
+      finishDate: function () {
+        this.filterMeals()
       },
     }
   }

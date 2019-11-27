@@ -1,16 +1,16 @@
 <template>
     <li class="paper menu__scheduler-item">
-        <p class="menu__scheduler-caption">{{dayOfMeal[typesOfMeals].dayOfWeek}} {{dayOfMeal[0].stringDate}}</p>
+        <p class="menu__scheduler-caption">{{dayOfMeal[typeOfMealsNumber].dayOfWeek}} {{dayOfMeal[0].stringDate}}</p>
         <div class="tabs__buttons tabs__buttons--separate menu__scheduler-tabs-btn">
             <button v-for="(item,key) in dayOfMeal"
-                    :key="key" :class="['tabs__btn', { 'active':typesOfMeals === key }]" type="button"
-                    @click.prevent="typesOfMeals=key"
+                    :key="key" :class="['tabs__btn', { 'active':typeOfMealsNumber === key }]" type="button"
+                    @click.prevent="typeOfMealsNumber=key"
             >{{item.mealTypeLocal}}
             </button>
         </div>
         <ul class="menu__scheduler-dish-list">
             <li class="menu__scheduler-dish-item"
-                v-for="(recipe,keyRecipe) in dayOfMeal[typesOfMeals].recipeWeights"
+                v-for="(recipe,keyRecipe) in dayOfMeal[typeOfMealsNumber].recipeWeights"
                 :key="keyRecipe">
                 <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                 <div class="menu__scheduler-content">
@@ -28,7 +28,7 @@
 <script>
   export default {
     name: "MealType2",
-    props: ["dayOfMeal", "typesOfMeals"]
+    props: ["dayOfMeal", "typeOfMealsNumber"]
   }
 </script>
 
