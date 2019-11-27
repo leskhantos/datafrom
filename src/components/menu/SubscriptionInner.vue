@@ -170,7 +170,9 @@
         discountForMonth: 0.35,
         discountForThreeMonths: 0.4,
         discountForSixMonths: 0.35,
-        discountForYear: 0.5
+        discountForYear: 0.5,
+        discountForChoosingAfterFirstMeal: 0.05,
+        discountForChoosingAllMeals: 0.05
       }
     },
     methods: {
@@ -178,18 +180,16 @@
         this.countData()
 
         let finalCost = 0
-        let discountForChoosingAfterFirstMeal = 0.05
-        let discountForChoosingAllMeals = 0.05
 
         if (this.mealsPerDayAmount === 1) {
           finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount
         } else if (this.mealsPerDayAmount === 4) {
-          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - discountForChoosingAllMeals)
+          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - this.discountForChoosingAllMeals)
         } else {
-          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - discountForChoosingAfterFirstMeal)
+          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - this.discountForChoosingAfterFirstMeal)
         }
 
-        this.finalCostForMonth = Math.round(finalCost * this.daysAmountForMonth * (1 - this.discountForMonth))
+        this.finalCostForMonth = Math.round(finalCost * this.daysAmountForMonth)
         this.finalCostForThreeMonths = Math.round(finalCost * this.daysAmountForThreeMonths * (1 - this.discountForThreeMonths))
         this.finalCostForSixMonths = Math.round(finalCost * this.daysAmountForSixMonths * (1 - this.discountForSixMonths))
         this.finalCostForYear = Math.round(finalCost * this.daysAmountForYear * (1 - this.discountForYear))
