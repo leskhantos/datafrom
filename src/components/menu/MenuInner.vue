@@ -415,6 +415,9 @@
       this.typeOfMenu = 1
 
       let startDate = new Date()
+      while (startDate.getDay() !== 1) {
+        startDate.setDate(startDate.getDate() - 1)
+      }
       this.startDate = this.getStringDate(startDate);
 
       let finishDate = new Date()
