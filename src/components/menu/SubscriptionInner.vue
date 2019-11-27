@@ -108,8 +108,10 @@
                             <label class="subscriptions-inner__item" for="price-6">
                                 <p class="subscriptions-inner__item-name">3 месяца</p>
                                 <p class="subscriptions-inner__price">{{finalCostForThreeMonths}} &#8381;</p>
-                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForThreeMonths/3)}} &#8381; / месяц</p>
-                                <p class="subscriptions-inner__item-text green">Экономия – {{discountForThreeMonths*100}}%</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForThreeMonths/3)}}
+                                    &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text green">Экономия –
+                                    {{discountForThreeMonths*100}}%</p>
                             </label>
                         </li>
                         <li @click="durationInMonths=6">
@@ -117,8 +119,10 @@
                             <label class="subscriptions-inner__item" for="price-7">
                                 <p class="subscriptions-inner__item-name">6 месяца</p>
                                 <p class="subscriptions-inner__price">{{finalCostForSixMonths}} &#8381;</p>
-                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForSixMonths/6)}} &#8381; / месяц</p>
-                                <p class="subscriptions-inner__item-text green">Экономия – {{discountForSixMonths*100}}%</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForSixMonths/6)}}
+                                    &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text green">Экономия –
+                                    {{discountForSixMonths*100}}%</p>
                             </label>
                         </li>
                         <li @click="durationInMonths=12">
@@ -126,7 +130,8 @@
                             <label class="subscriptions-inner__item" for="price-8">
                                 <p class="subscriptions-inner__item-name">Год</p>
                                 <p class="subscriptions-inner__price">{{finalCostForYear}} &#8381;</p>
-                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForYear/12)}} &#8381; / месяц</p>
+                                <p class="subscriptions-inner__item-text">{{Math.round(finalCostForYear/12)}} &#8381; /
+                                    месяц</p>
                                 <p class="subscriptions-inner__item-text green">Экономия – {{discountForYear*100}}%</p>
                             </label>
                         </li>
@@ -178,12 +183,10 @@
 
         if (this.mealsPerDayAmount === 1) {
           finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount
+        } else if (this.mealsPerDayAmount === 4) {
+          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - discountForChoosingAllMeals)
         } else {
-          finalCost = this.costPerDayOneMeal * (this.mealsPerDayAmount - (this.mealsPerDayAmount - 1) * discountForChoosingAfterFirstMeal)
-        }
-
-        if (this.mealsPerDayAmount === 4) {
-          finalCost = finalCost * (1 - discountForChoosingAllMeals)
+          finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - discountForChoosingAfterFirstMeal)
         }
 
         this.finalCostForMonth = Math.round(finalCost * this.daysAmountForMonth * (1 - this.discountForMonth))
