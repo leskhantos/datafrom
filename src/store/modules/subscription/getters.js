@@ -36,8 +36,8 @@ const getIngredientsByRecipe = (state) => (recipe, ingredients) => {
     ingredients = arr.map((value) => {
         return ingredients[value]
     })
-    return ingredients
 
+    return ingredients
 }
 const getCalories = (state) => (recipe,ingredients) => {
     let arr = []
@@ -50,6 +50,7 @@ const getCalories = (state) => (recipe,ingredients) => {
     ingredients = arr.map((value) => {
         cal += ingredients[value].kilocaloriesPerHundredGrams
     })
+
     return cal
 }
 
@@ -64,6 +65,7 @@ const getProteins = (state) => (recipe,ingredients) => {
     ingredients = arr.map((value) => {
         proteins += ingredients[value].nutrients[0].amountPerHundredGrams
     })
+
     return proteins
 }
 const getFats = (state) => (recipe,ingredients) => {
@@ -77,6 +79,7 @@ const getFats = (state) => (recipe,ingredients) => {
     ingredients = arr.map((value) => {
         fats += ingredients[value].nutrients[1].amountPerHundredGrams
     })
+
     return fats
 }
 const getCarboHydrates = (state) => (recipe,ingredients) => {
@@ -90,6 +93,7 @@ const getCarboHydrates = (state) => (recipe,ingredients) => {
     ingredients = arr.map((value) => {
         carboHydrates += ingredients[value].nutrients[2].amountPerHundredGrams
     })
+
     return carboHydrates
 }
 
@@ -102,6 +106,7 @@ const getDate = state => purchaseType => {
             date = value.date
         }
     })
+
     return date
 }
 
@@ -112,6 +117,7 @@ const getMealType = state => purchaseType => {
             mealType = value.mealType
         }
     })
+
     return mealType
 }
 const getSortedIngredients = state => sortType => {
@@ -126,14 +132,7 @@ const getSortedIngredients = state => sortType => {
             return 0
         });
     }else{
-        ingredients = Object.values(state.ingredients).sort();
-    }
-        return ingredients
-}
-const getSortedRecipes = state => sortType=>{
-    let recipes
-    if (sortType === 'desc'){
-        recipes = Object.values(state.recipes).sort(function(x, y) {
+        ingredients = Object.values(state.ingredients).sort(function(x, y) {
             let nameA = x.title.toLowerCase(), nameB = y.title.toLowerCase()
             if (nameA < nameB)
                 return 1
@@ -141,26 +140,13 @@ const getSortedRecipes = state => sortType=>{
                 return -1
             return 0
         });
-    }else{
-        recipes = Object.values(state.recipes).sort();
+        ingredients.reverse()
     }
-    return recipes
-}
-const getByTypeOfAllMeal = state => typeOfMeal =>{
 
-    return Object.values(state.recipes).filter(function (elem) {
-        return elem.mealType === typeOfMeal;
-    })
+        return ingredients
 }
-const getByTypeOfMealForDay = (state) => (typeOfMealForDay, mealDate)=>{
 
-   return  Object.values(state.recipes).filter(function (elem) {
-         if (elem.date === mealDate){
-             return elem.mealType === typeOfMealForDay;
-         }
-    })
-}
-const getFilteredIngredientsByDate = (state) =>(fromDate, toDate, ingredient)=>{
+const getFilteredIngredientsByDate = (state) => (fromDate, toDate, ingredient)=>{
     let arr=[]
     Object.values(state.purchases).map((value) => {
         let from = new Date(fromDate);
@@ -173,25 +159,38 @@ const getFilteredIngredientsByDate = (state) =>(fromDate, toDate, ingredient)=>{
     ingredient = arr.map((value) => {
         return ingredient[value]
     })
+
     return ingredient
 }
 
-const getFilteredRecipesByDate = (state) =>(fromDate, toDate, recipe)=>{
-    let arr=[]
-    Object.values(state.purchases).map((value) => {
-        let from = new Date(fromDate);
-        let to   = new Date(toDate);
-        let check = new Date(value.date);
-        if (check > from && check < to && !arr.includes(value.recipe)) {
-            arr.push(value.recipe)
-        }
-    })
-    recipe = arr.map((value) => {
-        return recipe[value]
-    })
-    return recipe
-}
+const getRecipesByDate = state =>{
+    let dates = []
+    let filteredRecipes = []
 
+    dates = [...new Set(Object.values(state.purchases).map((value) => {
+        return value.date
+    }))]
+
+    dates.forEach((date, index) => {
+        let recipe = {
+            date,
+            meals: {}
+        }
+        filteredRecipes.push(recipe)
+        Object.values(state.purchases).forEach((value) => {
+            if (value.date === date) {
+                if (!filteredRecipes[index].meals[value.mealType]) {
+                    filteredRecipes[index].meals[value.mealType] = [state.recipes[value.recipe]]
+                }
+
+                if (filteredRecipes[index].meals[value.mealType] && !filteredRecipes[index].meals[value.mealType].includes(state.recipes[value.recipe])) {
+                    filteredRecipes[index].meals[value.mealType].push(state.recipes[value.recipe])
+                }
+            }
+        })
+    })
+    return filteredRecipes
+}
 
 export default {
     getWeight,
@@ -203,13 +202,10 @@ export default {
     getDate,
     getMealType,
     getSortedIngredients,
-    getSortedRecipes,
-    getByTypeOfAllMeal,
-    getByTypeOfMealForDay,
     getCalories,
     getProteins,
     getFats,
     getCarboHydrates,
     getFilteredIngredientsByDate,
-    getFilteredRecipesByDate
+    getRecipesByDate
 }

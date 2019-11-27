@@ -66,9 +66,9 @@
                                 <PreviousIcon/>
                             </button>
                             <div class="datepicker filter__datepicker">
-                                <input type="date" v-model="fromDate">
+                                <input type="date" v-model="fromDate" >
                             </div><span>&ndash;</span>
-                            <div class="datepicker filter__datepicker">
+                            <div class="datepicker filter__datepicker" >
                                 <input type="date" v-model="toDate">
                             </div>
                             <button class="icon-button filter__btn-arrow filter__btn-arrow--next" type="button" @click="nextWeek">
@@ -99,7 +99,10 @@
                     </div>
                 </div>
                 <PurchaseIngredient v-if="picked==='ingredient'" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
-                <PurchaseRecipe  v-else-if="picked==='recipe'" :typeOfView="typeOfView" :typeOfMeal="typeOfMeal" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
+
+                <section v-else-if="picked==='recipe'" class="scheduler-food">
+                    <PurchaseRecipe v-for="recipe in recipes" :key="recipe.id" :recipeData="recipe" :typeOfView="typeOfView" :typeOfMeal="typeOfMeal" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
+                </section>
             </div>
                 <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
                     <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
@@ -184,7 +187,7 @@
                     </div>
                 </div>
         </section>
-            <div :class="['overlay',{'show show-modal':showAddUserModal}]"></div>
+            <div :class="['overlay',{'show show-modal':showBuyMoreModal}]"></div>
     </main>
 </template>
 
@@ -226,13 +229,14 @@
                 fromDate: '',
                 toDate: '',
                 cookBySelf: false,
-                typeOfMeal: '',
-                sortType:''
+                typeOfMeal: 'breakfast',
+                sortType:'',
+                recipes: []
             }
         },
         methods: {
             resetSort(){
-                this.typeOfMeal=''
+                this.typeOfMeal='breakfast'
                 this.sortType=''
             },
             getFilteredByMealOfAll(type){
@@ -270,15 +274,6 @@
                 date.setDate(date.getDate() - 7);
                 this.fromDate = date.toISOString().split('T')[0];
             },
-            getFilteredDate(){
-                let fromDate = this.fromDate
-                let toDate = this.toDate
-                let dates = '?dateFrom='+fromDate+'&dateTo='+toDate
-                this.$store.dispatch('subscription/getShopListAction',dates)
-            },
-            showOverlay(){
-                return this.showAddUserModal || this.showBuyMoreModal || this.showRecipeAddModal
-            },
         },
         computed:{
             listProfiles() {
@@ -291,6 +286,98 @@
             let dates = '?dateFrom=2019-11-01&dateTo=2019-11-30';
             this.$store.dispatch('subscription/getShopListAction',dates)
         },
+        watch: {
+            picked: {
+                immediate: true,
+                handler(val) {
+                    if (val === 'recipe') {
+                        let arr =  Object.values(this.$store.getters['subscription/getRecipesByDate'])
+                        let ingredients = this.$store.getters['subscription/getIngredients']
+                        arr = arr.map((value)=> {
+                            Object.keys(value.meals).forEach((meal)=>{
+                                value.meals[meal] = value.meals[meal].map((recipe)=>{
+                                    recipe.weight = this.$store.getters['subscription/getWeight'](recipe)
+                                    recipe.calories = this.$store.getters['subscription/getCalories'](recipe,ingredients)
+                                    recipe.proteins = this.$store.getters['subscription/getProteins'](recipe,ingredients)
+                                    recipe.fats = this.$store.getters['subscription/getFats'](recipe,ingredients)
+                                    recipe.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](recipe,ingredients)
+                                    recipe.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](recipe, ingredients)
+                                    recipe.date = value.date
+                                    recipe.mealType = meal
+                                    return recipe
+                                })
+                            })
+
+                            return value
+                        })
+
+                        this.recipes = arr
+                    }
+                }
+            },
+            fromDate: {
+                immediate: true,
+                handler(val) {
+                        let arr =  Object.values(this.$store.getters['subscription/getRecipesByDate'])
+                        let ingredients = this.$store.getters['subscription/getIngredients']
+                        arr = arr.map((value)=> {
+                            Object.keys(value.meals).forEach((meal)=>{
+                                value.meals[meal] = value.meals[meal].map((recipe)=>{
+                                    recipe.weight = this.$store.getters['subscription/getWeight'](recipe)
+                                    recipe.calories = this.$store.getters['subscription/getCalories'](recipe,ingredients)
+                                    recipe.proteins = this.$store.getters['subscription/getProteins'](recipe,ingredients)
+                                    recipe.fats = this.$store.getters['subscription/getFats'](recipe,ingredients)
+                                    recipe.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](recipe,ingredients)
+                                    recipe.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](recipe, ingredients)
+                                    recipe.date = value.date
+                                    recipe.mealType = meal
+                                    return recipe
+                                })
+                            })
+
+                            return value
+                        })
+                     arr = arr.filter((value) => {
+                        let from = new Date(val);
+                        let check = new Date(value.date);
+                        return check > from
+                    })
+
+                        this.recipes = arr
+
+                }
+            },
+            toDate: {
+                immediate: true,
+                handler(val) {
+                    let arr =  Object.values(this.$store.getters['subscription/getRecipesByDate'])
+                    let ingredients = this.$store.getters['subscription/getIngredients']
+                    arr = arr.map((value)=> {
+                        Object.keys(value.meals).forEach((meal)=>{
+                            value.meals[meal] = value.meals[meal].map((recipe)=>{
+                                recipe.weight = this.$store.getters['subscription/getWeight'](recipe)
+                                recipe.calories = this.$store.getters['subscription/getCalories'](recipe,ingredients)
+                                recipe.proteins = this.$store.getters['subscription/getProteins'](recipe,ingredients)
+                                recipe.fats = this.$store.getters['subscription/getFats'](recipe,ingredients)
+                                recipe.carboHydrates = this.$store.getters['subscription/getCarboHydrates'](recipe,ingredients)
+                                recipe.ingredients = this.$store.getters['subscription/getIngredientsByRecipe'](recipe, ingredients)
+                                recipe.date = value.date
+                                recipe.mealType = meal
+                                return recipe
+                            })
+                        })
+
+                        return value
+                    })
+                    arr = arr.filter((value) => {
+                        let to = new Date(val);
+                        let check = new Date(value.date);
+                        return check < to
+                    })
+                    this.recipes = arr
+                }
+            },
+        }
     }
 </script>
 

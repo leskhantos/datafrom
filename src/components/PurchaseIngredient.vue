@@ -34,7 +34,7 @@
                     </div>
                 </section>
             </div>
-            <div :class="['buy__item-dropdown',{'open':ingredient.open}]">
+            <div v-if="ingredient.open" :class="['buy__item-dropdown',{'open':ingredient.open}]">
                 <ul class="buy__sublist">
                     <li class="buy__item" v-for="recipe in ingredient.recipes" :key="recipe.id">
                         <div class="buy__item-wrap">
@@ -151,9 +151,6 @@
                 let year = date.getFullYear();
                 return data+"."+month+"."+year
             },
-        },
-        computed:{
-
         },
         mounted() {
             let arr = Object.values(this.$store.getters['subscription/getIngredients'])
