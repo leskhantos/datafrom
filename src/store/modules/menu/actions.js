@@ -3,7 +3,8 @@ import {
   GetMenu,
   GetMeals,
   GetIngredients,
-  ListSubscriptions
+  ListSubscriptions,
+  CreateSubscription
 } from '@/api'
 
 
@@ -66,10 +67,26 @@ const getListSubscriptions = async ({commit}) => {
       console.error(error);
     })
 }
+
+const createSubscription = ({commit}, payload) => {
+  return CreateSubscription(payload)
+    .then((response) => {
+      // eslint-disable-next-line
+      console.log(response.data)
+    })
+    .catch((error) => {
+      commit('SUBSCRIPTION', error)
+      // eslint-disable-next-line
+      console.error(error);
+      throw "Подписка не прошла";
+    })
+}
+
 export default {
   getListMenus,
   getMenu,
   getMeals,
   getIngredients,
-  getListSubscriptions
+  getListSubscriptions,
+  createSubscription
 }

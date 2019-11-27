@@ -7,6 +7,7 @@ const state = {
   list_subscriptions: [],
   menu: {},
   meals: [],
+  subscription: {},
   ingredients: []
 }
 

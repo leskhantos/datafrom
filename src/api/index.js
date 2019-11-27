@@ -69,3 +69,7 @@ export function GetIngredients(recipe, weight) {
 export function ListSubscriptions() {
   return axios.get(Settings.host + '/api/v1/subscriptions')
 }
+
+export function CreateSubscription(subscription) {
+  return axios.post(Settings.host + '/api/v1/subscription/subscribe', subscription)
+}

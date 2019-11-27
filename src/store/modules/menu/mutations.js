@@ -13,11 +13,15 @@ const MEALS = (state, meals) => {
 const INGREDIENTS = (state, ingredients) => {
   state.ingredients = ingredients
 }
+const SUBSCRIPTION = (state, subscription) => {
+  state.subscription = subscription
+}
 
 export default {
   LIST_MENUS,
   LIST_SUBSCRIPTIONS,
   MENU,
   MEALS,
-  INGREDIENTS
+  INGREDIENTS,
+  SUBSCRIPTION
 }
