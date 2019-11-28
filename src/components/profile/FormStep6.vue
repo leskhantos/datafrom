@@ -1,36 +1,39 @@
 <template>
     <div class="paper settings__container">
-        <h2 class="settings__title">Ваша цель</h2>
+        <h2 class="settings__title">Ваш уровень активности</h2>
         <div class="settings__group">
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="gain_weight">
-                <div><img src="/static/images/png/weight-1.png" alt="weight">
-                    <p>Набор мышечной массы</p>
-                </div>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity" value="none">
+                <p>Физическая нагрузка отсутсвует или минимальная</p>
             </label>
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="lose_weight">
-                <div><img src="/static/images/png/weight-2.png" alt="weight">
-                    <p>Медленная потеря веса</p>
-                </div>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity" value="medium_2_times">
+                <p>Тренировки средней тяжести 2-3 раз в неделю</p>
             </label>
-            <label class="settings__target">
-                <input class="visually-hidden" type="radio" name="target" v-model="target" value="hold_weight">
-                <div><img src="/static/images/png/weight-3.png" alt="weight">
-                    <p>Поддержание текущей формы</p>
-                </div>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity" value="medium_5_times">
+                <p>Тренировки средней тяжести 5 раз в неделю</p>
             </label>
-            <!--            <label class="settings__target">-->
-            <!--                <input class="visually-hidden" type="radio" name="target">-->
-            <!--                <div><img src="/static/images/png/weight-4.png" alt="weight">-->
-            <!--                    <p>Быстрая потеря веса</p>-->
-            <!--                </div>-->
-            <!--            </label>-->
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity"
+                       value="intensive_5_times">
+                <p>Интенсивные тренировки 5 раз в неделю</p>
+            </label>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity" value="every_day">
+                <p>Тренировки каждый день</p>
+            </label>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity"
+                       value="intensive_every_day">
+                <p>Интенсивные тренировки каждый день</p>
+            </label>
+            <label class="settings__lifestyle">
+                <input class="visually-hidden" type="radio" name="lifestyle" v-model="activity" value="every_day_work">
+                <p>Ежедневная нагрузка + физическая работа</p>
+            </label>
         </div>
-        <b :class="{'active':error!==''}">{{ this.error }}</b>
-        <a class="button settings__btn" href=""
-           @click="nextStep">Далее
-        </a>
+        <a class="button settings__btn" href="" @click="nextStep">Далее</a>
     </div>
 </template>
 
@@ -47,7 +50,7 @@
     data() {
       return {
         error: '',
-        target: ''
+        activity: ''
       }
     },
     methods: {
@@ -56,18 +59,18 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['target'] = this.target
-        if (!this.target) {
-          this.error = 'Выберите цель';
+        profile['activity'] = this.activity
+        if (!this.activity) {
+          this.error = 'Выберите активность';
         } else {
           this.$store.commit('user/PROFILE_INFO', profile)
-          this.$emit('create')
+          this.$emit('next-step')
         }
 
       }
     },
     mounted() {
-      this.target = this.$store.getters['user/getProfileInfo'].target
+      this.activity = this.$store.getters['user/getProfileInfo'].activity
     }
   }
 </script>
@@ -77,5 +80,10 @@
         margin-top: 16px;
         text-align: center;
         color: red;
+    }
+
+    .settings__lifestyle p {
+        font-size: 14px;
+        text-align: center;
     }
 </style>

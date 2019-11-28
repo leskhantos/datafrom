@@ -33,7 +33,7 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['height'] = this.height
+        profile['height'] = Math.round(this.height)
         if (!this.height) {
           this.error = 'Заполните это поле';
         } else {

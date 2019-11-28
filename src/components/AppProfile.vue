@@ -23,7 +23,7 @@
                             </label>
                         </li>
                         <li class="user__btn-add">
-                            <a class="button-add button-add--green button-add--big" type="button">
+                            <a class="button-add button-add--green button-add--big" type="button" @click="goToCreate">
                                 Добавить профиль
                             </a>
                         </li>
@@ -97,6 +97,13 @@
       BlogIcon,
       StatisticsIcon
     },
+    methods: {
+      goToCreate() {
+        this.$store.dispatch('user/getUserInfo').then(() => {
+          this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: false}})
+        });
+      }
+    },
     computed: {
       listProfiles() {
         return this.$store.getters['user/getListProfiles'].items;
@@ -106,12 +113,14 @@
       }
     },
     mounted() {
-      this.$store.dispatch('user/getListProfiles'),
-        this.$store.dispatch('user/getMainProfile')
+      this.$store.dispatch('user/getListProfiles')
+      this.$store.dispatch('user/getMainProfile')
     }
   }
 </script>
 
 <style scoped>
-
+    .button-add--big {
+        cursor: pointer;
+    }
 </style>

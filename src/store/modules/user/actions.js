@@ -11,6 +11,7 @@ import {
   GetNutrients
 } from '@/api'
 import VueCookies from 'vue-cookies'
+import {EditProfile} from "../../../api";
 
 const loginConfirm = ({commit}, payload) => {
   return Login(payload)
@@ -151,7 +152,7 @@ const getUserInfo = async ({commit}) => {
 const getNutrients = async ({commit}, profile) => {
   await GetNutrients(profile.weight, profile.height, profile.age,
     profile.gender, profile.target, profile.fatsPercentage,
-    profile.proteinsPercentage, profile.carbohydratesPercentage)
+    profile.proteinsPercentage, profile.carbohydratesPercentage, profile.activity)
     .then((response) => {
       const data = response.data
       commit('NUTRIENTS', data)
@@ -159,6 +160,19 @@ const getNutrients = async ({commit}, profile) => {
     .catch((error) => {
       // eslint-disable-next-line
       console.error(error);
+    })
+}
+
+const editProfile = (non, profile) => {
+  EditProfile(profile.id, profile.payload)
+    .then((response) => {
+      // eslint-disable-next-line
+      console.log(response.data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+      throw "Ошибка в заполнении формы";
     })
 }
 
@@ -173,5 +187,6 @@ export default {
   getProfile,
   getUserInfo,
   createProfile,
-  getNutrients
+  getNutrients,
+  editProfile
 }

@@ -44,8 +44,12 @@ export function CreateProfile(profile) {
   return axios.post(Settings.host + '/api/v1/profiles', profile)
 }
 
-export function GetNutrients(weight, height, age, gender, target, fatsPercentage, proteinsPercentage, carbohydratesPercentage) {
+export function GetNutrients(weight, height, age, gender, target, fatsPercentage, proteinsPercentage, carbohydratesPercentage, activity) {
   return axios.get(Settings.host + '/api/v1/nutrients/calculate?weight=' + weight + '&height=' + height + '&age=' + age
     + '&gender=' + gender + '&target=' + target + '&fatsPercentage=' + fatsPercentage + '&proteinsPercentage=' + proteinsPercentage
-    + '&carbohydratesPercentage=' + carbohydratesPercentage)
+    + '&carbohydratesPercentage=' + carbohydratesPercentage + '&activity=' + activity)
+}
+
+export function EditProfile(id, profile) {
+  return axios.put(Settings.host + '/api/v1/profiles/' + id, profile)
 }

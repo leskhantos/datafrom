@@ -44,7 +44,7 @@
 
         let profile = this.$store.getters['user/getProfileInfo']
 
-        profile['weight'] = this.weight
+        profile['weight'] = Math.round(this.weight)
         if (!this.weight) {
           this.error = 'Заполните это поле';
         } else {

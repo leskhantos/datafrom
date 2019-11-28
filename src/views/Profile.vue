@@ -7,11 +7,31 @@
                 <div class="title__wrapper">
                     <h1 class="title">Профиль</h1>
                 </div>
-                <div id="app">
-                    <child :text="message"></child>
-                    <child :text="message"></child>
-                </div>
+                <!--                <div id="app">-->
+                <!--                    <child :text="message"></child>-->
+                <!--                    <child :text="message"></child>-->
+                <!--                </div>-->
                 <div class="paper profile">
+                    <button class="icon-button buy__item-action" type="button" title="Действия"
+                            @click="openActions=!openActions">
+                        <svg mlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                            <circle cx="64" cy="256" r="64" />
+                            <circle cx="64" cy="448" r="64" />
+                            <circle cx="64" cy="64" r="64" />
+                        </svg>
+
+                    </button>
+                    <section :class="['paper','actions','anim-show-action', { 'show':openActions }]">
+                        <div class="actions__item"><a class="profile__edit" @click="goToEdit">
+                            <EditIcon />
+                            <span>Редактировать профиль</span></a></div>
+                        <div class="actions__item">
+                            <button class="profile__btn-logout" type="button">
+                                <CloseIcon />
+                                <span>Выйти из аккаунта</span>
+                            </button>
+                        </div>
+                    </section>
                     <div class="profile__col">
                         <div class="user__avatar profile__avatar"><img src="@/assets/images/jpg/avatar.jpg"
                                                                        alt="avatar"></div>
@@ -38,13 +58,13 @@
                             <!--                                <span slot="label">+7 (921) 315-57-75</span>-->
                             <!--                            </paragraph-profile>-->
                         </div>
-                        <a class="profile__edit" href="">
-                            <EditIcon />
-                            <span>Редактировать профиль</span></a>
-                        <button class="profile__btn-logout" type="button">
-                            <CloseIcon />
-                            <span>Выйти из аккаунта</span>
-                        </button>
+                        <!--            <a class="profile__edit" href="">-->
+                        <!--                <EditIcon />-->
+                        <!--                <span>Редактировать профиль</span></a>-->
+                        <!--            <button class="profile__btn-logout" type="button">-->
+                        <!--                <CloseIcon />-->
+                        <!--                <span>Выйти из аккаунта</span>-->
+                        <!--            </button>-->
                     </div>
                     <div class="profile__col">
                         <h2 class="profile__caption">Информация о профиле</h2>
@@ -172,6 +192,7 @@
         height: '',
         weight: '',
         target: '',
+        openActions: false
       }
     },
     methods: {
@@ -184,6 +205,13 @@
           age--;
         }
         return age;
+      },
+      goToEdit() {
+        this.$store.dispatch('user/getUserInfo').then(() => {
+          let profile = this.$store.getters['user/getProfile']
+          this.$store.commit('user/PROFILE_INFO', profile)
+          this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: true}})
+        });
       }
     },
     watch: {
@@ -217,4 +245,7 @@
 </script>
 
 <style scoped>
+    .profile__edit {
+        cursor: pointer;
+    }
 </style>
