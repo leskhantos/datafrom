@@ -11,9 +11,9 @@
             <button class="icon-button icon-button--big modal-add-user" type="button" title="Добавить профиль">
                 <ProfileAddIcon/>
             </button>
-            <button :class="['icon-button buy__item-action',{'show':show}]" type="button" title="Действия" @click="$emit('showItem')">
-                <ActionsIcon/>
-            </button>
+<!--            <button :class="['icon-button buy__item-action',{'show':show}]" type="button" title="Действия" @click="$emit('showItem')">-->
+<!--                <ActionsIcon/>-->
+<!--            </button>-->
             <section :class="['paper actions anim-show-action',{'show':recipe.show}]">
                 <div class="actions__item">
                     <div class="actions__img">
@@ -52,9 +52,9 @@
                             <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
                             <p> {{ingredient.title}} {{ingredient.weight}} г</p>
                         </label>
-                        <button  :class="['icon-button buy__item-action',{'show':ingredient.show}]" type="button" title="Действия">
-                            <ActionsIcon/>
-                        </button>
+<!--                        <button  :class="['icon-button buy__item-action',{'show':ingredient.show}]" type="button" title="Действия">-->
+<!--                            <ActionsIcon/>-->
+<!--                        </button>-->
                         <section :class="['paper actions anim-show-action',{'show':ingredient.show}]">
                             <div class="actions__item">
                                 <div class="actions__img">
@@ -86,7 +86,6 @@
 <script>
     import DownIcon from "./icons/DownIcon";
     import ProfileAddIcon from "./icons/ProfileAddIcon";
-    import ActionsIcon from "./icons/ActionsIcon";
     import ClockIcon from "./icons/ClockIcon";
     import CloseIcon from "./icons/CloseIcon";
 
@@ -98,7 +97,7 @@
                 recipe: {}
             }
         },
-        components: {CloseIcon, ClockIcon, ActionsIcon, ProfileAddIcon, DownIcon},
+        components: {CloseIcon, ClockIcon, ProfileAddIcon, DownIcon},
         methods: {
 
             getTranslatedMealType(type){

@@ -1,10 +1,13 @@
 const getIngredients = state => state.ingredients
+const getAllIngredients = state => state.allIngredients
 const getRecipes = state => state.recipes
 const getPurchases = state => state.purchases
-const getWeight  = state => ingredient => {
+const getWeight  = state => purchaseType => {
     let weight = 0
     Object.values(state.purchases).map((value) => {
-        if (value.ingredient === ingredient.id) {
+        if (value.ingredient === purchaseType.id) {
+            weight += value.weight
+        }else if(value.recipe === purchaseType.id){
             weight += value.weight
         }
     })
@@ -172,7 +175,7 @@ const getRecipesByDate = state =>{
     dates.forEach((date, index) => {
         let recipe = {
             date,
-            meals: {}
+            meals: {},
         }
         filteredRecipes.push(recipe)
         Object.values(state.purchases).forEach((value) => {
@@ -205,5 +208,6 @@ export default {
     getFats,
     getCarboHydrates,
     getFilteredIngredientsByDate,
-    getRecipesByDate
+    getRecipesByDate,
+    getAllIngredients
 }

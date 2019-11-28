@@ -6,7 +6,8 @@ const state = {
   recipes:{},
   ingredients:{},
   purchases:{},
-  weight: 0
+  weight: 0,
+  allIngredients: []
 }
 
 export default {

@@ -38,3 +38,6 @@ export function GetShopList(date) {
 export function AddCustomShopItem(payload) {
   return axios.post(Settings.host + '/api/v1/subscription/shop_list/custom', payload)
 }
+export function GetIngredientsList(search) {
+    return axios.get(Settings.host + '/api/v1/ingredients?title=' + search)
+}

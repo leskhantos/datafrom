@@ -10,9 +10,9 @@
                 <button :class="['icon-button buy__item-arrow',{'open':ingredient.open}]" type="button" title="Открыть" @click="openItem(ingredient.id)">
                     <DownIcon/>
                 </button>
-                <button :class="['icon-button buy__item-action',{'show':ingredient.show}]" type="button" title="Действия" @click="showItem(ingredient.id)">
-                    <ActionsIcon/>
-                </button>
+<!--                <button :class="['icon-button buy__item-action',{'show':ingredient.show}]" type="button" title="Действия" @click="showItem(ingredient.id)">-->
+<!--                    <ActionsIcon/>-->
+<!--                </button>-->
                 <section :class="['paper actions anim-show-action',{'show':ingredient.show}]">
                     <div class="actions__item">
                         <div class="actions__img">
@@ -45,9 +45,9 @@
                             <button class="icon-button icon-button--big buy__item-add-user modal-add-user" type="button" title="Добавить профиль">
                                 <ProfileAddIcon/>
                             </button>
-                            <button :class="['icon-button buy__item-action',{'show':recipe.show}]" type="button" title="Действия" @click="showChildItem(ingredient.id,recipe.id)" >
-                                <ActionsIcon/>
-                            </button>
+<!--                            <button :class="['icon-button buy__item-action',{'show':recipe.show}]" type="button" title="Действия" @click="showChildItem(ingredient.id,recipe.id)" >-->
+<!--                                <ActionsIcon/>-->
+<!--                            </button>-->
                             <section :class="['paper actions anim-show-action',{'show':recipe.show}]">
                                 <div class="actions__item">
                                     <div class="actions__img">
@@ -77,7 +77,7 @@
         </li>
         <li class="buy__add">
             <div>
-                <v-select v-model="selected"  label="title" :options="listOfTitles">
+                <v-select v-model="selected"  label="title" @search="getOptions" :options="options">
                     <div slot="no-options">Нет подходящего ингредиента</div>
                     <i slot="spinner" class="icon icon-spinner"></i>
                 </v-select>
@@ -104,7 +104,6 @@
 
 <script>
     import DownIcon from "./icons/DownIcon";
-    import ActionsIcon from "./icons/ActionsIcon";
     import ClockIcon from "./icons/ClockIcon";
     import CloseIcon from "./icons/CloseIcon";
     import ProfileAddIcon from "./icons/ProfileAddIcon";
@@ -113,7 +112,7 @@
     export default {
         name: "PurchaseIngredient",
         props:['sortType','fromDate','toDate'],
-        components: {ProfileAddIcon, CloseIcon, ClockIcon, ActionsIcon, DownIcon},
+        components: {ProfileAddIcon, CloseIcon, ClockIcon, DownIcon},
         data(){
             return{
                 ingredients: [],
@@ -121,9 +120,15 @@
                 selectedId: '',
                 showBuyMoreModal: false,
                 weightForCustom: 0,
+                options: []
             }
         },
         methods:{
+            getOptions(search){
+                this.$store.dispatch('subscription/getIngredientsList',search).then(()=>{
+                    this.options = this.$store.getters['subscription/getAllIngredients']
+                })
+            },
             sendData(){
                 let payload = {
                         ingredient: this.setSelectedId(),
@@ -225,11 +230,6 @@
                 return value
             })
             this.ingredients =  arr
-        },
-        computed:{
-          listOfTitles(){
-              return this.ingredients
-          },
         },
         watch: {
             'sortType': function () {

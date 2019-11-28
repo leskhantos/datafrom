@@ -1,6 +1,7 @@
 import {
     GetShopList,
-    AddCustomShopItem
+    AddCustomShopItem,
+    GetIngredientsList
 } from '@/api'
 import {normalize,schema} from "normalizr";
 
@@ -42,7 +43,17 @@ const addCustomShopItem = ({commit}, payload) => {
             commit('SET_ERROR','Ошибка при отправке данных')
         })
 }
+const getIngredientsList = ({commit},search) => {
+    GetIngredientsList(search)
+        .then((response) => {
+            commit('ALL_INGREDIENTS',response.data._embedded.items)
+        })
+        .catch(() => {
+            commit('SET_ERROR','Ошибка при отправке данных')
+        })
+}
 export default {
     getShopListAction,
-    addCustomShopItem
+    addCustomShopItem,
+    getIngredientsList
 }
