@@ -31,31 +31,31 @@
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list">
                         <li>
-                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-5"
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-5'+keySub"
                                    v-model="breakfast"
                                    checked>
-                            <label class="subscriptions-inner__item" for="meals-5">
+                            <label class="subscriptions-inner__item" :for="'meals-5'+keySub">
                                 <p class="subscriptions-inner__item-name">Завтрак</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-6" v-model="dinner">
-                            <label class="subscriptions-inner__item" for="meals-6">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-6'+keySub" v-model="dinner">
+                            <label class="subscriptions-inner__item" :for="'meals-6'+keySub">
                                 <p class="subscriptions-inner__item-name">Обед</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-7" v-model="brunch">
-                            <label class="subscriptions-inner__item" for="meals-7">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-7'+keySub" v-model="brunch">
+                            <label class="subscriptions-inner__item" :for="'meals-7'+keySub">
                                 <p class="subscriptions-inner__item-name">Перекус</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" name="meals-2" id="meals-8" v-model="supper">
-                            <label class="subscriptions-inner__item" for="meals-8">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-8'+keySub" v-model="supper">
+                            <label class="subscriptions-inner__item" :for="'meals-8'+keySub">
                                 <p class="subscriptions-inner__item-name">Ужин</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
@@ -71,16 +71,16 @@
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list subscriptions-inner__list--type-2">
                         <li @click="periodicity='seven_days'">
-                            <input class="visually-hidden" type="radio" name="day-2" id="day-3" checked
+                            <input class="visually-hidden" type="radio" :name="'day-2'+keySub" :id="'day-3'+keySub" checked
                             >
-                            <label class="subscriptions-inner__item" for="day-3">
+                            <label class="subscriptions-inner__item" :for="'day-3'+keySub">
                                 <p class="subscriptions-inner__item-name"><b>7 дней в неделю</b></p>
                                 <p class="subscriptions-inner__item-text">с пн – вс</p>
                             </label>
                         </li>
                         <li @click="periodicity='five_days'">
-                            <input class="visually-hidden" type="radio" name="day-2" id="day-4">
-                            <label class="subscriptions-inner__item" for="day-4">
+                            <input class="visually-hidden" type="radio" :name="'day-2'+keySub" :id="'day-4'+keySub">
+                            <label class="subscriptions-inner__item" :for="'day-4'+keySub">
                                 <p class="subscriptions-inner__item-name"><b>5 дней в неделю</b></p>
                                 <p class="subscriptions-inner__item-text">с пн – пт</p>
                             </label>
@@ -96,16 +96,16 @@
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list subscriptions-inner__list--type-2">
                         <li @click="durationInMonths=1">
-                            <input class="visually-hidden" type="radio" name="price-2" id="price-5"
+                            <input class="visually-hidden" type="radio" :name="'price-2'+keySub" :id="'price-5'+keySub"
                                    checked>
-                            <label class="subscriptions-inner__item" for="price-5">
+                            <label class="subscriptions-inner__item" :for="'price-5'+keySub">
                                 <p class="subscriptions-inner__item-name">Месяц</p>
                                 <p class="subscriptions-inner__price">{{finalCostForMonth}} &#8381;</p>
                             </label>
                         </li>
                         <li @click="durationInMonths=3">
-                            <input class="visually-hidden" type="radio" name="price-2" id="price-6">
-                            <label class="subscriptions-inner__item" for="price-6">
+                            <input class="visually-hidden" type="radio" :name="'price-2'+keySub" :id="'price-6'+keySub">
+                            <label class="subscriptions-inner__item" :for="'price-6'+keySub">
                                 <p class="subscriptions-inner__item-name">3 месяца</p>
                                 <p class="subscriptions-inner__price">{{finalCostForThreeMonths}} &#8381;</p>
                                 <p class="subscriptions-inner__item-text">{{Math.round(finalCostForThreeMonths/3)}}
@@ -115,8 +115,8 @@
                             </label>
                         </li>
                         <li @click="durationInMonths=6">
-                            <input class="visually-hidden" type="radio" name="price-2" id="price-7">
-                            <label class="subscriptions-inner__item" for="price-7">
+                            <input class="visually-hidden" type="radio" :name="'price-2'+keySub" :id="'price-7'+keySub">
+                            <label class="subscriptions-inner__item" :for="'price-7'+keySub">
                                 <p class="subscriptions-inner__item-name">6 месяца</p>
                                 <p class="subscriptions-inner__price">{{finalCostForSixMonths}} &#8381;</p>
                                 <p class="subscriptions-inner__item-text">{{Math.round(finalCostForSixMonths/6)}}
@@ -126,8 +126,8 @@
                             </label>
                         </li>
                         <li @click="durationInMonths=12">
-                            <input class="visually-hidden" type="radio" name="price-2" id="price-8">
-                            <label class="subscriptions-inner__item" for="price-8">
+                            <input class="visually-hidden" type="radio" :name="'price-2'+keySub" :id="'price-8'+keySub">
+                            <label class="subscriptions-inner__item" :for="'price-8'+keySub">
                                 <p class="subscriptions-inner__item-name">Год</p>
                                 <p class="subscriptions-inner__price">{{finalCostForYear}} &#8381;</p>
                                 <p class="subscriptions-inner__item-text">{{Math.round(finalCostForYear/12)}} &#8381; /

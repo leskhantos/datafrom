@@ -4,8 +4,8 @@
             <div class="subscriptions-inner__image"><img src="/static/images/jpg/image-1.jpg" alt="diary"></div>
             <div class="subscriptions-inner__content">
                 <div class="subscriptions-inner__title-wrap">
-                    <h2 class="subscriptions-inner__caption">{{item.menu.title}}</h2>
-                    <p class="subscriptions-inner__calories">{{item.menu.calories.min}} – {{item.menu.calories.max}}
+                    <h2 class="subscriptions-inner__caption">{{item.title}}</h2>
+                    <p class="subscriptions-inner__calories">{{item.calories.min}} – {{item.calories.max}}
                         калорий</p>
                 </div>
                 <ul class="subscriptions-inner__checked-profiles" v-for="(item, key) in listProfiles" :key="key">
@@ -14,7 +14,7 @@
                 </ul>
                 <div class="subscriptions-inner__desc">
                     <p>Описание меню</p>
-                    <p>{{item.menu.description}}</p>
+                    <p>{{item.description}}</p>
                 </div>
                 <button :class="['subscriptions-inner__btn', { 'open':openMenu===keySub }]" type="button"
                         @click="openMenu===keySub ? openMenu=-1 : openMenu=keySub">
@@ -26,9 +26,9 @@
             <subscription-inner
                     :openMenu="openMenu"
                     :keySub="keySub"
-                    :costPerDayOneMeal="item.menu.costPerDayOneMeal"
+                    :costPerDayOneMeal="item.costPerDayOneMeal"
                     :listProfiles="listProfiles"
-                    :menu="item.menu.id"></subscription-inner>
+                    :menu="item.id"></subscription-inner>
         </article>
     </div>
 </template>
@@ -53,12 +53,12 @@
         return this.$store.getters['user/getListProfiles'].items;
       },
       listSubscriptions() {
-        return this.$store.getters['menu/getListSubscriptions'];
+        return this.$store.getters['menu/getListMenus'];
       },
     },
     mounted() {
-      this.$store.dispatch('user/getListProfiles'),
-        this.$store.dispatch('menu/getListSubscriptions')
+      this.$store.dispatch('user/getListProfiles')
+      this.$store.dispatch('menu/getListMenus')
     }
   }
 </script>
