@@ -110,7 +110,7 @@
             }
           }
           this.$store.dispatch('user/editProfile', profileInfo).then(() => {
-            this.$store.commit('error/SET_OK', "Агент успешно отредактирован")
+            this.$store.commit('error/SET_OK', "Профиль успешно отредактирован")
             this.step += 1
           }).catch((error) => {
             this.$store.commit('error/SET_ERROR', error);
@@ -118,6 +118,7 @@
         } else {
           profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
           this.$store.dispatch('user/createProfile', profile).then(() => {
+            this.$store.commit('error/SET_OK', "Профиль успешно создан")
             this.step += 1
           }).catch((error) => {
             this.$store.commit('error/SET_ERROR', error);
@@ -125,6 +126,8 @@
         }
       },
       finishRegistration() {
+        let profile = {}
+        this.$store.commit('user/PROFILE_INFO', profile)
         if (this.isOneExist) {
           this.$router.push({name: 'profile', params: {id: this.$store.getters['user/getProfileInfo'].id}})
         } else {
