@@ -108,8 +108,10 @@
                 :is="currentMenu"
                 :listMeals="listMeals"
                 :typeOfMealsNumber="typeOfMealsNumber"
+                @modalShow="transitRecipe"
         >
         </component>
+        <DishModal :show="modalShow" :recipeForModal="recipeForModal" v-on:modalClose="modalShow=false" />
     </div>
 </template>
 
@@ -122,10 +124,12 @@
   import ArrowRightIcon from "../icons/ArrowRightIcon";
   import ButtonArrowLeftIcon from "../icons/ButtonArrowLeftIcon";
   import ButtonArrowRightIcon from "../icons/ButtonArrowRightIcon";
+  import DishModal from "./DishModal";
 
   export default {
     name: "MenuInner",
     components: {
+      DishModal,
       ButtonArrowRightIcon,
       ButtonArrowLeftIcon,
       ArrowLeftIcon,
@@ -152,7 +156,10 @@
         proportions: {},
         meals: [],
         listMeals: [],
-        isRecipe: false
+        isRecipe: false,
+        modalShow: false,
+        recipeForModal: {},
+        recipes: []
       }
     },
     computed: {
@@ -161,6 +168,15 @@
       },
     },
     methods: {
+      transitRecipe(recipeId) {
+        this.recipes.forEach((recipe) => {
+          if (recipe.recipe.id === recipeId) {
+            this.recipeForModal = recipe
+            return
+          }
+        })
+        this.modalShow = true
+      },
       onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
       },
@@ -401,10 +417,12 @@
                   recipe.kilocalories = Math.round(kilocalories)
                   this.isRecipe = !this.isRecipe
                 })
+                this.recipes.push(recipe)
                 return recipe
               })
               return meal
             })
+
           })
 
         })

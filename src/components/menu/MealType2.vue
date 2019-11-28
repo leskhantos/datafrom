@@ -14,7 +14,7 @@
                 :key="keyRecipe">
                 <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                 <div class="menu__scheduler-content">
-                    <p class="menu__scheduler-desc">{{recipe.recipe._embedded.proportions[0].description}}</p>
+                    <p class="menu__scheduler-desc">{{recipe.recipe.title}}</p>
                     <p class="composed"><span class="orange">{{recipe.proteins}}</span><span class="yellow">{{recipe.fats}}</span><span
                             class="green">{{recipe.carbohydrates}}</span></p>
                     <p class="menu__scheduler-calories"><span>{{recipe.weight}}г.</span>{{recipe.kilocalories}}

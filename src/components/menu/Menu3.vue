@@ -10,7 +10,7 @@
                         </div>
                         <recipe>
                             <p slot="description" class="menu__scheduler-desc">
-                                {{recipe.recipe._embedded.proportions[0].description}}</p>
+                                {{recipe.recipe.title}}</p>
                             <p v-if="recipe.kilocalories" slot="calories" class="menu__scheduler-calories">
                                 {{recipe.kilocalories}} Кал</p>
                             <span v-if="recipe.proteins" slot="proteins" class="orange">{{recipe.proteins}}</span>
