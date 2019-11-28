@@ -33,6 +33,7 @@
                 <p>Ежедневная нагрузка + физическая работа</p>
             </label>
         </div>
+        <b :class="{'active':error!==''}">{{ this.error }}</b>
         <a class="button settings__btn" href="" @click="nextStep">Далее</a>
     </div>
 </template>
