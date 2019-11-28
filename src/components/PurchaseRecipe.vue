@@ -2,10 +2,10 @@
         <div class="paper scheduler-food__day" v-if="typeOfView === 'first' ? recipeData.meals[typeOfMeal] : true" >
             <p class="scheduler-food__caption">{{ showTitleDateFormat(recipeData.date) }}</p>
             <div class="tabs__buttons tabs__buttons--separate scheduler-food__tabs-btn" v-if="typeOfView==='second'">
-                <button class="tabs__btn"  :class="{ active: typeOfMealForDay === 'breakfast'}"  type="button" @click="typeOfMealForDay = 'breakfast'">Завтрак</button>
-                <button class="tabs__btn" :class="{ active: typeOfMealForDay === 'dinner' }" type="button" @click="typeOfMealForDay = 'dinner'">Перекус</button>
-                <button class="tabs__btn"  :class="{ active: typeOfMealForDay === 'lunch' }"  type="button" @click="typeOfMealForDay = 'lunch'">Обед</button>
-                <button class="tabs__btn"   :class="{ active: typeOfMealForDay === 'supper' }"  type="button" @click="typeOfMealForDay = 'supper'">Ужин</button>
+                <button class="tabs__btn" v-if="recipeData.meals.breakfast" :class="{ active: typeOfMealForDay === 'breakfast'}"  type="button" @click="typeOfMealForDay = 'breakfast'">Завтрак</button>
+                <button class="tabs__btn" v-if="recipeData.meals.dinner || recipeData.meals.brunch" :class="{ active: typeOfMealForDay === 'dinner' || typeOfMealForDay === 'brunch' }" type="button" @click="typeOfMealForDay = 'dinner'">Перекус</button>
+                <button class="tabs__btn" v-if="recipeData.meals.lunch" :class="{ active: typeOfMealForDay === 'lunch' }"  type="button" @click="typeOfMealForDay = 'lunch'">Обед</button>
+                <button class="tabs__btn" v-if="recipeData.meals.supper" :class="{ active: typeOfMealForDay === 'supper' }"  type="button" @click="typeOfMealForDay = 'supper'">Ужин</button>
             </div>
             <ul class="scheduler-food__list">
                 <RecipeItem v-for="recipe in recipeArr" :key="recipe.id" :recipeItem="recipe" :meal="typeOfView === 'first' ? typeOfMeal : typeOfMealForDay" :open="recipe.open" :show="recipe.show" v-on:openItem="open(recipe.id)"  v-on:showItem="show(recipe.id)" />
@@ -144,6 +144,7 @@
             } else {
                 this.recipeArr = this.$props.recipeData.meals[this.$props.typeOfMeal]
             }
+          this.typeOfMealForDay = Object.keys(this.$props.recipeData.meals)[0]
         }
     }
 </script>
