@@ -35,3 +35,6 @@ export function GetProfile(id) {
 export function GetShopList(date) {
     return axios.get(Settings.host + '/api/v1/subscription/shop_list'+date)
 }
+export function AddCustomShopItem(payload) {
+  return axios.post(Settings.host + '/api/v1/subscription/shop_list/custom', payload)
+}

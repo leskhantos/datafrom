@@ -104,20 +104,6 @@
                     <PurchaseRecipe v-for="recipe in recipes" :key="recipe.id" :recipeData="recipe" :typeOfView="typeOfView" :typeOfMeal="typeOfMeal" :sortType="sortType" :fromDate="fromDate" :toDate="toDate"/>
                 </section>
             </div>
-                <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
-                    <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
-                        <CloseIcon/>
-                    </button>
-                    <div class="modal__container">
-                        <h2 class="modal__title">Купить ещё</h2>
-                        <div class="counter">
-                            <button class="counter__btn counter__btn--min" type="button"></button>
-                            <input type="text" value="300 г">
-                            <button class="counter__btn counter__btn--plus" type="button"></button>
-                        </div>
-                        <button class="button modal__btn" type="button">Купить ещё</button>
-                    </div>
-                </div>
                 <div :class="['modal modal--recipe',{'show':showRecipeAddModal}]">
                     <button class="icon-button modal__btn-close" type="button" @click="showRecipeAddModal=false">
                         <CloseIcon/>

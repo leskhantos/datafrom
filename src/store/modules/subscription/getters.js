@@ -13,8 +13,6 @@ const getWeight  = state => ingredient => {
 const getRecipesByIngredient = (state) => (ingredient, recipes) => {
     let arr = []
     Object.values(state.purchases).map((value)=>{
-        // eslint-disable-next-line no-console
-        console.log(value)
         if (value.ingredient === ingredient.id && !arr.includes(value.recipe)) {
             arr.push(value.recipe)
         }

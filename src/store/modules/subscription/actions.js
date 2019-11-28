@@ -1,5 +1,6 @@
 import {
-    GetShopList
+    GetShopList,
+    AddCustomShopItem
 } from '@/api'
 import {normalize,schema} from "normalizr";
 
@@ -31,7 +32,17 @@ const getShopListAction = async ({commit}, dates) => {
             commit('SET_ERROR','Ошибка при получении данных')
         })
 }
-
+const addCustomShopItem = ({commit}, payload) => {
+     AddCustomShopItem(payload)
+        .then((response) => {
+            // eslint-disable-next-line no-console
+            console.log(response)
+        })
+        .catch(() => {
+            commit('SET_ERROR','Ошибка при отправке данных')
+        })
+}
 export default {
     getShopListAction,
+    addCustomShopItem
 }

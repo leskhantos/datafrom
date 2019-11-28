@@ -76,11 +76,29 @@
             </div>
         </li>
         <li class="buy__add">
-            <div class="buy__input">
-                <input type="text" placeholder="Добавить еще покупку">
-                <button class="button-add button-add--green buy__btn-add" type="button">Добавить</button>
+            <div>
+                <v-select v-model="selected"  label="title" :options="listOfTitles">
+                    <div slot="no-options">Нет подходящего ингредиента</div>
+                    <i slot="spinner" class="icon icon-spinner"></i>
+                </v-select>
+                <button class="button-add button-add--green buy__btn-add" type="button" @click="showBuyMoreModal=true">Добавить</button>
             </div>
         </li>
+        <div :class="['modal modal--buy',{'show':showBuyMoreModal}]">
+            <button class="icon-button modal__btn-close" type="button" @click="showBuyMoreModal=false">
+                <CloseIcon/>
+            </button>
+            <div class="modal__container">
+                <h2 class="modal__title">Купить ещё</h2>
+                <div class="counter">
+                    <button class="counter__btn counter__btn--min" type="button" @click="minusWeight"></button>
+                    <input type="number" v-model="weightForCustom" placeholder="300 г" min="0">
+                    <button class="counter__btn counter__btn--plus" type="button" @click="plusWeight"></button>
+                </div>
+                <button class="button modal__btn" type="button" @click="sendData">Купить ещё</button>
+            </div>
+        </div>
+        <div :class="['overlay',{'show show-modal':showBuyMoreModal}]"></div>
     </ul>
 </template>
 
@@ -90,6 +108,7 @@
     import ClockIcon from "./icons/ClockIcon";
     import CloseIcon from "./icons/CloseIcon";
     import ProfileAddIcon from "./icons/ProfileAddIcon";
+    import 'vue-select/dist/vue-select.css';
 
     export default {
         name: "PurchaseIngredient",
@@ -97,10 +116,40 @@
         components: {ProfileAddIcon, CloseIcon, ClockIcon, ActionsIcon, DownIcon},
         data(){
             return{
-                ingredients: []
+                ingredients: [],
+                selected: {},
+                selectedId: '',
+                showBuyMoreModal: false,
+                weightForCustom: 0,
             }
         },
         methods:{
+            sendData(){
+                let payload = {
+                        ingredient: this.setSelectedId(),
+                        weight: this.weightForCustom,
+                        date: this.getCurrentDate()
+                }
+
+                this.$store.dispatch('subscription/addCustomShopItem', payload).then(() => {
+                    this.showBuyMoreModal = false
+                    this.weightForCustom = 0
+                    this.$store.commit('error/SET_OK', 'Отправлено');
+                }).catch(() => {
+                    this.$store.commit('error/SET_ERROR', 'Ошибка при отправке');
+                });
+
+            },
+            minusWeight(){
+                if (this.weightForCustom <= 0){
+                    this.weightForCustom =  0
+                }else {
+                    this.weightForCustom =  this.weightForCustom - 1
+                }
+            },
+            plusWeight(){
+                this.weightForCustom =  this.weightForCustom + 1
+            },
             getTranslatedMealType(type){
                 let rusMealType
                 if(type==="breakfast"){
@@ -151,6 +200,19 @@
                 let year = date.getFullYear();
                 return data+"."+month+"."+year
             },
+            getCurrentDate(){
+                let today = new Date();
+                let dd = String(today.getDate()).padStart(2, '0');
+                let mm = String(today.getMonth() + 1).padStart(2, '0');
+                let yyyy = today.getFullYear();
+
+                today = yyyy + '-' + mm + '-' + dd;
+                return today
+            },
+            setSelectedId(){
+                this.selectedId = this.selected.id
+                return this.selectedId
+            }
         },
         mounted() {
             let arr = Object.values(this.$store.getters['subscription/getIngredients'])
@@ -163,6 +225,11 @@
                 return value
             })
             this.ingredients =  arr
+        },
+        computed:{
+          listOfTitles(){
+              return this.ingredients
+          },
         },
         watch: {
             'sortType': function () {
@@ -181,5 +248,6 @@
 </script>
 
 <style scoped>
+
 
 </style>
