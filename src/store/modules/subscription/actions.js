@@ -1,7 +1,8 @@
 import {
     GetShopList,
     AddCustomShopItem,
-    GetIngredientsList
+    GetIngredientsList,
+    SetBoughtIngredient
 } from '@/api'
 import {normalize,schema} from "normalizr";
 
@@ -55,8 +56,19 @@ const getIngredientsList = ({commit},search) => {
             commit('SET_ERROR','Ошибка при отправке данных')
         })
 }
+const setBoughtIngredient = ({commit},shopItem) => {
+    SetBoughtIngredient(shopItem)
+        .then((response) => {
+            // eslint-disable-next-line no-console
+            console.log(response)
+        })
+        .catch(() => {
+            commit('SET_ERROR','Ошибка при отправке данных')
+        })
+}
 export default {
     getShopListAction,
     addCustomShopItem,
-    getIngredientsList
+    getIngredientsList,
+    setBoughtIngredient
 }

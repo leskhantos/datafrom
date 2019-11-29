@@ -221,6 +221,32 @@ const getIngredientWeightByDateAndMeal = state => (ingredient, recipe) => {
 
   return weight
 }
+const getIsBought = state => ingredient => {
+    let bought
+    let purchases=[]
+    Object.values(state.purchases).map((value) => {
+        if (value.ingredient === ingredient.id) {
+            purchases.push(value.isBought)
+        }
+    })
+    bought = purchases.every((val)=>{
+        if(val===true){
+            return true
+        }
+    })
+
+    return bought
+
+}
+const getIngredientsPurchases = state => ingredient =>{
+    let purchases=[]
+    Object.values(state.purchases).map((value) => {
+        if (value.ingredient === ingredient.id) {
+            purchases.push(value.id)
+        }
+    })
+    return purchases
+}
 
 export default {
   getWeight,
@@ -240,5 +266,7 @@ export default {
   getRecipesByDate,
   getAllIngredients,
   getRecipeWeightByDateAndMeal,
-  getIngredientWeightByDateAndMeal
+  getIngredientWeightByDateAndMeal,
+  getIsBought,
+  getIngredientsPurchases
 }

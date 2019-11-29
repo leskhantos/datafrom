@@ -1,9 +1,9 @@
 <template>
     <ul class="paper buy__list">
-        <li :class="['buy__item',{'open':ingredient.open}]" v-for="ingredient in ingredients" :key="ingredient.id">
+        <li :class="['buy__item',{'open':ingredient.open, 'disabled':ingredient.isBought}]" v-for="ingredient in ingredients" :key="ingredient.id">
             <div class="buy__item-wrap">
-                <label class="input-checkbox">
-                    <input class="visually-hidden" type="checkbox"><span class="input-checkbox__custom"></span>
+                <label class="input-checkbox" @click="setBought(ingredient.isBought,ingredient.ingredientsPurchases)" >
+                    <input class="visually-hidden" type="checkbox" :checked="ingredient.isBought" :disabled="ingredient.isBought"><span class="input-checkbox__custom" ></span>
                     <p>{{ ingredient.title }} {{ingredient.weight}}г</p>
                 </label>
                 <button class="button-add buy__item-add" type="button" title="Купить ещё" @click="showBuyMoreModal=true"></button>
@@ -124,6 +124,14 @@
             }
         },
         methods:{
+            setBought(isBought,purchases){
+                if (!isBought){
+                    purchases.forEach((purchase)=>{
+                        this.$store.dispatch('subscription/setBoughtIngredient', purchase)
+                    })
+                }
+
+            },
             getOptions(search){
                 this.$store.dispatch('subscription/getIngredientsList',search).then(()=>{
                     this.options = this.$store.getters['subscription/getAllIngredients']
@@ -224,6 +232,8 @@
             let recipes = this.$store.getters['subscription/getRecipes']
             arr.map((value)=>{
                 value.mealType = this.$store.getters['subscription/getMealType'](value)
+                value.isBought = this.$store.getters['subscription/getIsBought'](value)
+                value.ingredientsPurchases = this.$store.getters['subscription/getIngredientsPurchases'](value)
                 value.date = this.$store.getters['subscription/getDate'](value)
                 value.weight = this.$store.getters['subscription/getWeight'](value)
                 value.recipes = this.$store.getters['subscription/getRecipesByIngredient'](value,recipes)
