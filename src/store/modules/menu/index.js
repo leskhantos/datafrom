@@ -8,6 +8,7 @@ const state = {
   menu: {},
   meals: [],
   subscription: {},
+  ingredient: {},
   ingredients: []
 }
 

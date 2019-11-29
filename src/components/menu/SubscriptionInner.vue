@@ -1,61 +1,71 @@
 <template>
     <div :class="['subscriptions-inner__wrapper', { 'open':openMenu === keySub}]">
-        <!--    <div :class="['subscriptions-inner__wrapper, open']">-->
         <div class="subscriptions-inner__container">
-            <h3 class="subscriptions-inner__subtitle">Настройка меню</h3>
+            <h3 class="subscriptions-inner__subtitle">Настройка подписки</h3>
+            <!--            <div class="subscriptions-inner__step">-->
+            <!--                <div class="subscriptions-inner__col">-->
+            <!--                    <p><b>Шаг 1</b></p>-->
+            <!--                    <p>Выберите профили</p>-->
+            <!--                </div>-->
+            <!--                <div class="subscriptions-inner__col">-->
+            <!--                    <ul class="user__profile-list subscriptions-inner__user-list">-->
+            <!--                        <li v-for="(item, key) in listProfiles" :key="key">-->
+            <!--                            <label :class="['user__profile', { 'user__profile&#45;&#45;main': item.isMain }]">-->
+            <!--                                <input class="visually-hidden" type="checkbox" name="profile-2"-->
+            <!--                                       :checked="item.isMain">-->
+            <!--                                <div :class="['user__avatar', { 'user__avatar&#45;&#45;big': item.isMain }]"><img-->
+            <!--                                        :src="item.avatar.path"-->
+            <!--                                        alt="avatar"></div>-->
+            <!--                                <p class="user__name">{{item.fullName.firstName}}</p>-->
+            <!--                            </label>-->
+            <!--                        </li>-->
+            <!--                    </ul>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="subscriptions-inner__step">
                 <div class="subscriptions-inner__col">
                     <p><b>Шаг 1</b></p>
-                    <p>Выберите профили</p>
-                </div>
-                <div class="subscriptions-inner__col">
-                    <ul class="user__profile-list subscriptions-inner__user-list">
-                        <li v-for="(item, key) in listProfiles" :key="key">
-                            <label :class="['user__profile', { 'user__profile--main': item.isMain }]">
-                                <input class="visually-hidden" type="checkbox" name="profile-2"
-                                       :checked="item.isMain">
-                                <div :class="['user__avatar', { 'user__avatar--big': item.isMain }]"><img
-                                        :src="item.avatar.path"
-                                        alt="avatar"></div>
-                                <p class="user__name">{{item.fullName.firstName}}</p>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="subscriptions-inner__step">
-                <div class="subscriptions-inner__col">
-                    <p><b>Шаг 2</b></p>
                     <p>Выберите приёмы пищи</p>
                 </div>
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list">
                         <li>
-                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-5'+keySub"
-                                   v-model="breakfast"
-                                   checked>
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
+                                   :id="'meals-5'+keySub"
+                                   v-model="breakfast">
                             <label class="subscriptions-inner__item" :for="'meals-5'+keySub">
                                 <p class="subscriptions-inner__item-name">Завтрак</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-6'+keySub" v-model="dinner">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
+                                   :id="'meals-6'+keySub" v-model="dinner">
                             <label class="subscriptions-inner__item" :for="'meals-6'+keySub">
                                 <p class="subscriptions-inner__item-name">Обед</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-7'+keySub" v-model="brunch">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
+                                   :id="'meals-7'+keySub" v-model="brunch">
                             <label class="subscriptions-inner__item" :for="'meals-7'+keySub">
                                 <p class="subscriptions-inner__item-name">Перекус</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
-                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub" :id="'meals-8'+keySub" v-model="supper">
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
+                                   :id="'meals-8'+keySub" v-model="lunch">
                             <label class="subscriptions-inner__item" :for="'meals-8'+keySub">
+                                <p class="subscriptions-inner__item-name">Ланч</p>
+                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                            </label>
+                        </li>
+                        <li>
+                            <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
+                                   :id="'meals-9'+keySub" v-model="supper">
+                            <label class="subscriptions-inner__item" :for="'meals-9'+keySub">
                                 <p class="subscriptions-inner__item-name">Ужин</p>
                                 <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
@@ -65,13 +75,14 @@
             </div>
             <div class="subscriptions-inner__step">
                 <div class="subscriptions-inner__col">
-                    <p><b>Шаг 3</b></p>
+                    <p><b>Шаг 2</b></p>
                     <p>Укажите дни питания</p>
                 </div>
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list subscriptions-inner__list--type-2">
                         <li @click="periodicity='seven_days'">
-                            <input class="visually-hidden" type="radio" :name="'day-2'+keySub" :id="'day-3'+keySub" checked
+                            <input class="visually-hidden" type="radio" :name="'day-2'+keySub" :id="'day-3'+keySub"
+                                   checked
                             >
                             <label class="subscriptions-inner__item" :for="'day-3'+keySub">
                                 <p class="subscriptions-inner__item-name"><b>7 дней в неделю</b></p>
@@ -90,7 +101,7 @@
             </div>
             <div class="subscriptions-inner__step">
                 <div class="subscriptions-inner__col">
-                    <p><b>Шаг 4</b></p>
+                    <p><b>Шаг 3</b></p>
                     <p>Стоимость</p>
                 </div>
                 <div class="subscriptions-inner__col">
@@ -153,6 +164,7 @@
         dinner: false,
         brunch: false,
         supper: false,
+        lunch: false,
         mealTypes: [],
         periodicity: 'seven_days',
         durationInMonths: 1,
@@ -183,7 +195,7 @@
 
         if (this.mealsPerDayAmount === 1) {
           finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount
-        } else if (this.mealsPerDayAmount === 4) {
+        } else if (this.mealsPerDayAmount === 5) {
           finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - this.discountForChoosingAllMeals)
         } else {
           finalCost = this.costPerDayOneMeal * this.mealsPerDayAmount * (1 - this.discountForChoosingAfterFirstMeal)
@@ -209,6 +221,9 @@
         }
         if (this.brunch) {
           this.mealTypes.push('brunch')
+        }
+        if (this.lunch) {
+          this.mealTypes.push('lunch')
         }
 
         this.mealsPerDayAmount = this.mealTypes.length

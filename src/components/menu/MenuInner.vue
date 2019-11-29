@@ -158,7 +158,13 @@
         listMeals: [],
         isRecipe: false,
         modalShow: false,
-        recipeForModal: {},
+        recipeForModal: {
+          "recipe": {},
+          'kilocalories': '',
+          'proteins': '',
+          'fats': '',
+          'carbohydrates': ''
+        },
         recipes: []
       }
     },
@@ -175,6 +181,7 @@
             return
           }
         })
+        this.recipeForModal['profiles'] = this.$store.getters['user/getListProfiles'].items
         this.modalShow = true
       },
       onlyUnique(value, index, self) {
@@ -401,6 +408,8 @@
                 recipeSelf['weight'] = recipe.weight
                 this.$store.dispatch('menu/getIngredients', recipeSelf).then(() => {
                   let nutrients = this.$store.getters['menu/getIngredients'];
+                  recipe['nutrients'] = nutrients
+                  recipe['ingredients'] = []
                   let sumProteins = 0
                   let sumFats = 0
                   let sumCarbohydrates = 0
@@ -410,6 +419,11 @@
                     sumFats += nutrient.nutrients[1].weight
                     sumCarbohydrates += nutrient.nutrients[2].weight
                     kilocalories += nutrient.kilocalories
+
+                    this.$store.dispatch('menu/getIngredient', nutrient.ingredientId).then(() => {
+                      let ingredient = this.$store.getters['menu/getIngredient'];
+                      recipe.ingredients.push(ingredient)
+                    })
                   })
                   recipe.proteins = Math.round(sumProteins)
                   recipe.fats = Math.round(sumFats)
@@ -452,6 +466,7 @@
         this.getMeals()
       })
 
+      this.$store.dispatch('user/getListProfiles')
 
       this.typeOfMeals = 'breakfast'
       this.typeOfMealsNumber = 0

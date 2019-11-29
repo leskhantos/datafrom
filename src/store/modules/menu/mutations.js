@@ -13,6 +13,9 @@ const MEALS = (state, meals) => {
 const INGREDIENTS = (state, ingredients) => {
   state.ingredients = ingredients
 }
+const INGREDIENT = (state, ingredient) => {
+  state.ingredient = ingredient
+}
 const SUBSCRIPTION = (state, subscription) => {
   state.subscription = subscription
 }
@@ -23,5 +26,6 @@ export default {
   MENU,
   MEALS,
   INGREDIENTS,
+  INGREDIENT,
   SUBSCRIPTION
 }

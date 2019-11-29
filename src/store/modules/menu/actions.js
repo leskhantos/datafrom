@@ -3,6 +3,7 @@ import {
   GetMenu,
   GetMeals,
   GetIngredients,
+  GetIngredient,
   ListSubscriptions,
   CreateSubscription
 } from '@/api'
@@ -82,11 +83,24 @@ const createSubscription = ({commit}, payload) => {
     })
 }
 
+const getIngredient = async ({commit}, id) => {
+  await GetIngredient(id)
+    .then((response) => {
+      const data = response.data
+      commit('INGREDIENT', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.log(error);
+    })
+}
+
 export default {
   getListMenus,
   getMenu,
   getMeals,
   getIngredients,
   getListSubscriptions,
-  createSubscription
+  createSubscription,
+  getIngredient
 }

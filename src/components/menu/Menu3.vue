@@ -9,7 +9,8 @@
                         <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish">
                         </div>
                         <recipe>
-                            <p slot="description" class="menu__scheduler-desc">
+                            <p slot="description" class="menu__scheduler-desc open-modal-dish"
+                               @click="modalShow(recipe.recipe.id)">
                                 {{recipe.recipe.title}}</p>
                             <p v-if="recipe.kilocalories" slot="calories" class="menu__scheduler-calories">
                                 {{recipe.kilocalories}} Кал</p>
@@ -34,6 +35,11 @@
     components: {
       "recipe": Recipe
     },
+    methods: {
+      modalShow(id) {
+        this.$emit('modalShow', id)
+      }
+    }
   }
 </script>
 

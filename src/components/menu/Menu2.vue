@@ -3,7 +3,9 @@
         <ul class="menu__scheduler-list">
             <meal-type-2 v-for="(dayOfMeal,key) in listMeals" :key="key"
                          :dayOfMeal="dayOfMeal"
-                         :typeOfMealsNumber="typeOfMealsNumber"></meal-type-2>
+                         :typeOfMealsNumber="typeOfMealsNumber"
+                         @modalShow="modalShow">
+            </meal-type-2>
         </ul>
     </div>
 </template>
@@ -18,6 +20,11 @@
     components: {
       "meal-type-2": MealType2
     },
+    methods: {
+      modalShow(id) {
+        this.$emit('modalShow', id)
+      }
+    }
   }
 </script>
 

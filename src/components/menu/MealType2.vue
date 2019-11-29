@@ -14,7 +14,8 @@
                 :key="keyRecipe">
                 <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
                 <div class="menu__scheduler-content">
-                    <p class="menu__scheduler-desc">{{recipe.recipe.title}}</p>
+                    <p class="menu__scheduler-desc open-modal-dish" @click="modalShow(recipe.recipe.id)">
+                        {{recipe.recipe.title}}</p>
                     <p class="composed"><span class="orange">{{recipe.proteins}}</span><span class="yellow">{{recipe.fats}}</span><span
                             class="green">{{recipe.carbohydrates}}</span></p>
                     <p class="menu__scheduler-calories"><span>{{recipe.weight}}г.</span>{{recipe.kilocalories}}
@@ -28,7 +29,12 @@
 <script>
   export default {
     name: "MealType2",
-    props: ["dayOfMeal", "typeOfMealsNumber"]
+    props: ["dayOfMeal", "typeOfMealsNumber"],
+    methods: {
+      modalShow(id) {
+        this.$emit('modalShow', id)
+      }
+    }
   }
 </script>
 

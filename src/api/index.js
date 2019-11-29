@@ -73,3 +73,7 @@ export function ListSubscriptions() {
 export function CreateSubscription(subscription) {
   return axios.post(Settings.host + '/api/v1/subscription/subscribe', subscription)
 }
+
+export function GetIngredient(id) {
+  return axios.get(Settings.host + '/api/v1/ingredients/'+ id)
+}
