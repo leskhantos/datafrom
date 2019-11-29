@@ -6,6 +6,9 @@ import {
 import {normalize,schema} from "normalizr";
 
 const getShopListAction = async ({commit}, dates) => {
+  commit('RECIPES',[])
+  commit('INGREDIENTS',[])
+  commit('PURCHASES',[])
     await GetShopList(dates)
         .then((response) => {
 
