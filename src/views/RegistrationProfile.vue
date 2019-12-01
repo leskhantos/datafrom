@@ -111,6 +111,7 @@
               activity: profile.activity,
             }
           }
+
           this.$store.dispatch('user/editProfile', profileInfo).then(() => {
             this.$store.commit('error/SET_OK', "Профиль успешно отредактирован")
             this.step += 1
@@ -124,7 +125,13 @@
 
             this.$store.dispatch('user/getListProfiles').then(() => {
               let listProfiles = this.$store.getters['user/getListProfiles'].items;
-              this.id = listProfiles[listProfiles.length - 1].id
+              let listProfilesWihoutMain = []
+              listProfiles.forEach(function (item) {
+                if (item.isMain !== true) {
+                  listProfilesWihoutMain.push(item)
+                }
+              });
+              this.id = listProfilesWihoutMain[listProfilesWihoutMain.length - 1].id
             })
             this.step += 1
           }).catch((error) => {

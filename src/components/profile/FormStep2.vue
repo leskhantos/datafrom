@@ -45,7 +45,7 @@
         if (!this.isEdit) {
           this.uploadAvatar(profile)
         } else {
-          if (!this.previewImage) {
+          if (this.previewImage === '/static/images/svg/user.svg' || this.formData !== null) {
             this.uploadAvatar(profile)
           } else {
             profile['title'] = this.title
@@ -88,6 +88,7 @@
         reader.onload = e => {
           this.previewImage = e.target.result
         }
+
       }
     },
     mounted() {
@@ -114,7 +115,8 @@
         border-radius: 50%;
         overflow: hidden;
     }
-    .user__avatar-create img{
+
+    .user__avatar-create img {
         display: block;
         width: 100%;
         height: 100%;
@@ -125,6 +127,10 @@
     }
 
     .settings__upload-previewImage input {
+        cursor: pointer;
+    }
+
+    .settings__upload-avatar input {
         cursor: pointer;
     }
 </style>
