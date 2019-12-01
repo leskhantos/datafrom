@@ -9,6 +9,7 @@ import AppRegistration from "../views/AppRegistration";
 import RegistrationConfirm from "../views/RegistrationConfirm";
 import Profile from "../views/Profile";
 import RegistrationProfile from "../views/RegistrationProfile";
+import Menu from "../views/Menu";
 
 Vue.use(VueRouter)
 
@@ -104,6 +105,13 @@ export default new VueRouter({
             props: true,
             component: RegistrationProfile,
             beforeEnter: ifAuthenticatedFirst
+        },
+        {
+            path: '/menu',
+            name: 'menu',
+            props: true,
+            component: Menu,
+            beforeEnter: ifAuthenticated
         },
     ],
     mode: 'history'

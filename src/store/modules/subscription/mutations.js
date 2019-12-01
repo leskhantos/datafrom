@@ -1,8 +1,19 @@
-
-const SET_SHOP_LIST = (state, shopList) => {
-  state.shopList = shopList
+const RECIPES=(state,recipes)=>{
+  state.recipes = recipes
+}
+const INGREDIENTS=(state,ingredients)=>{
+  state.ingredients = ingredients
+}
+const ALL_INGREDIENTS=(state,allIngredients)=>{
+  state.allIngredients = allIngredients
+}
+const PURCHASES=(state,purchases)=>{
+  state.purchases = purchases
 }
 
 export default {
-  SET_SHOP_LIST: SET_SHOP_LIST
+  RECIPES,
+  INGREDIENTS,
+  PURCHASES,
+  ALL_INGREDIENTS
 }
