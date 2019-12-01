@@ -14,7 +14,8 @@ const state = {
   profile: {},
   user_info: {},
   has_profiles: 0,
-  nutrients: []
+  nutrients: [],
+  image: {},
 }
 
 export default {

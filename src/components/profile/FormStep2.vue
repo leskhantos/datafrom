@@ -1,10 +1,16 @@
 <template>
     <div class="paper settings__container">
         <div class="settings__upload-avatar">
-            <input type="file">
-            <div class="settings__upload-avatar-image">
+            <input type="file" @change="onFileSelected">
+            <div class="user__avatar-create">
+                <img :src="previewImage" alt="Image">
             </div>
-            <p>+ Добавить фото</p>
+            <!--            <button @click.prevent="onUpload">Upload</button>-->
+
+            <!--            <div class="settings__upload-previewImage-image">-->
+            <!--            </div>-->
+            <p v-if="!isEdit">+ Добавить фото</p>
+            <p v-if="isEdit">+ Изменить фото</p>
         </div>
         <h2 class="settings__title">Укажите имя</h2>
         <div class="settings__input settings__input--center">
@@ -20,17 +26,15 @@
 <script>
 
   export default {
-    props: {
-      profile: {
-        type: Object,
-        default: () => ({}),
-      }
-    },
+    props: ['profile', 'isEdit'],
     name: "FormStep2",
     data() {
       return {
         error: '',
-        title: ''
+        title: '',
+        previewImage: '/static/images/svg/user.svg',
+        formData: null,
+        imageId: ''
       }
     },
     methods: {
@@ -38,19 +42,59 @@
         e.preventDefault()
 
         let profile = this.$store.getters['user/getProfileInfo']
-
-        profile['title'] = this.title
-        if (!this.title) {
-          this.error = 'Заполните это поле';
+        if (!this.isEdit) {
+          this.uploadAvatar(profile)
         } else {
-          this.$store.commit('user/PROFILE_INFO', profile)
-          this.$emit('next-step')
+          if (!this.previewImage) {
+            this.uploadAvatar(profile)
+          } else {
+            profile['title'] = this.title
+            if (!this.title) {
+              this.error = 'Заполните это поле';
+            } else {
+              this.$store.commit('user/PROFILE_INFO', profile)
+              this.$emit('next-step')
+            }
+          }
         }
+      },
+      uploadAvatar(profile) {
 
+        this.$store.dispatch('user/uploadImage', this.formData).then(() => {
+          this.$store.commit('error/SET_OK', "Изображение загружено")
+
+          this.imageId = this.$store.getters['user/uploadImage'].id
+          profile['avatar'] = this.imageId
+          profile['title'] = this.title
+          if (!this.title) {
+            this.error = 'Заполните это поле';
+          } else {
+            this.$store.commit('user/PROFILE_INFO', profile)
+            this.$emit('next-step')
+          }
+
+        }).catch((error) => {
+          this.$store.commit('error/SET_ERROR', error);
+        })
+      },
+      onFileSelected(event) {
+        let selectedFile = event.target.files[0]
+
+        this.formData = new FormData()
+        this.formData.append('file', selectedFile)
+
+        let reader = new FileReader()
+        reader.readAsDataURL(selectedFile);
+        reader.onload = e => {
+          this.previewImage = e.target.result
+        }
       }
     },
     mounted() {
       this.title = this.$store.getters['user/getProfileInfo'].title
+      if (this.$store.getters['user/getProfileInfo'].avatar.path) {
+        this.previewImage = this.$store.getters['user/getProfileInfo'].avatar.path
+      }
     }
   }
 </script>
@@ -60,5 +104,27 @@
         margin-top: 16px;
         text-align: center;
         color: red;
+    }
+
+    .user__avatar-create {
+        position: relative;
+        width: 130px;
+        height: 130px;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .user__avatar-create img{
+        display: block;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        -o-object-position: center;
+        object-position: center;
+    }
+
+    .settings__upload-previewImage input {
+        cursor: pointer;
     }
 </style>

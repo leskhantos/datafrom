@@ -8,6 +8,7 @@ const getProfile = state => state.profile
 const getUserInfo = state => state.user_info
 const getNutrients = state => state.nutrients
 const hasProfiles = state => state.has_profiles
+const uploadImage = state => state.image
 
 export default {
   isAuthenticated,
@@ -19,5 +20,6 @@ export default {
   getUserInfo,
   getProfileInfo,
   hasProfiles,
-  getNutrients
+  getNutrients,
+  uploadImage
 }

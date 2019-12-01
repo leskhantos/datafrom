@@ -8,10 +8,12 @@ import {
   GetProfile,
   GetUserInfo,
   CreateProfile,
-  GetNutrients
+  GetNutrients,
+  UploadImage,
+  EditProfile
 } from '@/api'
+
 import VueCookies from 'vue-cookies'
-import {EditProfile} from "../../../api";
 
 const loginConfirm = ({commit}, payload) => {
   return Login(payload)
@@ -179,6 +181,19 @@ const editProfile = (non, profile) => {
     })
 }
 
+const uploadImage = ({commit}, image) => {
+  return UploadImage(image)
+    .then((response) => {
+      commit('IMAGE', response.data)
+    })
+    .catch((error) => {
+      commit('SET_ERROR', error)
+      // eslint-disable-next-line
+      console.error(error);
+      throw "Неверное изображение";
+    })
+}
+
 export default {
   loginConfirm,
   registrationConfirm,
@@ -191,5 +206,6 @@ export default {
   getUserInfo,
   createProfile,
   getNutrients,
-  editProfile
+  editProfile,
+  uploadImage
 }

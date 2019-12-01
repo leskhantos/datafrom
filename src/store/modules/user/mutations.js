@@ -28,6 +28,9 @@ const NUTRIENTS = (state, nutrients) => {
 const HAS_PROFILES = (state, has_profiles) => {
   state.has_profiles = has_profiles
 }
+const IMAGE = (state, image) => {
+  state.image = image
+}
 export default {
   TOKEN_UPDATED,
   PHONE,
@@ -38,5 +41,6 @@ export default {
   USER_INFO,
   PROFILE_INFO,
   HAS_PROFILES,
-  NUTRIENTS
+  NUTRIENTS,
+  IMAGE
 }

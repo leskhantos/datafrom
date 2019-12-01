@@ -12,7 +12,7 @@
                             {{mainProfile.title}}</p>
                     </label>
                     <ul class="user__profile-list">
-                        <li v-for="(item, key) in listProfilesWithoutMain" :key="key">
+                        <li v-for="(item, key) in listProfilesWithoutMain" :key="key" @click="goToProfile(item.id)">
                             <label class="user__profile">
                                 <input class="visually-hidden" type="radio" name="profile">
                                 <div class="user__avatar"><img :src="item.avatar.path"
@@ -38,14 +38,12 @@
                             <div class="user__submenu-wrap">
                                 <ul class="user__submenu">
                                     <li v-for="(item, key) in listProfiles" :key="key">
-                                        <router-link class="user__menu-link"
-                                                     href=""
-                                                     :to="{ name: 'profile', params: { id: item.id }}">
+                                        <div class="user__menu-link" @click.prevent="goToProfile(item.id)">
                                             <div class="user__avatar"><img
                                                     :src="item.avatar.path"
                                                     alt="avatar"></div>
                                             <p v-if="item.title != null" class="user__name">
-                                                {{item.title}}</p></router-link>
+                                                {{item.title}}</p></div>
                                     </li>
                                 </ul>
                             </div>
@@ -102,6 +100,10 @@
         this.$store.dispatch('user/getUserInfo').then(() => {
           this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: false}})
         });
+      },
+      goToProfile(id) {
+        this.$router.push({name: 'profile', params: {id: id}}).catch(() => {
+        })
       }
     },
     computed: {
@@ -128,6 +130,10 @@
 
 <style scoped>
     .button-add--big {
+        cursor: pointer;
+    }
+
+    ul.user__submenu .user__menu-link {
         cursor: pointer;
     }
 </style>

@@ -53,3 +53,7 @@ export function GetNutrients(weight, height, age, gender, target, fatsPercentage
 export function EditProfile(id, profile) {
   return axios.put(Settings.host + '/api/v1/profiles/' + id, profile)
 }
+
+export function UploadImage(image) {
+  return axios.post(Settings.host + '/api/v1/uploads/profile-avatar', image)
+}

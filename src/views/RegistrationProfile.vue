@@ -35,6 +35,7 @@
 
                     <component
                             :is="currentStep"
+                            :isEdit="isEdit"
                             v-on:next-step="childNextStep"
                             v-on:create="createProfile"
                             v-on:finish="finishRegistration"
@@ -73,7 +74,8 @@
     },
     data() {
       return {
-        step: 1
+        step: 1,
+        id: ""
       }
     },
     name: "RegistrationProfile",
@@ -86,12 +88,11 @@
     methods: {
       childNextStep() {
         this.step += 1
-        // eslint-disable-next-line no-console
-        console.log(this.step)
       },
       createProfile() {
         const profile = this.$store.getters['user/getProfileInfo']
         if (this.isEdit) {
+          this.id = profile.id
           const profileInfo = {
             id: profile.id,
             payload: {
@@ -105,6 +106,7 @@
               weight: profile.weight,
               target: profile.target,
               gender: profile.gender,
+              avatar: profile.avatar,
               birthDate: profile.birthDate,
               activity: profile.activity,
             }
@@ -119,6 +121,11 @@
           profile['fullName'] = this.$store.getters['user/getUserInfo'].fullName
           this.$store.dispatch('user/createProfile', profile).then(() => {
             this.$store.commit('error/SET_OK', "Профиль успешно создан")
+
+            this.$store.dispatch('user/getListProfiles').then(() => {
+              let listProfiles = this.$store.getters['user/getListProfiles'].items;
+              this.id = listProfiles[listProfiles.length - 1].id
+            })
             this.step += 1
           }).catch((error) => {
             this.$store.commit('error/SET_ERROR', error);
@@ -129,7 +136,8 @@
         let profile = {}
         this.$store.commit('user/PROFILE_INFO', profile)
         if (this.isOneExist) {
-          this.$router.push({name: 'profile', params: {id: this.$store.getters['user/getProfileInfo'].id}})
+          // this.$router.push({name: 'profile', params: {id: this.$store.getters['user/getProfileInfo'].id}})
+          this.$router.push({name: 'profile', params: {id: this.id}})
         } else {
           this.$router.push({name: 'home'})
         }
