@@ -9,6 +9,7 @@ import AppRegistration from "../views/AppRegistration";
 import RegistrationConfirm from "../views/RegistrationConfirm";
 import Profile from "../views/Profile";
 import RegistrationProfile from "../views/RegistrationProfile";
+import UserDiary from "../views/UserDiary";
 
 Vue.use(VueRouter)
 
@@ -105,6 +106,13 @@ export default new VueRouter({
             component: RegistrationProfile,
             beforeEnter: ifAuthenticatedFirst
         },
+        {
+            path: '/diary',
+            name: 'diary',
+            props: false,
+            component: UserDiary,
+            beforeEnter: ifAuthenticatedFirst
+        }
     ],
     mode: 'history'
 });

@@ -50,13 +50,17 @@
                                 </ul>
                             </div>
                         </li>
-                        <li><a class="user__menu-link" href="">
-                            <DiaryIcon />
-                            <span>Дневник</span></a></li>
+                        <li>
+                            <router-link class="user__menu-link active" to="/diary">
+                                <DiaryIcon />
+                                <span>Дневник</span>
+                            </router-link>
+                        </li>
                         <li>
                             <router-link class="user__menu-link active" to="/purchases">
                                 <PurchasesIcon />
-                                <span>Покупки</span></router-link>
+                                <span>Покупки</span>
+                            </router-link>
                         </li>
                         <li><a class="user__menu-link" href="">
                             <MenuIcon />

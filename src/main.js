@@ -7,7 +7,6 @@ import VueCookies from 'vue-cookies'
 import VueThemask from 'vue-the-mask'
 import Vuelidate from 'vuelidate'
 
-
 Vue.use(VueCookies)
 Vue.use(VueThemask)
 Vue.use(Vuelidate)

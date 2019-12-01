@@ -1,5 +1,6 @@
 import {
-    GetShopList
+    GetShopList,
+    GetGeneratedSubscriptionMeals,
 } from '@/api'
 
 const getShopListAction = async ({commit}, profile) => {
@@ -13,6 +14,19 @@ const getShopListAction = async ({commit}, profile) => {
         })
 }
 
+const getGeneratedSubscriptionMeals = async ({commit}, profile) => {
+  await GetGeneratedSubscriptionMeals(profile)
+    .then((response) => {
+      const data = response.data
+      commit('GET_GENERATED_SUBSCRIPTION_MEALS', data._embedded.items)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.log(error)
+    })
+}
+
 export default {
-    getShopListAction
+    getShopListAction,
+    getGeneratedSubscriptionMeals,
 }
