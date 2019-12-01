@@ -269,7 +269,7 @@ export default {
   getRecipeWeightByDateAndMeal,
   getIngredientWeightByDateAndMeal,
   getIsBought,
-  getIngredientsPurchases
+  getIngredientsPurchases,
   getShopList,
   getGeneratedSubscriptionMeals,
 }

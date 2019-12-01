@@ -1,5 +1,4 @@
 import {
-    GetShopList,
     GetGeneratedSubscriptionMeals,
     GetShopList,
     AddCustomShopItem,
@@ -85,7 +84,6 @@ export default {
     getShopListAction,
     addCustomShopItem,
     getIngredientsList,
-    setBoughtIngredient
-    getShopListAction,
+    setBoughtIngredient,
     getGeneratedSubscriptionMeals,
 }

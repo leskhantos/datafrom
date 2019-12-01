@@ -16,7 +16,7 @@ export default new Vuex.Store({
         user: userModule,
         error: errorModule,
         subscription: subscriptionModule,
-        menu: menuModule
+        menu: menuModule,
         nutrients: nutrientsModule,
         diary: diaryModule,
         recipe: recipeModule,

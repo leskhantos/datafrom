@@ -7,7 +7,7 @@ const state = {
   ingredients:{},
   purchases:{},
   weight: 0,
-  allIngredients: []
+  allIngredients: [],
   shopList:[],
   generatedSubscriptionMeals: [],
 }

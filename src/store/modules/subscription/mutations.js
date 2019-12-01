@@ -7,8 +7,9 @@ const INGREDIENTS=(state,ingredients)=>{
 const ALL_INGREDIENTS=(state,allIngredients)=>{
   state.allIngredients = allIngredients
 }
-const PURCHASES=(state,purchases)=>{
-  state.purchases = purchases
+const PURCHASES=(state,purchases)=> {
+    state.purchases = purchases
+}
 const SET_SHOP_LIST = (state, shopList) => {
   state.shopList = shopList
 }
@@ -21,7 +22,7 @@ export default {
   RECIPES,
   INGREDIENTS,
   PURCHASES,
-  ALL_INGREDIENTS
+  ALL_INGREDIENTS,
   SET_SHOP_LIST,
   GET_GENERATED_SUBSCRIPTION_MEALS,
 }
