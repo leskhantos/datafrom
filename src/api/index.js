@@ -66,3 +66,31 @@ export function EditProfile(id, profile) {
 export function UploadImage(image) {
   return axios.post(Settings.host + '/api/v1/uploads/profile-avatar', image)
 }
+
+export function ListMenus() {
+  return axios.get(Settings.host + '/api/v1/menus')
+}
+
+export function GetMenu(id) {
+  return axios.get(Settings.host + '/api/v1/menus/' + id)
+}
+
+export function GetMeals(menuId, menuProportionId) {
+  return axios.get(Settings.host + '/api/v1/menus/'+menuId+'/proportions/'+menuProportionId+'/meals')
+}
+
+export function GetIngredients(recipe, weight) {
+  return axios.get(Settings.host + '/api/v1/recipe/calculate-weight?recipe='+recipe+'&weight='+weight)
+}
+
+export function ListSubscriptions() {
+  return axios.get(Settings.host + '/api/v1/subscriptions')
+}
+
+export function CreateSubscription(subscription) {
+  return axios.post(Settings.host + '/api/v1/subscription/subscribe', subscription)
+}
+
+export function GetIngredient(id) {
+  return axios.get(Settings.host + '/api/v1/ingredients/'+ id)
+}

@@ -52,13 +52,19 @@
                             <DiaryIcon />
                             <span>Дневник</span></a></li>
                         <li>
-                            <router-link class="user__menu-link active" to="/purchases">
+                            <router-link to="/purchases"
+                                         :class="['user__menu-link', { 'active':this.$route.name === 'purchases' }]">
                                 <PurchasesIcon />
                                 <span>Покупки</span></router-link>
                         </li>
-                        <li><a class="user__menu-link" href="">
-                            <MenuIcon />
-                            <span>Меню</span></a></li>
+                        <li @click.prevent="activeMenu='Меню'">
+                            <router-link
+                                    href=""
+                                    :to="{ name: 'menu'}"
+                                    :class="['user__menu-link', { 'active':this.$route.name === 'menu' }]">
+                                <MenuIcon />
+                                <span>Меню</span></router-link>
+                        </li>
                         <li><a class="user__menu-link" href="">
                             <BlogIcon />
                             <span>Блог</span></a></li>
