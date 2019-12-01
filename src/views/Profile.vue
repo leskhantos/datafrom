@@ -33,15 +33,17 @@
                         </div>
                     </section>
                     <div class="profile__col">
-                        <div class="user__avatar profile__avatar"><img src="@/assets/images/jpg/avatar.jpg"
-                                                                       alt="avatar"></div>
+                        <div class="user__avatar profile__avatar">
+                            <img :src="avatar.path"
+                                 alt="avatar">
+                        </div>
                         <div class="profile__fields-wrap">
                             <paragraph-profile>
                                 <div slot="icon">
                                     <FaceIcon />
                                 </div>
                                 <p class="profile__label" slot="item">Имя</p>
-                                <span slot="label">{{this.firstName}}</span>
+                                <span slot="label">{{this.title}}</span>
                             </paragraph-profile>
                             <!--                            <paragraph-profile>-->
                             <!--                                <div slot="icon">-->
@@ -188,10 +190,12 @@
       return {
         birthDate: '',
         firstName: '',
+        title: '',
         gender: '',
         height: '',
         weight: '',
         target: '',
+        avatar: {},
         openActions: false
       }
     },
@@ -222,6 +226,8 @@
             let profile = this.$store.getters['user/getProfile'];
             this.birthDate = this.getAge(profile.birthDate);
             this.firstName = profile.fullName.firstName
+            this.title = profile.title
+            this.avatar = profile.avatar
             if (profile.gender === 'male') {
               this.gender = "Мужчина"
             } else {

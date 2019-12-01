@@ -8,18 +8,18 @@
                         <div class="user__avatar user__avatar--big"><img
                                 :src="mainProfile.avatar.path"
                                 alt="avatar"></div>
-                        <p v-if="mainProfile.fullName.firstName != null" class="user__name">
-                            {{mainProfile.fullName.firstName}}</p>
+                        <p v-if="mainProfile.title != null" class="user__name">
+                            {{mainProfile.title}}</p>
                     </label>
                     <ul class="user__profile-list">
-                        <li v-for="(item, key) in listProfiles" :key="key">
-                            <label class="user__profile" v-if="item.isMain == false">
+                        <li v-for="(item, key) in listProfilesWithoutMain" :key="key">
+                            <label class="user__profile">
                                 <input class="visually-hidden" type="radio" name="profile">
                                 <div class="user__avatar"><img :src="item.avatar.path"
                                                                alt="avatar">
                                 </div>
-                                <p v-if="item.fullName.firstName != null" class="user__name">
-                                    {{item.fullName.firstName}}</p>
+                                <p v-if="item.title != null" class="user__name">
+                                    {{item.title}}</p>
                             </label>
                         </li>
                         <li class="user__btn-add">
@@ -44,8 +44,8 @@
                                             <div class="user__avatar"><img
                                                     :src="item.avatar.path"
                                                     alt="avatar"></div>
-                                            <p v-if="item.fullName.firstName != null" class="user__name">
-                                                {{item.fullName.firstName}}</p></router-link>
+                                            <p v-if="item.title != null" class="user__name">
+                                                {{item.title}}</p></router-link>
                                     </li>
                                 </ul>
                             </div>
@@ -110,6 +110,13 @@
       },
       mainProfile() {
         return this.$store.getters['user/getMainProfile'];
+      },
+      listProfilesWithoutMain: function () {
+        return this.$store.getters['user/getListProfiles'].items.filter(function (profile) {
+          if (!profile.isMain) {
+            return profile
+          }
+        })
       }
     },
     mounted() {

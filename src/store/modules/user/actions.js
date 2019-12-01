@@ -131,6 +131,9 @@ const getProfile = async ({commit}, id) => {
   await GetProfile(id)
     .then((response) => {
       const data = response.data
+      if (data.avatar == null) {
+        data.avatar = {'path': '/static/images/svg/user.svg'}
+      }
       commit('PROFILE', data)
     })
     .catch((error) => {

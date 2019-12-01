@@ -4,7 +4,7 @@
             <input type="file">
             <div class="settings__upload-avatar-image">
             </div>
-            <p>+ Добвить фото</p>
+            <p>+ Добавить фото</p>
         </div>
         <h2 class="settings__title">Укажите имя</h2>
         <div class="settings__input settings__input--center">
