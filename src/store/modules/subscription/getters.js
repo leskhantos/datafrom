@@ -7,25 +7,24 @@ const getWeight = state => purchaseType => {
   Object.values(state.purchases).map((value) => {
     if (value.ingredient === purchaseType.id) {
       weight += value.weight
-    } else if (value.recipe === purchaseType.id) {
-      weight += value.weight
     }
   })
   return weight
 }
-const getRecipesByIngredient = (state) => (ingredient, recipes) => {
+const getRecipesByIngredient = (state) => (ingredient) => {
   let arr = []
   Object.values(state.purchases).map((value) => {
-    if (value.ingredient === ingredient.id && !arr.includes(value.recipe)) {
-      arr.push(value.recipe)
+    if (value.ingredient === ingredient.id) {
+      let recipe = Object.create(state.recipes[value.recipe])
+      recipe.weight = value.weight
+      recipe.date = value.date
+      recipe.mealType = value.mealType
+      recipe.isBought = value.isBought
+      arr.push(recipe)
     }
   })
 
-  recipes = arr.map((value) => {
-    return recipes[value]
-  })
-
-  return recipes
+  return arr
 }
 const getIngredientsByRecipe = (state) => (recipe, ingredients) => {
   let arr = []
@@ -168,7 +167,7 @@ const getRecipesByDate = state => {
   let dates = []
   let filteredRecipes = []
 
-  if(state.purchases) {
+  if (state.purchases) {
     dates = [...new Set(Object.values(state.purchases).map((value) => {
       return value.date
     }))]
@@ -222,30 +221,30 @@ const getIngredientWeightByDateAndMeal = state => (ingredient, recipe) => {
   return weight
 }
 const getIsBought = state => ingredient => {
-    let bought
-    let purchases=[]
-    Object.values(state.purchases).map((value) => {
-        if (value.ingredient === ingredient.id) {
-            purchases.push(value.isBought)
-        }
-    })
-    bought = purchases.every((val)=>{
-        if(val===true){
-            return true
-        }
-    })
+  let bought
+  let purchases = []
+  Object.values(state.purchases).map((value) => {
+    if (value.ingredient === ingredient.id) {
+      purchases.push(value.isBought)
+    }
+  })
+  bought = purchases.every((val) => {
+    if (val === true) {
+      return true
+    }
+  })
 
-    return bought
+  return bought
 
 }
-const getIngredientsPurchases = state => ingredient =>{
-    let purchases=[]
-    Object.values(state.purchases).map((value) => {
-        if (value.ingredient === ingredient.id) {
-            purchases.push(value.id)
-        }
-    })
-    return purchases
+const getIngredientsPurchases = state => ingredient => {
+  let purchases = []
+  Object.values(state.purchases).map((value) => {
+    if (value.ingredient === ingredient.id) {
+      purchases.push(value.id)
+    }
+  })
+  return purchases
 }
 
 export default {
