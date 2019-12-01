@@ -10,6 +10,7 @@ import RegistrationConfirm from "../views/RegistrationConfirm";
 import Profile from "../views/Profile";
 import RegistrationProfile from "../views/RegistrationProfile";
 import Menu from "../views/Menu";
+import UserDiary from "../views/UserDiary";
 
 Vue.use(VueRouter)
 
@@ -113,6 +114,13 @@ export default new VueRouter({
             component: Menu,
             beforeEnter: ifAuthenticated
         },
+        {
+            path: '/diary',
+            name: 'diary',
+            props: false,
+            component: UserDiary,
+            beforeEnter: ifAuthenticatedFirst
+        }
     ],
     mode: 'history'
 });

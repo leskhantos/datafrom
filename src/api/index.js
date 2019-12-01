@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 
 const Settings = {
   host: process.env.VUE_APP_API_HOST
@@ -93,4 +94,79 @@ export function CreateSubscription(subscription) {
 
 export function GetIngredient(id) {
   return axios.get(Settings.host + '/api/v1/ingredients/'+ id)
+export function GetNutrients(weight, height, age, gender, target, fatsPercentage, proteinsPercentage, carbohydratesPercentage) {
+  return axios.get(Settings.host + '/api/v1/nutrients/calculate?' + qs.stringify({
+    'weight': weight,
+    'height': height,
+    'age': age,
+    'gender': gender,
+    'target': target,
+    'fatsPercentage': fatsPercentage,
+    'proteinsPercentage': proteinsPercentage,
+    'carbohydratesPercentage': carbohydratesPercentage,
+  }))
+}
+
+export function GetProfileNutrients(profile, fastPercentage, proteinsPercentage, carbohydratesPercentage) {
+  return axios.get(Settings.host + '/api/v1/nutrients/calculate/profile?' + qs.stringify({
+    'profile': profile,
+    'fastPercentage': fastPercentage,
+    'proteinsPercentage': proteinsPercentage,
+    'carbohydratesPercentage': carbohydratesPercentage,
+  }))
+}
+
+export function GetListWater(dateTo, profile) {
+  return axios.get(Settings.host + '/api/v1/diary/water/list?' + qs.stringify({
+    'dateTo': dateTo,
+    'profile': profile,
+  }))
+}
+
+export function GetListSleep(dateTo, profile) {
+  return axios.get(Settings.host + '/api/v1/diary/sleep/list?' + qs.stringify({
+    'dateTo': dateTo,
+    'profile': profile,
+  }))
+}
+
+export function GetListWeight(dateTo, profile) {
+  return axios.get(Settings.host + '/api/v1/diary/weight/list?' + qs.stringify({
+    'dateTo': dateTo,
+    'profile': profile,
+  }))
+}
+
+export function GetListSport(dateTo, profile) {
+  return axios.get(Settings.host + '/api/v1/diary/sport/list?' + qs.stringify({
+    'dateTo': dateTo,
+    'profile': profile,
+  }))
+}
+
+export function ListAllSportActivities() {
+  return axios.get(Settings.host + '/api/v1/diary/sport/list')
+}
+
+export function ListEatenIngredient(dateFrom, dateTo, profile) {
+  return axios.get(Settings.host + '/api/v1/diary/eaten-ingredient/list?' + qs.stringify({
+    'dateFrom': dateFrom,
+    'dateTo': dateTo,
+    'profile': profile,
+  }))
+}
+
+export function GetGeneratedSubscriptionMeals(profile) {
+  return axios.get(Settings.host + '/api/v1/subscription/meals/' + profile)
+}
+
+export function CalculateWeight(recipe, weight) {
+  return axios.get(Settings.host + '/api/v1/recipe/calculate-weight?' + qs.stringify({
+    recipe,
+    weight
+  }))
+}
+
+export function CreateWater(data) {
+    return axios.post(Settings.host + '/api/v1/diary/water', data)
 }

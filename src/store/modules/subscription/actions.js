@@ -1,5 +1,7 @@
 import {
     GetShopList,
+    GetGeneratedSubscriptionMeals,
+    GetShopList,
     AddCustomShopItem,
     GetIngredientsList,
     SetBoughtIngredient
@@ -66,9 +68,24 @@ const setBoughtIngredient = ({commit},shopItem) => {
             commit('SET_ERROR','Ошибка при отправке данных')
         })
 }
+
+const getGeneratedSubscriptionMeals = async ({commit}, profile) => {
+  await GetGeneratedSubscriptionMeals(profile)
+    .then((response) => {
+      const data = response.data
+      commit('GET_GENERATED_SUBSCRIPTION_MEALS', data._embedded.items)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.log(error)
+    })
+}
+
 export default {
     getShopListAction,
     addCustomShopItem,
     getIngredientsList,
     setBoughtIngredient
+    getShopListAction,
+    getGeneratedSubscriptionMeals,
 }

@@ -3,6 +3,8 @@
     <AppHeader/>
     <router-view></router-view>
     <SnackBar/>
+
+    <div class="overlay"></div>
   </body>
 </template>
 

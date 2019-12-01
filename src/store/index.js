@@ -4,7 +4,10 @@ import errorModule from './modules/error'
 import userModule from './modules/user'
 import subscriptionModule from './modules/subscription'
 import menuModule from './modules/menu'
-
+import nutrientsModule from './modules/nutrients'
+import diaryModule from './modules/diary'
+import recipeModule from './modules/recipe'
+import ingredientModule from './modules/ingredients'
 
 Vue.use(Vuex)
 
@@ -14,5 +17,9 @@ export default new Vuex.Store({
         error: errorModule,
         subscription: subscriptionModule,
         menu: menuModule
+        nutrients: nutrientsModule,
+        diary: diaryModule,
+        recipe: recipeModule,
+        ingredients: ingredientModule,
     },
 })

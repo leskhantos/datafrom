@@ -3,13 +3,7 @@ import getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  recipes:{},
-  ingredients:{},
-  purchases:{},
-  weight: 0,
-  allIngredients: []
-  shopList:[],
-  generatedSubscriptionMeals: [],
+  calculatedWeight: []
 }
 
 export default {
