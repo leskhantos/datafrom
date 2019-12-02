@@ -20,12 +20,15 @@
     name: 'app',
     components:{
       AppHeader,
-      SnackBar
+      SnackBar,
     },
-    computed:{
-      isMobile(){
-        return isMobile;
+    data() {
+      return {
+        isMobile: false
       }
+    },
+    beforeCreate: () => {
+      this.isMobile = isMobile
     },
     created: function () {
       axios.interceptors.response.use(response => {
