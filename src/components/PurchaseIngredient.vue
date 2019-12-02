@@ -86,7 +86,7 @@
             </div>
         </li>
         <li class="buy__add">
-            <div>
+            <div class="buy__input">
                 <v-select v-model="selected" label="title" @search="getOptions" :options="options">
                     <div slot="no-options">Нет подходящего ингредиента</div>
                     <i slot="spinner" class="icon icon-spinner"></i>
@@ -277,6 +277,9 @@
 <style scoped>
     .buy__item-arrow {
         margin-left: auto;
+    }
+    .v-select{
+        width: 85%;
     }
 
 </style>
