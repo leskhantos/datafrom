@@ -1,6 +1,6 @@
 <template>
     <main class="page">
-        <div class="centered">
+        <div class="centered" v-if="!isMobile">
             <section class="login" style="margin: 50px 0">
                 <div class="login__logo"><img src="@/assets/images/png/mail.png" alt="logo"></div>
                 <form class="form login__form">
@@ -35,11 +35,44 @@
                 </form>
             </section>
         </div>
+        <div class="login" v-else>
+            <div class="login__logo"><img src="@/assets/images/png/mail.png" alt="logo"></div>
+            <form class="form login__form" @submit="onSubmit">
+                <div class="form__recovery">
+                    <p>Введите код<br> отправленный в СМС</p>
+                    <div class="form__recovery-inputs">
+                        <div class="form__recovery-input">
+                            <input type="text" id="mob1" v-model="num1" maxlength="1" v-on:keyup="getFocus('mob2')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" ref="num2" id="mob2" v-model="num2" maxlength="1" v-on:keyup="getFocus('mob3')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="mob3" v-model="num3" maxlength="1" v-on:keyup="getFocus('mob4')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="mob4" v-model="num4" maxlength="1" v-on:keyup="getFocus('mob5')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="mob5" v-model="num5" maxlength="1" v-on:keyup="getFocus('mob6')">
+                        </div>
+                        <div class="form__recovery-input">
+                            <input type="text" id="mob6" v-model="num6" maxlength="1" v-on:keyup="onSubmit">
+                        </div>
+                    </div>
+                </div>
+                <div class="form__footer">
+                    <p>Код действителен в течении 10 минут</p><a class="form__link" href="">Отправить код еще раз</a>
+                </div>
+            </form>
+        </div>
     </main>
 </template>
 
 <script>
-  export default {
+    import { isMobile } from 'mobile-device-detect';
+
+    export default {
     name: "RegistrationConfirm",
     data() {
       return {
@@ -78,7 +111,12 @@
           this.$store.commit('error/SET_ERROR', error);
         });
       }
-    }
+    },
+      computed:{
+          isMobile(){
+              return isMobile;
+          }
+      }
   }
 </script>
 
