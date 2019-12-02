@@ -107,6 +107,20 @@
         },
         created() {
             this.dateInput = this.getCurrentDate()
+        },
+        mounted() {
+            let diaryHeader = document.querySelector('.diary__header')
+
+            window.addEventListener('scroll', () => {
+                const current = (document.documentElement.clientWidth <= 1439) ? 90 : 110;
+                const top = Math.round(diaryHeader.getBoundingClientRect().top);
+
+                if (top <= current) {
+                    diaryHeader.classList.add('small');
+                } else {
+                    diaryHeader.classList.remove('small');
+                }
+            });
         }
     }
 </script>
