@@ -49,7 +49,7 @@
                             </div>
                         </li>
                         <li>
-                            <router-link class="user__menu-link active" to="/diary">
+                            <router-link class="user__menu-link" to="/diary">
                                 <DiaryIcon />
                                 <span>Дневник</span>
                             </router-link>
