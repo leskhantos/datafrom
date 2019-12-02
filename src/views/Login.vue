@@ -16,7 +16,7 @@
                     </div>
                     <button class="button form__submit" type="submit">Войти</button>
                     <div class="form__footer">
-                        <p>Не помню номер телефона</p><a class="form__link" href="">Восстановить аккаунт</a>
+                        <p>Ещё не зарегистрированы?</p><router-link class="form__link" to="/registration">Зарегистрироваться</router-link>
                     </div>
                 </form>
             </section>
@@ -37,7 +37,7 @@
                 </div>
                 <button class="button form__submit" type="submit">Войти</button>
                 <div class="form__footer">
-                    <p>Не помню номер телефона</p><a class="form__link" href="">Восстановить аккаунт</a>
+                    <p>Ещё не зарегистрированы?</p><router-link class="form__link" to="/registration">Зарегистрироваться</router-link>
                 </div>
             </form>
         </div>

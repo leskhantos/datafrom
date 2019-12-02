@@ -273,7 +273,11 @@
         subscription['startedAt'] = this.startedAt
         subscription['finishedAt'] = this.finishedAt
 
-        this.$store.dispatch('menu/createSubscription', subscription)
+        this.$store.dispatch('menu/createSubscription', subscription).then(() => {
+          this.$store.commit('error/SET_OK', "Подписка успешно оформлена")
+        }).catch((e) => {
+          this.$store.commit('error/SET_ERROR', e)
+        })
       }
     },
     mounted() {

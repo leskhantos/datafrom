@@ -4,13 +4,13 @@
             <h3 class="subscriptions-inner__subtitle">Настройка меню</h3>
             <div class="subscriptions-inner__step">
                 <div class="subscriptions-inner__col">
-                    <p v-if="listProfiles[selectedProfileId]">Назначте для профиля
-                        {{listProfiles[selectedProfileId].title}} приём пищи</p>
+                    <p v-if="selectedProfile">Назначте для профиля
+                        {{selectedProfile.title}} приём пищи</p>
                 </div>
                 <div class="subscriptions-inner__col">
                     <ul class="user__profile-list subscriptions-inner__user-list">
                         <li v-for="(item, key) in listProfiles" :key="key">
-                            <label class="user__profile" @click="selectedProfileId = key">
+                            <label class="user__profile" @click="selectProfile(key)">
                                 <input class="visually-hidden" type="radio" name="profile-1">
                                 <div class="user__avatar">
                                     <img :src="item.avatar.path" alt="avatar">
@@ -25,45 +25,40 @@
                 <div class="subscriptions-inner__col"></div>
                 <div class="subscriptions-inner__col">
                     <ul class="subscriptions-inner__list subscriptions-inner__list--5col">
-                        <li>
+                        <li v-if="subscription.mealTypes.includes('breakfast')">
                             <input class="visually-hidden" type="checkbox" :name="'meal-1'+keySub"
                                    :id="'meals-'+keySub+'1'"
                                    v-model="breakfast">
                             <label class="subscriptions-inner__item" :for="'meals-'+keySub+'1'">
                                 <p class="subscriptions-inner__item-name">Завтрак</p>
-                                <!--p.subscriptions-inner__price + 125 &#8381;-->
                             </label>
                         </li>
-                        <li>
+                        <li v-if="subscription.mealTypes.includes('brunch')">
                             <input class="visually-hidden" type="checkbox" :name="'meal-1'+keySub"
                                    :id="'meals-'+keySub+'2'" v-model="brunch">
                             <label class="subscriptions-inner__item" :for="'meals-'+keySub+'2'">
                                 <p class="subscriptions-inner__item-name">Перекус</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
                             </label>
                         </li>
-                        <li>
+                        <li v-if="subscription.mealTypes.includes('dinner')">
                             <input class="visually-hidden" type="checkbox" :name="'meal-1'+keySub"
                                    :id="'meals-'+keySub+'3'" v-model="dinner">
                             <label class="subscriptions-inner__item" :for="'meals-'+keySub+'3'">
                                 <p class="subscriptions-inner__item-name">Обед</p>
-                                <!--p.subscriptions-inner__price + 125 &#8381;-->
                             </label>
                         </li>
-                        <li>
+                        <li v-if="subscription.mealTypes.includes('lunch')">
                             <input class="visually-hidden" type="checkbox" :name="'meal-1'+keySub"
                                    :id="'meals-'+keySub+'4'" v-model="lunch">
                             <label class="subscriptions-inner__item" :for="'meals-'+keySub+'4'">
                                 <p class="subscriptions-inner__item-name">Ланч</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
                             </label>
                         </li>
-                        <li>
+                        <li v-if="subscription.mealTypes.includes('supper')">
                             <input class="visually-hidden" type="checkbox" :name="'meal-1'+keySub"
                                    :id="'meals-'+keySub+'5'" v-model="supper">
                             <label class="subscriptions-inner__item" :for="'meals-'+keySub+'5'">
                                 <p class="subscriptions-inner__item-name">Ужин</p>
-                                <p class="subscriptions-inner__price">+ 125 &#8381;</p>
                             </label>
                         </li>
                     </ul>
@@ -71,7 +66,7 @@
             </div>
             <div class="subscriptions-inner__step-footer">
                 <p>Подписка активна до 29 декабря 2018 года</p>
-                <button class="button subscriptions-inner__button" type="button">Назначить</button>
+                <button class="button subscriptions-inner__button" type="button" @click.prevent="updateMeals()">Назначить</button>
             </div>
         </div>
     </div>
@@ -88,7 +83,41 @@
         brunch: false,
         lunch: false,
         supper: false,
-        selectedProfileId: '',
+        selectedProfile: '',
+      }
+    },
+    methods: {
+      selectProfile(key) {
+        this.selectedProfile = this.$props.listProfiles[key]
+      },
+      updateMeals() {
+        let meals = []
+
+        this.breakfast ? meals = [...meals, "breakfast"] : meals = [...meals]
+        this.dinner ? meals = [...meals, "dinner"] : meals = [...meals]
+        this.brunch ? meals = [...meals, "brunch"] : meals = [...meals]
+        this.lunch ? meals = [...meals, "lunch"] : meals = [...meals]
+        this.supper ? meals = [...meals, "supper"] : meals = [...meals]
+
+        if(meals.length < 1) {
+          this.$store.commit('error/SET_ERROR', "Выберите приёмы пищи")
+
+          return
+        }
+
+        if(!this.selectedProfile) {
+          this.$store.commit('error/SET_ERROR', "Выберите профиль")
+
+          return
+        }
+
+        this.$store.dispatch('menu/updateSubscription', {
+          profile: this.selectedProfile.id,
+          subscription: this.$props.subscription.id,
+          mealTypes: meals
+        }).then(() => {
+          this.$store.commit('error/SET_OK', "Приемы пищи по подписке успешно отредактированы")
+        })
       }
     },
     mounted() {
@@ -109,8 +138,6 @@
       if (mealTypes.includes("supper")) {
         this.supper = true
       }
-
-      this.selectedProfileId = 0
     }
   }
 </script>

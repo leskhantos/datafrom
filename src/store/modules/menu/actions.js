@@ -5,9 +5,9 @@ import {
   GetIngredients,
   GetIngredient,
   ListSubscriptions,
-  CreateSubscription
+  CreateSubscription,
+  AddMealsToSub
 } from '@/api'
-
 
 const getListMenus = async ({commit}) => {
   await ListMenus()
@@ -69,14 +69,30 @@ const getListSubscriptions = async ({commit}) => {
     })
 }
 
-const createSubscription = ({commit}, payload) => {
+const createSubscription = (non, payload) => {
   return CreateSubscription(payload)
     .then((response) => {
       // eslint-disable-next-line
       console.log(response.data)
     })
     .catch((error) => {
-      commit('SUBSCRIPTION', error)
+      // eslint-disable-next-line
+      console.error(error.response.data);
+      let err = 'Ошибка при оформлении подписки'
+      if (error.response.data === 'You already have subscription on this menu') {
+        err = 'Вы уже подписаны на это меню'
+      }
+      throw err;
+    })
+}
+
+const updateSubscription = (non, payload) => {
+  return AddMealsToSub(payload)
+    .then((response) => {
+      // eslint-disable-next-line
+      console.log(response.data)
+    })
+    .catch((error) => {
       // eslint-disable-next-line
       console.error(error);
       throw "Подписка не прошла";
@@ -102,5 +118,6 @@ export default {
   getIngredients,
   getListSubscriptions,
   createSubscription,
-  getIngredient
+  getIngredient,
+  updateSubscription
 }

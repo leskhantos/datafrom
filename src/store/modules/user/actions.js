@@ -24,7 +24,7 @@ const loginConfirm = ({commit}, payload) => {
       VueCookies.set('Authorization', token, {expires: 1})
     })
     .catch((error) => {
-      commit('SET_ERROR', error)// eslint-disable-next-line
+      commit('error/SET_ERROR', error)// eslint-disable-next-line
       console.error(error);
       throw "Неверный номер или код";
     })
@@ -59,7 +59,7 @@ const createProfile = ({commit}, payload) => {
       console.log(response.data)
     })
     .catch((error) => {
-      commit('SET_ERROR', error)
+      commit('error/SET_ERROR', error)
       // eslint-disable-next-line
       console.error(error);
       throw "Регистрация не прошла";
@@ -74,7 +74,7 @@ const sendSMSRegistration = ({commit}, phone) => {
       console.log(response.data)
     })
     .catch((error) => {
-      commit('SET_ERROR', error)
+      commit('error/SET_ERROR', error)
       // eslint-disable-next-line
       console.log(error.response.data.status);
     })
@@ -86,10 +86,8 @@ const sendSMSLogin = ({commit}, phone) => {
       console.log(response.data)
     })
     .catch((error) => {
-      commit('SET_ERROR', error)
+      commit('error/SET_ERROR', error)
       throw "Ошибка в заполнении формы"
-      // eslint-disable-next-line
-      console.error(error);
     })
 }
 const getListProfiles = async ({commit}) => {
@@ -187,7 +185,7 @@ const uploadImage = ({commit}, image) => {
       commit('IMAGE', response.data)
     })
     .catch((error) => {
-      commit('SET_ERROR', error)
+      commit('error/SET_ERROR', error)
       // eslint-disable-next-line
       console.error(error);
       throw "Неверное изображение";

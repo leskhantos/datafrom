@@ -1,5 +1,7 @@
 <template>
   <body>
+    <link v-if="!isMobile" rel="stylesheet" href="/static/css/style.css">
+    <link v-else rel="stylesheet" href="/static/css/style-mobile.css">
     <AppHeader/>
     <router-view></router-view>
     <SnackBar/>
@@ -12,11 +14,18 @@
   import AppHeader from "./components/AppHeader";
   import axios from 'axios'
   import SnackBar from "./components/SnackBar";
+  import { isMobile } from 'mobile-device-detect';
+
   export default {
     name: 'app',
     components:{
       AppHeader,
       SnackBar
+    },
+    computed:{
+      isMobile(){
+        return isMobile;
+      }
     },
     created: function () {
       axios.interceptors.response.use(response => {
@@ -27,7 +36,7 @@
             this.$router.replace('login')
           })
         }
-        return Promise.reject(new Error(400));
+        return Promise.reject(error);
       })
     }
   }

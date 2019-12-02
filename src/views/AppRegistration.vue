@@ -42,7 +42,7 @@
                 </form>
             </section>
         </div>
-        <div class="login signUp__page">
+        <div class="login signUp__page" v-else>
             <div class="login__logo">
                 <AppLogo/>
             </div>

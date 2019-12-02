@@ -1,5 +1,5 @@
 <template>
-    <div class="modal__tab-content active">
+    <div :class="active ? 'modal__tab-content active' : 'modal__tab-content'">
         <div class="modal__tab-content-col">
             <p class="modal-dish__caption"><b>Для кого готовим?</b></p>
             <ul class="user__profile-list modal-dish__user-list">
@@ -47,7 +47,7 @@
 <script>
   export default {
     name: "Ingredients",
-    props: ['recipeForModal'],
+    props: ['recipeForModal', 'active'],
   }
 </script>
 

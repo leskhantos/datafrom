@@ -23,11 +23,8 @@
                                 <p class="menu__slide-description" :key="activeMenuDescription">
                                     {{activeMenuDescription}}</p>
                             </transition>
-                            <button class="button menu__slide-btn" type="button"><span>Попробовать БЕСПЛАТНО!</span>
-                                <GiftIcon />
-                            </button>
-                            <p class="menu__slide-meta">Не знаете какое меню выбрать? Мы подберём подходящий вариант.<a
-                                    href="">Начать</a></p>
+                            <router-link v-if="!activeMenuSub" class="button menu__slide-btn" :to="'/subscribe/' + activeMenuId"><span>Подписаться</span>
+                            </router-link>
                         </div>
                     </div>
                 </li>
@@ -112,6 +109,7 @@
         >
         </component>
         <DishModal :show="modalShow" :recipeForModal="recipeForModal" v-on:modalClose="modalShow=false" />
+        <div :class="modalShow ? 'overlay show show-modal': 'overlay'" @click="modalShow=false"></div>
     </div>
 </template>
 
@@ -151,6 +149,7 @@
         activeMenuDescription: '',
         activeMenuMinCalories: '',
         activeMenuMaxCalories: '',
+        activeMenuSub: false,
         typeOfMeals: 'breakfast',
         typeOfMealsNumber: 0,
         proportions: {},
@@ -463,6 +462,7 @@
         this.activeMenuId = this.menus[this.activeMenu].id
         this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
         this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
+        this.activeMenuSub = this.menus[this.activeMenu].isSubscribed
         this.getMeals()
       })
 
@@ -478,6 +478,7 @@
         this.activeMenuId = this.menus[this.activeMenu].id
         this.activeMenuMinCalories = this.menus[this.activeMenu].calories.min
         this.activeMenuMaxCalories = this.menus[this.activeMenu].calories.max
+        this.activeMenuSub = this.menus[this.activeMenu].isSubscribed
       },
       activeMenuId: function () {
         this.getMeals()
