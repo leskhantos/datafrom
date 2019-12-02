@@ -15,7 +15,7 @@
         </ul>
         <p class="modal-dish__caption"><b>Сервировка</b></p>
         <div class="modal-dish__cook-wrap">
-            <pЭтого class="modal-dish__cook-desc">{{recipeForModal.recipe.serving}}</pЭтого>
+            <p class="modal-dish__cook-desc">{{recipeForModal.recipe.serving}}</p>
         </div>
         <div class="modal-dish__cook-wrap">
 <!--            <div>-->
