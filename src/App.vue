@@ -1,12 +1,12 @@
 <template>
   <body>
-    <link v-if="!isMobile" rel="stylesheet" href="/static/css/style.css">
-    <link v-else rel="stylesheet" href="/static/css/style-mobile.css">
-    <AppHeader/>
-    <router-view></router-view>
-    <SnackBar/>
+    <link @load="showAll = true" v-if="!isMobile" rel="stylesheet" href="/static/css/style.css">
+    <link @load="showAll = true" v-else rel="stylesheet" href="/static/css/style-mobile.css">
+    <AppHeader v-if="showAll"/>
+    <router-view v-if="showAll"></router-view>
+    <SnackBar v-if="showAll"/>
 
-    <div class="overlay"></div>
+    <div class="overlay" v-if="showAll"></div>
   </body>
 </template>
 
@@ -24,10 +24,11 @@
     },
     data() {
       return {
-        isMobile: false
+        isMobile: false,
+        showAll: false
       }
     },
-    beforeCreate: () => {
+    beforeCreate() {
       this.isMobile = isMobile
     },
     created: function () {
