@@ -2,7 +2,7 @@
   <body>
     <link @load="showAll = true" v-if="!isMobile" rel="stylesheet" href="/static/css/style.css">
     <link @load="showAll = true" v-else rel="stylesheet" href="/static/css/style-mobile.css">
-    <AppHeader v-if="showAll"/>
+    <AppHeader v-if="showAll && !isMobile"/>
     <router-view v-if="showAll"></router-view>
     <SnackBar v-if="showAll"/>
 
