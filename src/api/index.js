@@ -36,12 +36,15 @@ export function GetProfile(id) {
 export function GetShopList(date) {
     return axios.get(Settings.host + '/api/v1/subscription/shop_list'+date)
 }
+
 export function AddCustomShopItem(payload) {
   return axios.post(Settings.host + '/api/v1/ccustom', payload)
 }
+
 export function GetIngredientsList(search) {
   return axios.get(Settings.host + '/api/v1/ingredients?title=' + search)
 }
+
 export function SetBoughtIngredient(shopItem) {
   return axios.put(Settings.host + '/api/v1/subscription/shop_list/' + shopItem + '/buy')
 }
@@ -96,52 +99,52 @@ export function GetIngredient(id) {
 
 export function GetNutrients(weight, height, age, gender, target, fatsPercentage, proteinsPercentage, carbohydratesPercentage, activity) {
   return axios.get(Settings.host + '/api/v1/nutrients/calculate?' + qs.stringify({
-    'weight': weight,
-    'height': height,
-    'age': age,
-    'gender': gender,
-    'target': target,
-    'fatsPercentage': fatsPercentage,
-    'proteinsPercentage': proteinsPercentage,
-    'carbohydratesPercentage': carbohydratesPercentage,
-    'activity': activity
+      weight,
+      height,
+      age,
+      gender,
+      target,
+      fatsPercentage,
+      proteinsPercentage,
+      carbohydratesPercentage,
+      activity
   }))
 }
 
 export function GetProfileNutrients(profile, fastPercentage, proteinsPercentage, carbohydratesPercentage) {
   return axios.get(Settings.host + '/api/v1/nutrients/calculate/profile?' + qs.stringify({
-    'profile': profile,
-    'fastPercentage': fastPercentage,
-    'proteinsPercentage': proteinsPercentage,
-    'carbohydratesPercentage': carbohydratesPercentage,
+      profile,
+      fastPercentage,
+      proteinsPercentage,
+      carbohydratesPercentage,
   }))
 }
 
 export function GetListWater(dateTo, profile) {
   return axios.get(Settings.host + '/api/v1/diary/water/list?' + qs.stringify({
-    'dateTo': dateTo,
-    'profile': profile,
+      dateTo,
+      profile,
   }))
 }
 
 export function GetListSleep(dateTo, profile) {
   return axios.get(Settings.host + '/api/v1/diary/sleep/list?' + qs.stringify({
-    'dateTo': dateTo,
-    'profile': profile,
+      dateTo,
+      profile,
   }))
 }
 
 export function GetListWeight(dateTo, profile) {
   return axios.get(Settings.host + '/api/v1/diary/weight/list?' + qs.stringify({
-    'dateTo': dateTo,
-    'profile': profile,
+      dateTo,
+      profile,
   }))
 }
 
 export function GetListSport(dateTo, profile) {
   return axios.get(Settings.host + '/api/v1/diary/sport/list?' + qs.stringify({
-    'dateTo': dateTo,
-    'profile': profile,
+      dateTo,
+      profile,
   }))
 }
 
@@ -151,9 +154,9 @@ export function ListAllSportActivities() {
 
 export function ListEatenIngredient(dateFrom, dateTo, profile) {
   return axios.get(Settings.host + '/api/v1/diary/eaten-ingredient/list?' + qs.stringify({
-    'dateFrom': dateFrom,
-    'dateTo': dateTo,
-    'profile': profile,
+      dateFrom,
+      dateTo,
+      profile,
   }))
 }
 
@@ -170,4 +173,16 @@ export function CalculateWeight(recipe, weight) {
 
 export function CreateWater(data) {
     return axios.post(Settings.host + '/api/v1/diary/water', data)
+}
+
+export function ListWaterForOneDay(data) {
+    return axios.get(Settings.host + '/api/v1/diary/water/one-day?' + qs.stringify(data))
+}
+
+export function ListSportForOneDay(data) {
+    return axios.get(Settings.host + '/api/v1/diary/sport/one-day?' + qs.stringify(data))
+}
+
+export function GetSubsForOneDay(data) {
+    return axios.get(Settings.host + '/api/v1/subscription/meals/profile/one-day?' + qs.stringify(data))
 }

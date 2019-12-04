@@ -3,7 +3,8 @@ import {
     GetShopList,
     AddCustomShopItem,
     GetIngredientsList,
-    SetBoughtIngredient
+    SetBoughtIngredient,
+    GetSubsForOneDay,
 } from '@/api'
 import {normalize,schema} from "normalizr";
 
@@ -80,10 +81,23 @@ const getGeneratedSubscriptionMeals = async ({commit}, profile) => {
     })
 }
 
+const getSubsForOneDay = async({commit}, data) => {
+    await GetSubsForOneDay(data)
+    .then((response) => {
+        const data = response.data
+        commit('GET_SUBS_FOR_ONE_DAY', data._embedded.items)
+    })
+    .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error)
+    })
+}
+
 export default {
     getShopListAction,
     addCustomShopItem,
     getIngredientsList,
     setBoughtIngredient,
     getGeneratedSubscriptionMeals,
+    getSubsForOneDay,
 }

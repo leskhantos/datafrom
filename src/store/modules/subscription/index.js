@@ -10,6 +10,7 @@ const state = {
   allIngredients: [],
   shopList:[],
   generatedSubscriptionMeals: [],
+  subs: []
 }
 
 export default {
