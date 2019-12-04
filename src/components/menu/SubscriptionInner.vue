@@ -2,26 +2,6 @@
     <div :class="['subscriptions-inner__wrapper', { 'open':openMenu === keySub}]">
         <div class="subscriptions-inner__container">
             <h3 class="subscriptions-inner__subtitle">Настройка подписки</h3>
-            <!--            <div class="subscriptions-inner__step">-->
-            <!--                <div class="subscriptions-inner__col">-->
-            <!--                    <p><b>Шаг 1</b></p>-->
-            <!--                    <p>Выберите профили</p>-->
-            <!--                </div>-->
-            <!--                <div class="subscriptions-inner__col">-->
-            <!--                    <ul class="user__profile-list subscriptions-inner__user-list">-->
-            <!--                        <li v-for="(item, key) in listProfiles" :key="key">-->
-            <!--                            <label :class="['user__profile', { 'user__profile&#45;&#45;main': item.isMain }]">-->
-            <!--                                <input class="visually-hidden" type="checkbox" name="profile-2"-->
-            <!--                                       :checked="item.isMain">-->
-            <!--                                <div :class="['user__avatar', { 'user__avatar&#45;&#45;big': item.isMain }]"><img-->
-            <!--                                        :src="item.avatar.path"-->
-            <!--                                        alt="avatar"></div>-->
-            <!--                                <p class="user__name">{{item.fullName.firstName}}</p>-->
-            <!--                            </label>-->
-            <!--                        </li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
-            <!--            </div>-->
             <div class="subscriptions-inner__step">
                 <div class="subscriptions-inner__col">
                     <p><b>Шаг 1</b></p>
@@ -35,7 +15,7 @@
                                    v-model="breakfast">
                             <label class="subscriptions-inner__item" :for="'meals-5'+keySub">
                                 <p class="subscriptions-inner__item-name">Завтрак</p>
-                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                                <p class="subscriptions-inner__price" v-if="!mealTypesExist.includes('breakfast')">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
@@ -43,7 +23,7 @@
                                    :id="'meals-6'+keySub" v-model="dinner">
                             <label class="subscriptions-inner__item" :for="'meals-6'+keySub">
                                 <p class="subscriptions-inner__item-name">Обед</p>
-                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                                <p class="subscriptions-inner__price" v-if="!mealTypesExist.includes('dinner')">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
@@ -51,7 +31,7 @@
                                    :id="'meals-7'+keySub" v-model="brunch">
                             <label class="subscriptions-inner__item" :for="'meals-7'+keySub">
                                 <p class="subscriptions-inner__item-name">Перекус</p>
-                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                                <p class="subscriptions-inner__price" v-if="!mealTypesExist.includes('brunch')">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
@@ -59,21 +39,21 @@
                                    :id="'meals-8'+keySub" v-model="lunch">
                             <label class="subscriptions-inner__item" :for="'meals-8'+keySub">
                                 <p class="subscriptions-inner__item-name">Ланч</p>
-                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                                <p class="subscriptions-inner__price" v-if="!mealTypesExist.includes('lunch')">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                         <li>
                             <input class="visually-hidden" type="checkbox" :name="'meal-2'+keySub"
-                                   :id="'meals-9'+keySub" v-model="supper">
+                                   :id="'meals-9'+keySub" v-model="supper" >
                             <label class="subscriptions-inner__item" :for="'meals-9'+keySub">
                                 <p class="subscriptions-inner__item-name">Ужин</p>
-                                <p class="subscriptions-inner__price">+ {{costPerDayOneMeal}} &#8381;</p>
+                                <p class="subscriptions-inner__price" v-if="!mealTypesExist.includes('supper')">+ {{costPerDayOneMeal}} &#8381;</p>
                             </label>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="subscriptions-inner__step">
+            <div :class="['subscriptions-inner__step', {'disabled': edit}]">
                 <div class="subscriptions-inner__col">
                     <p><b>Шаг 2</b></p>
                     <p>Укажите дни питания</p>
@@ -99,7 +79,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="subscriptions-inner__step">
+            <div :class="['subscriptions-inner__step', {'disabled': edit}]">
                 <div class="subscriptions-inner__col">
                     <p><b>Шаг 3</b></p>
                     <p>Стоимость</p>
@@ -157,14 +137,14 @@
 <script>
   export default {
     name: "SubscriptionInner",
-    props: ["openMenu", 'listProfiles', 'menu', 'keySub', 'costPerDayOneMeal'],
+    props: ["openMenu", 'listProfiles', 'menu', 'keySub', 'costPerDayOneMeal', 'edit', 'mealTypesExist', 'sub'],
     data() {
       return {
-        breakfast: true,
-        dinner: false,
-        brunch: false,
-        supper: false,
-        lunch: false,
+        breakfast: this.$props.mealTypesExist.includes('breakfast'),
+        dinner: this.$props.mealTypesExist.includes('dinner'),
+        brunch: this.$props.mealTypesExist.includes('brunch'),
+        supper: this.$props.mealTypesExist.includes('supper'),
+        lunch: this.$props.mealTypesExist.includes('lunch'),
         mealTypes: [],
         periodicity: 'seven_days',
         durationInMonths: 1,
@@ -264,20 +244,38 @@
       },
       buy() {
         this.countData()
-
         let subscription = {}
+        if (!this.$props.edit) {
+          subscription['menu'] = this.menu
+          subscription['mealTypes'] = this.mealTypes
+          subscription['periodicity'] = this.periodicity
+          subscription['startedAt'] = this.startedAt
+          subscription['finishedAt'] = this.finishedAt
 
-        subscription['menu'] = this.menu
-        subscription['mealTypes'] = this.mealTypes
-        subscription['periodicity'] = this.periodicity
-        subscription['startedAt'] = this.startedAt
-        subscription['finishedAt'] = this.finishedAt
+          this.$store.dispatch('menu/createSubscription', subscription).then(() => {
+            this.$store.commit('error/SET_OK', "Подписка успешно оформлена")
+          }).catch((e) => {
+            this.$store.commit('error/SET_ERROR', e)
+          })
+        } else {
+          subscription['mealTypes'] = this.mealTypes.filter((val) => {
+            if (!this.$props.mealTypesExist.includes(val)) {
+              return val
+            }
+          })
 
-        this.$store.dispatch('menu/createSubscription', subscription).then(() => {
-          this.$store.commit('error/SET_OK', "Подписка успешно оформлена")
-        }).catch((e) => {
-          this.$store.commit('error/SET_ERROR', e)
-        })
+          subscription['id'] = this.$props.sub.id
+
+          if (subscription.mealTypes.length > 0) {
+            this.$store.dispatch('menu/editSubscription', subscription).then(() => {
+              this.$store.dispatch('menu/getListSubscriptions')
+              this.$store.commit('error/SET_OK', "Подписка успешно отредактирована")
+            }).catch((e) => {
+              this.$store.commit('error/SET_ERROR', e)
+            })
+          }
+        }
+
       }
     },
     mounted() {

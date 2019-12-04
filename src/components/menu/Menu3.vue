@@ -6,7 +6,7 @@
                 <ul class="menu__scheduler-dish-list">
                     <li class="menu__scheduler-dish-item" v-for="(recipe,keyRecipe) in meal.recipeWeights"
                         :key="keyRecipe">
-                        <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish">
+                        <div class="menu__scheduler-image"><img v-if="recipe.recipe.cover" :src="recipe.recipe.cover.path" alt="dish">
                         </div>
                         <recipe>
                             <p slot="description" class="menu__scheduler-desc open-modal-dish"

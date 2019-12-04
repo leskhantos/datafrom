@@ -6,7 +6,8 @@
             <div class="subscriptions-inner__content">
                 <div class="subscriptions-inner__title-wrap">
                     <h2 class="subscriptions-inner__caption">{{item.menu.title}}</h2>
-                    <p class="subscriptions-inner__calories">{{item.menu.calories.min}} – {{item.menu.calories.max}} калорий</p>
+                    <p class="subscriptions-inner__calories">{{item.menu.calories.min}} – {{item.menu.calories.max}}
+                        калорий</p>
                 </div>
                 <div class="profiles-list__container">
                     <ul class="profiles-list">
@@ -34,7 +35,10 @@
                     :keySub="keySub"
                     :costPerDayOneMeal="item.menu.costPerDayOneMeal"
                     :listProfiles="listProfiles"
-                    :menu="item.menu.id" />
+                    :edit="true"
+                    :mealTypesExist="item.mealTypes"
+                    :menu="item.menu.id"
+                    :sub="item" />
             <subscription-settings
                     :openSettings="openSettings"
                     :keySub="keySub"
@@ -69,7 +73,10 @@
         return this.$store.getters['user/getListProfiles'].items;
       },
       listSubscriptions() {
-        return this.$store.getters['menu/getListSubscriptions'];
+        let subs = this.$store.getters['menu/getListSubscriptions']
+        return subs.sort((a, b) => {
+          return a.id - b.id
+        });
       }
     },
     methods: {
@@ -78,12 +85,19 @@
         this.openMenu = keySub
       },
       openSettingsTab(keySub) {
-        this.openMenu = -1,
-          this.openSettings = keySub
+        this.openMenu = -1
+        this.openSettings = keySub
       }
     },
     mounted() {
-      this.$store.dispatch('user/getListProfiles')
+      this.$store.dispatch('user/getListProfiles').then(() => {
+        let profiles = this.$store.getters['user/getListProfiles']
+        if (profiles.items.length > 0) {
+          profiles.items.forEach((item) => {
+            this.$store.dispatch('menu/getProfileMeals', item.id)
+          })
+        }
+      })
       this.$store.dispatch('menu/getListSubscriptions')
     }
   }

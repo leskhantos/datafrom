@@ -8,15 +8,15 @@
                         <input class="visually-hidden" type="checkbox" name="profile-1" :checked="item.isMain">
                         <div :class="['user__avatar', { 'user__avatar--big':item.isMain }]"><img :src="item.avatar.path"
                                                                                                  alt="avatar"></div>
-                        <p class="user__name">{{item.fullName.firstName}}</p>
+                        <p class="user__name">{{item.title}}</p>
                     </label>
                 </li>
             </ul>
             <p class="modal-dish__caption"><b>Хотите добавить гостя?</b></p>
             <div class="counter modal-dish__counter">
-                <button class="counter__btn counter__btn--min" type="button"></button>
-                <input type="text" value="300 г">
-                <button class="counter__btn counter__btn--plus" type="button"></button>
+                <button class="counter__btn counter__btn--min" @click="delGuest()" type="button"></button>
+                <input type="text" v-model="guests">
+                <button class="counter__btn counter__btn--plus" @click="addGuest()" type="button"></button>
             </div>
         </div>
         <div class="modal__tab-content-col">
@@ -27,17 +27,8 @@
                 </p>
             </div>
             <ul class="modal-dish__food-list">
-                <li><img src="/static/images/png/tomato.png" alt="tomato">
-                    <p>Помидоры</p><span>5 шт</span>
-                </li>
-                <li><img src="/static/images/png/squash.png" alt="squash">
-                    <p>Кабачок</p><span>1 шт</span>
-                </li>
-                <li><img src="/static/images/png/tomato.png" alt="tomato">
-                    <p>Помидоры</p><span>5 шт</span>
-                </li>
-                <li><img src="/static/images/png/squash.png" alt="squash">
-                    <p>Кабачок</p><span>1 шт</span>
+                <li v-for="ingredient in recipeForModal.ingredients" :key="ingredient.id"><img v-if="ingredient.cover" :src="ingredient.cover.path">
+                    <p>{{ingredient.title}}</p><span>{{ingredient.items ? ingredient.items + ' шт' : ingredient.weight + ' гр'}}</span>
                 </li>
             </ul>
         </div>
@@ -47,7 +38,27 @@
 <script>
   export default {
     name: "Ingredients",
-    props: ['recipeForModal', 'active'],
+    props: ['recipeForModal', 'active', 'subId'],
+    data() {
+      return {
+        guests: 0
+      }
+    },
+    methods: {
+      addGuest() {
+        this.guests ++
+
+        this.$store.dispatch('menu/editPortions', {
+          id: this.$props.subId,
+          portions: this.guests
+        }).then(() => {
+          this.$store.commit('error/SET_OK', "Кол-во порций успешно изменено")
+        })
+      },
+      delGuest() {
+
+      }
+    }
   }
 </script>
 

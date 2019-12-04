@@ -82,6 +82,7 @@
                         <Ingredients
                                 :active="currentTab === 'Ingredients'"
                                 :recipeForModal="recipeForModal"
+                                :subId="subId"
                         >
                         </Ingredients>
                         <Cooking
@@ -104,7 +105,7 @@
 
   export default {
     name: "DishModal",
-    props: ['show', 'recipeForModal'],
+    props: ['show', 'recipeForModal', 'subId'],
     components: {
       CloseForModalIcon,
       DishDescription,

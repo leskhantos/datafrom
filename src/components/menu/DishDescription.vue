@@ -37,17 +37,12 @@
             </div>
         </div>
         <div class="modal__tab-content-col two-column">
-            <div>
+            <div v-if="recipeForModal.recipe.inventory && recipeForModal.recipe.inventory.length > 0">
                 <p class="modal-dish__caption">Инвентарь:</p>
-                <div class="slider__cutlery">
+                <div ref="cutlerySliders" class="slider__cutlery" >
                     <div class="slider__cutlery-track" data-glide-el="track">
                         <ul class="slider__cutlery-list">
-                            <li><img src="/static/images/png/cooking.png" alt="cutlery"></li>
-                            <li><img src="/static/images/png/dinner.png" alt="cutlery"></li>
-                            <li><img src="/static/images/png/oven.png" alt="cutlery"></li>
-                            <li><img src="/static/images/png/cooking.png" alt="cutlery"></li>
-                            <li><img src="/static/images/png/dinner.png" alt="cutlery"></li>
-                            <li><img src="/static/images/png/oven.png" alt="cutlery"></li>
+                            <li v-for="item in recipeForModal.recipe.inventory" :key="item.id"><img v-if="item.icon" :src="item.icon.path" alt="item"></li>
                         </ul>
                     </div>
                     <div class="slider__cutlery-arrows" data-glide-el="controls">
@@ -77,6 +72,7 @@
 <script>
   import ArrowLeft from "../icons/ArrowLeftIcon";
   import ArrowRight from "../icons/ArrowRightIcon";
+  import Glide from '@glidejs/glide';
 
   export default {
     name: "DishDescription",
@@ -94,6 +90,18 @@
         this.difficulty = 2
       } else if (this.recipeForModal.recipe.difficulty === 'hard') {
         this.difficulty = 3
+      }
+
+      if (this.$refs.cutlerySliders) {
+        new Glide(this.$refs.cutlerySliders, {
+          perView: 3,
+          gap: 20,
+          bound: true,
+          peek: {
+            before: 5,
+            after: 0,
+          },
+        }).mount();
       }
     },
     watch: {

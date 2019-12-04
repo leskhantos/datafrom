@@ -6,7 +6,11 @@ import {
   GetIngredient,
   ListSubscriptions,
   CreateSubscription,
-  AddMealsToSub
+  AddMealsToSub,
+  EditSubscription,
+  GetMealsByProfile,
+  EditPortions,
+  SubscriptionsByMenu
 } from '@/api'
 
 const getListMenus = async ({commit}) => {
@@ -99,11 +103,65 @@ const updateSubscription = (non, payload) => {
     })
 }
 
+const editSubscription = (non, payload) => {
+  return EditSubscription(payload)
+    .then((response) => {
+      // eslint-disable-next-line
+      console.log(response.data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+      throw "Ошибка при редактировании подписки";
+    })
+}
+
+const editPortions = (non, payload) => {
+  return EditPortions(payload.id, payload.portions)
+    .then((response) => {
+      // eslint-disable-next-line
+      console.log(response.data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+      throw "Ошибка при редактировании подписки";
+    })
+}
+
 const getIngredient = async ({commit}, id) => {
   await GetIngredient(id)
     .then((response) => {
       const data = response.data
       commit('INGREDIENT', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.log(error);
+    })
+}
+
+const getSubByMenu = async ({commit}, id) => {
+  await SubscriptionsByMenu(id)
+    .then((response) => {
+      const data = response.data
+      commit('SUBSCRIPTION', data)
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.log(error);
+    })
+}
+
+const getProfileMeals = async ({commit}, id) => {
+  await GetMealsByProfile(id)
+    .then((response) => {
+      const data = response.data
+      let meals = {
+        id,
+        data
+      }
+      commit('PROFILE_MEALS', meals)
     })
     .catch((error) => {
       // eslint-disable-next-line
@@ -119,5 +177,9 @@ export default {
   getListSubscriptions,
   createSubscription,
   getIngredient,
-  updateSubscription
+  updateSubscription,
+  editSubscription,
+  getProfileMeals,
+  editPortions,
+  getSubByMenu
 }

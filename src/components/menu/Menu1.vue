@@ -4,7 +4,7 @@
             <p class="menu__scheduler-caption">{{item.dayOfWeek}} {{item.stringDate}}</p>
             <ul class="menu__scheduler-dish-list">
                 <li class="menu__scheduler-dish-item" v-for="(recipe) in item.recipeWeights" :key="recipe.recipe.id">
-                    <div class="menu__scheduler-image"><img src="/static/images/jpg/dish-1.jpg" alt="dish"></div>
+                    <div class="menu__scheduler-image"><img v-if="recipe.recipe.cover" :src="recipe.recipe.cover.path" alt="dish"></div>
                     <recipe>
                         <p slot="description" class="menu__scheduler-desc open-modal-dish"
                            @click="modalShow(recipe.recipe.id)">

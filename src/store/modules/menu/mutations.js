@@ -19,6 +19,12 @@ const INGREDIENT = (state, ingredient) => {
 const SUBSCRIPTION = (state, subscription) => {
   state.subscription = subscription
 }
+const PROFILE_MEALS = (state, meals) => {
+  state.profileMeals = [...state.profileMeals, meals]
+}
+const PROFILE_MEALS_CLEAR = (state) => {
+  state.profileMeals = []
+}
 
 export default {
   LIST_MENUS,
@@ -27,5 +33,7 @@ export default {
   MEALS,
   INGREDIENTS,
   INGREDIENT,
-  SUBSCRIPTION
+  SUBSCRIPTION,
+  PROFILE_MEALS,
+  PROFILE_MEALS_CLEAR
 }

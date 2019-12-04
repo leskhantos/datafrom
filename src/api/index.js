@@ -85,12 +85,28 @@ export function ListSubscriptions() {
   return axios.get(Settings.host + '/api/v1/subscriptions')
 }
 
+export function SubscriptionsByMenu(menu) {
+  return axios.get(Settings.host + '/api/v1/subscription/find/' + menu)
+}
+
 export function CreateSubscription(subscription) {
   return axios.post(Settings.host + '/api/v1/subscription/subscribe', subscription)
 }
 
+export function EditSubscription(subscription) {
+  return axios.put(Settings.host + '/api/v1/subscription/' + subscription.id, {mealTypes: subscription.mealTypes})
+}
+
 export function AddMealsToSub(meals) {
   return axios.post(Settings.host + '/api/v1/subscription/add_meals', meals)
+}
+
+export function GetMealsByProfile(profile) {
+  return axios.get(Settings.host + '/api/v1/subscription/meals/' + profile + '/types')
+}
+
+export function EditPortions(subId, portions) {
+  return axios.post(Settings.host + '/api/v1/subscription/meals/' + subId + '/add_guests', {portionsCount: portions})
 }
 
 export function GetIngredient(id) {

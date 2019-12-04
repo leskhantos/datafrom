@@ -108,7 +108,7 @@
                 @modalShow="transitRecipe"
         >
         </component>
-        <DishModal :show="modalShow" :recipeForModal="recipeForModal" v-on:modalClose="modalShow=false" />
+        <DishModal :show="modalShow" :recipeForModal="recipeForModal" :subId="activeMenuSubId" v-on:modalClose="modalShow=false" />
         <div :class="modalShow ? 'overlay show show-modal': 'overlay'" @click="modalShow=false"></div>
     </div>
 </template>
@@ -150,6 +150,7 @@
         activeMenuMinCalories: '',
         activeMenuMaxCalories: '',
         activeMenuSub: false,
+        activeMenuSubId: '',
         typeOfMeals: 'breakfast',
         typeOfMealsNumber: 0,
         proportions: {},
@@ -398,6 +399,10 @@
           menu['menuId'] = this.activeMenuId
           menu['menuProportionId'] = this.proportions[0].id
 
+          this.$store.dispatch('menu/getSubByMenu', menu['menuId']).then(() => {
+            this.activeMenuSubId = this.$store.getters['menu/getSubscription'].id
+          })
+
           this.$store.dispatch('menu/getMeals', menu).then(() => {
             let meals = this.$store.getters['menu/getMeals']._embedded.items;
             this.meals = meals.map((meal) => {
@@ -421,6 +426,10 @@
 
                     this.$store.dispatch('menu/getIngredient', nutrient.ingredientId).then(() => {
                       let ingredient = this.$store.getters['menu/getIngredient'];
+                      ingredient.weight = nutrient.weight
+                      if (ingredient.gramsPerVolumeUnit) {
+                        ingredient.items = (ingredient.weight / ingredient.gramsPerVolumeUnit.amount).toFixed(1)
+                      }
                       recipe.ingredients.push(ingredient)
                     })
                   })

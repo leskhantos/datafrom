@@ -9,7 +9,8 @@ const state = {
   meals: [],
   subscription: {},
   ingredient: {},
-  ingredients: []
+  ingredients: [],
+  profileMeals: []
 }
 
 export default {

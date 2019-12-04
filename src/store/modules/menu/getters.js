@@ -4,6 +4,7 @@ const getMenu = state => state.menu
 const getMeals = state => state.meals
 const getIngredients = state => state.ingredients
 const getIngredient = state => state.ingredient
+const getSubscription = state => state.subscription
 
 export default {
   getListMenus,
@@ -11,5 +12,6 @@ export default {
   getMeals,
   getIngredients,
   getIngredient,
-  getListSubscriptions
+  getListSubscriptions,
+  getSubscription
 }

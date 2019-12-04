@@ -25,6 +25,7 @@
                             :keySub="1"
                             :costPerDayOneMeal="menu.costPerDayOneMeal"
                             :listProfiles="[]"
+                            :mealTypesExist="[]"
                             :menu="id" />
                 </article>
             </div>
