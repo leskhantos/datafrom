@@ -49,7 +49,8 @@
                             </div>
                         </li>
                         <li>
-                            <router-link class="user__menu-link active" to="/diary">
+                            <router-link class="user__menu-link" to="/diary"
+                                         :class="['user__menu-link', { 'active':this.$route.name === 'diary' }]">
                                 <DiaryIcon />
                                 <span>Дневник</span>
                             </router-link>

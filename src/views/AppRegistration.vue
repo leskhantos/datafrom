@@ -1,6 +1,6 @@
 <template>
     <main class="page">
-        <div class="centered">
+        <div class="centered" v-if="!isMobile">
             <section class="login" style="margin: 50px 0">
                 <div class="login__logo">
                     <AppLogo/>
@@ -42,6 +42,46 @@
                 </form>
             </section>
         </div>
+        <div class="login signUp__page" v-else>
+            <div class="login__logo">
+                <AppLogo/>
+            </div>
+            <form class="form login__form" @submit="onSubmit">
+                <div class="form__wrapper">
+                    <div class="input-field form__input">
+                        <div class="input-field__wrapper">
+                            <input class="input" type="text" placeholder="Имя" v-model="$v.fname.$model" :class="status($v.fname)" required>
+                            <UserIcon/>
+                        </div>
+                        <p class="input-field__error-text">Имя более 20 сим.</p>
+                    </div>
+                    <div class="input-field form__input">
+                        <div class="input-field__wrapper">
+                            <input class="input" type="text" placeholder="Фамилия" v-model="$v.lname.$model" :class="status($v.lname)" required>
+                            <UserIcon/>
+                        </div>
+                        <p class="input-field__error-text"> Фамилия более 20 сим.</p>
+                    </div>
+                    <div class="input-field input-field form__input">
+                        <div class="input-field__wrapper">
+                            <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" v-model="$v.email.$model" :class="status($v.email)" required>
+                            <MailIcon/>
+                        </div>
+                        <p class="input-field__error-text">E-mail занят</p>
+                    </div>
+                    <div class="input-field form__input">
+                        <div class="input-field__wrapper">
+                            <the-mask type="tel" placeholder="+7 (921) 324 53 55" v-model="$v.phone.$model" :class="status($v.phone)" mask="+#(###)###-##-##" required />
+                        </div>
+                        <p class="input-field__error-text">Укажите телефон</p>
+                    </div>
+                </div>
+                <button class="button form__submit" type="submit" @click="onSubmit">Регистрация</button>
+                <div class="form__footer">
+                    <p>Уже зарегистрированы</p><router-link class="form__link" to="/login">Войти</router-link>
+                </div>
+            </form>
+        </div>
     </main>
 
 </template>
@@ -50,7 +90,8 @@
     import AppLogo from "../components/AppLogo";
     import UserIcon from "../components/icons/UserIcon";
     import MailIcon from "../components/icons/MailIcon";
-    import { required, minLength, email } from 'vuelidate/lib/validators'
+    import { required, minLength, email } from 'vuelidate/lib/validators';
+    import { isMobile } from 'mobile-device-detect';
 
     export default {
         name: "AppRegistration",
@@ -64,7 +105,7 @@
             }
         },
         components:{
-          AppLogo,
+            AppLogo,
             UserIcon,
             MailIcon
         },
@@ -94,6 +135,11 @@
                     error: validation.$error,
                     dirty: validation.$dirty
                 }
+            }
+        },
+        computed:{
+            isMobile(){
+                return isMobile;
             }
         },
         validations: {

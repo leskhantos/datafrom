@@ -1,10 +1,12 @@
 <template>
   <body>
-    <AppHeader/>
-    <router-view></router-view>
-    <SnackBar/>
+    <link @load="showAll = true" v-if="!isMobile" rel="stylesheet" href="/static/css/style.css">
+    <link @load="showAll = true" v-else rel="stylesheet" href="/static/css/style-mobile.css">
+    <AppHeader v-if="showAll && !isMobile"/>
+    <router-view v-if="showAll"></router-view>
+    <SnackBar v-if="showAll"/>
 
-    <div class="overlay"></div>
+    <div class="overlay" v-if="showAll"></div>
   </body>
 </template>
 
@@ -12,11 +14,22 @@
   import AppHeader from "./components/AppHeader";
   import axios from 'axios'
   import SnackBar from "./components/SnackBar";
+  import { isMobile } from 'mobile-device-detect';
+
   export default {
     name: 'app',
     components:{
       AppHeader,
-      SnackBar
+      SnackBar,
+    },
+    data() {
+      return {
+        isMobile: isMobile,
+        showAll: false
+      }
+    },
+    beforeCreate() {
+      this.isMobile = isMobile
     },
     created: function () {
       axios.interceptors.response.use(response => {
@@ -27,7 +40,7 @@
             this.$router.replace('login')
           })
         }
-        return Promise.reject(new Error(400));
+        return Promise.reject(error);
       })
     }
   }

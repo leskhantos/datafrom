@@ -10,6 +10,7 @@ import RegistrationConfirm from "../views/RegistrationConfirm";
 import Profile from "../views/Profile";
 import RegistrationProfile from "../views/RegistrationProfile";
 import Menu from "../views/Menu";
+import MenuSubscription from "../views/MenuSubscription";
 import UserDiary from "../views/UserDiary";
 
 Vue.use(VueRouter)
@@ -115,11 +116,18 @@ export default new VueRouter({
             beforeEnter: ifAuthenticated
         },
         {
+            path: '/subscribe/:id',
+            name: 'menuSubs',
+            props: true,
+            component: MenuSubscription,
+            beforeEnter: ifAuthenticated
+        },
+        {
             path: '/diary',
             name: 'diary',
             props: false,
             component: UserDiary,
-            beforeEnter: ifAuthenticatedFirst
+            beforeEnter: ifAuthenticated
         }
     ],
     mode: 'history'

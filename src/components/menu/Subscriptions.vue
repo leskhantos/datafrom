@@ -5,8 +5,8 @@
             <div class="subscriptions-inner__image"><img src="/static/images/jpg/image-2.jpg" alt="diary"></div>
             <div class="subscriptions-inner__content">
                 <div class="subscriptions-inner__title-wrap">
-                    <h2 class="subscriptions-inner__caption">{{item.title}}</h2>
-                    <p class="subscriptions-inner__calories">{{item.calories.min}} – {{item.calories.max}} калорий</p>
+                    <h2 class="subscriptions-inner__caption">{{item.menu.title}}</h2>
+                    <p class="subscriptions-inner__calories">{{item.menu.calories.min}} – {{item.menu.calories.max}} калорий</p>
                 </div>
                 <div class="profiles-list__container">
                     <ul class="profiles-list">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="subscriptions-inner__desc">
                     <p>Описание меню</p>
-                    <p>{{item.description}}</p>
+                    <p>{{item.menu.description}}</p>
                 </div>
                 <div class="subscriptions-inner__btn-group">
                     <button class="button" type="button" @click="openMenu===keySub ? openMenu=-1 : openMenuTab(keySub)">
@@ -32,15 +32,15 @@
             <subscription-inner
                     :openMenu="openMenu"
                     :keySub="keySub"
-                    :costPerDayOneMeal="item.costPerDayOneMeal"
+                    :costPerDayOneMeal="item.menu.costPerDayOneMeal"
                     :listProfiles="listProfiles"
-                    :menu="item.id" />
+                    :menu="item.menu.id" />
             <subscription-settings
                     :openSettings="openSettings"
                     :keySub="keySub"
-                    :costPerDayOneMeal="item.costPerDayOneMeal"
+                    :costPerDayOneMeal="item.menu.costPerDayOneMeal"
                     :listProfiles="listProfiles"
-                    :menu="item.id"
+                    :menu="item.menu.id"
                     :subscription="item" />
         </article>
     </div>
@@ -69,7 +69,7 @@
         return this.$store.getters['user/getListProfiles'].items;
       },
       listSubscriptions() {
-        return this.$store.getters['menu/getListMenus'];
+        return this.$store.getters['menu/getListSubscriptions'];
       }
     },
     methods: {
@@ -84,7 +84,7 @@
     },
     mounted() {
       this.$store.dispatch('user/getListProfiles')
-      this.$store.dispatch('menu/getListMenus')
+      this.$store.dispatch('menu/getListSubscriptions')
     }
   }
 </script>

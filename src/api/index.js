@@ -89,6 +89,10 @@ export function CreateSubscription(subscription) {
   return axios.post(Settings.host + '/api/v1/subscription/subscribe', subscription)
 }
 
+export function AddMealsToSub(meals) {
+  return axios.post(Settings.host + '/api/v1/subscription/add_meals', meals)
+}
+
 export function GetIngredient(id) {
     return axios.get(Settings.host + '/api/v1/ingredients/' + id)
 }

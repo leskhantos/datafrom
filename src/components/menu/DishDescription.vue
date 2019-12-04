@@ -1,5 +1,5 @@
 <template>
-    <div class="modal__tab-content active">
+    <div :class="active ? 'modal__tab-content active' : 'modal__tab-content'">
         <div class="modal__tab-content-col flex">
             <div class="modal__level">
                 <p>Уровень сложности: <span>{{difficulty}}</span></p>
@@ -81,7 +81,7 @@
   export default {
     name: "DishDescription",
     components: {ArrowRight, ArrowLeft},
-    props: ['recipeForModal'],
+    props: ['recipeForModal', 'active'],
     data() {
       return {
         difficulty: ''
