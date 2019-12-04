@@ -94,10 +94,15 @@
             }
         },
         watch: {
-            profileNutrients(newVal) {
-                Object.keys(newVal).map((key) => {
-                    newVal[key] = this.roundUp(newVal[key])
+            profileNutrients(v) {
+                Object.keys(v).map((key) => {
+                    v[key] = this.roundUp(v[key])
                 })
+            },
+            dateInput(v) {
+                if (v) {
+                    this.$emit('set-date', v)
+                }
             }
         },
         data() {

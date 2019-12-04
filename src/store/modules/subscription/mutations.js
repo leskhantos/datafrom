@@ -18,6 +18,10 @@ const GET_GENERATED_SUBSCRIPTION_MEALS = (state, generatedSubscriptionMeals) => 
   state.generatedSubscriptionMeals = generatedSubscriptionMeals
 }
 
+const GET_SUBS_FOR_ONE_DAY = (state, subs) => {
+    state.subs = subs
+}
+
 export default {
   RECIPES,
   INGREDIENTS,
@@ -25,4 +29,5 @@ export default {
   ALL_INGREDIENTS,
   SET_SHOP_LIST,
   GET_GENERATED_SUBSCRIPTION_MEALS,
+  GET_SUBS_FOR_ONE_DAY
 }

@@ -3,18 +3,20 @@ import getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  listWater: [],
-  listSleep: [],
-  listWeight: [],
-  listSport: [],
-  listAllSportActivities: [],
-  listEatenIngredient: [],
+    listWater: [],
+    listSleep: [],
+    listWeight: [],
+    listSport: [],
+    listAllSportActivities: [],
+    listEatenIngredient: [],
+    listWaterForOneDay: [],
+    listSportForOneDay: [],
 }
 
 export default {
-  namespaced: true,
-  state,
-  actions,
-  getters,
-  mutations,
+    namespaced: true,
+    state,
+    actions,
+    getters,
+    mutations,
 }

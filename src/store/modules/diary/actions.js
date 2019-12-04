@@ -6,6 +6,8 @@ import {
     ListAllSportActivities,
     ListEatenIngredient,
     CreateWater,
+    ListWaterForOneDay,
+    ListSportForOneDay,
 } from '@/api'
 
 const getListWater = async ({commit}, args) => {
@@ -89,6 +91,30 @@ const createWater = async ({commit}, data) => {
     })
 }
 
+const listWaterForOneDay = async({commit}, data) => {
+    await ListWaterForOneDay(data)
+    .then((response) => {
+        const data = response.data
+        commit('LIST_WATER_FOR_ONE_DAY', data._embedded.items)
+    })
+    .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error)
+    })
+}
+
+const listSportForOneDay = async({commit}, data) => {
+    await ListSportForOneDay(data)
+    .then((response) => {
+        const data = response.data
+        commit('LIST_SPORT_FOR_ONE_DAY', data._embedded.items)
+    })
+    .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error)
+    })
+}
+
 export default {
     getListWater,
     getListSleep,
@@ -97,4 +123,6 @@ export default {
     listAllSportActivities,
     listEatenIngredient,
     createWater,
+    listWaterForOneDay,
+    listSportForOneDay,
 }

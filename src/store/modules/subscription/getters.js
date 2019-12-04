@@ -248,6 +248,7 @@ const getIngredientsPurchases = state => ingredient => {
 }
 const getShopList = state => state.shopList
 const getGeneratedSubscriptionMeals =  state => state.generatedSubscriptionMeals
+const getSubsForOneDay = state => state.subs
 
 export default {
   getWeight,
@@ -272,4 +273,5 @@ export default {
   getIngredientsPurchases,
   getShopList,
   getGeneratedSubscriptionMeals,
+  getSubsForOneDay,
 }
