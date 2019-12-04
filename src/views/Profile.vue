@@ -121,7 +121,7 @@
                                 <span slot="label">Морковь, свекла</span>
                             </paragraph-profile>
                         </div>
-                        <button class="button profile__btn" type="button">Расчёт калорийности и БЖУ</button>
+                        <button class="button profile__btn" type="button" @click="goToCalculate">Расчёт калорийности и БЖУ</button>
                     </div>
                 </div>
                 <div class="paper subscriptions">
@@ -214,8 +214,15 @@
         this.$store.dispatch('user/getUserInfo').then(() => {
           let profile = this.$store.getters['user/getProfile']
           this.$store.commit('user/PROFILE_INFO', profile)
-          this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: true}})
+          this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: true, initialStep:1}})
         });
+      },
+      goToCalculate(){
+          this.$store.dispatch('user/getUserInfo').then(() => {
+              let profile = this.$store.getters['user/getProfile']
+              this.$store.commit('user/PROFILE_INFO', profile)
+              this.$router.push({name: 'profile_create', params: {isOneExist: true, isEdit: true, initialStep:8}})
+          });
       }
     },
     watch: {

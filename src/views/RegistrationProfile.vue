@@ -79,7 +79,7 @@
       }
     },
     name: "RegistrationProfile",
-    props: ['isOneExist', 'isEdit'],
+    props: ['isOneExist', 'isEdit','initialStep'],
     computed: {
       currentStep() {
         return 'FormStep' + this.step
@@ -149,7 +149,12 @@
           this.$router.push({name: 'home'})
         }
       },
-    }
+    },
+      mounted() {
+        if(this.isEdit && this.isOneExist){
+            this.step = this.initialStep
+        }
+      }
   }
 </script>
 

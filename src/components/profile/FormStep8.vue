@@ -15,7 +15,7 @@
                     <div class="chart__item">
                         <p class="chart__name">Б</p>
                         <div class="chart__range">
-                            <div class="chart__range-fill red" style="height: 20%"></div>
+                            <div class="chart__range-fill red" :style="{height: this.percentProteins+'%'}"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
                             <input type="number" v-model="percentProteins">
@@ -24,7 +24,7 @@
                     <div class="chart__item">
                         <p class="chart__name">Ж</p>
                         <div class="chart__range">
-                            <div class="chart__range-fill yellow" style="height: 30%"></div>
+                            <div class="chart__range-fill yellow" :style="{height: this.percentFats+'%'}"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
                             <input type="number" v-model="percentFats">
@@ -33,7 +33,7 @@
                     <div class="chart__item">
                         <p class="chart__name">У</p>
                         <div class="chart__range">
-                            <div class="chart__range-fill green" style="height: 50%"></div>
+                            <div class="chart__range-fill green" :style="{height: this.percentCarbohydrates+'%'}"></div>
                         </div>
                         <label class="chart__input"><span>%</span>
                             <input type="number" v-model="percentCarbohydrates">
@@ -117,13 +117,25 @@
           this.carbohydrates = Math.round(((this.calories * this.percentCarbohydrates) / 100) / 4)
       },
       percentProteins: function () {
-        this.proteins = Math.round(((this.calories * this.percentProteins) / 100) / 4)
+          if (this.percentProteins >= 0 && this.percentProteins <= 100){
+              this.proteins = Math.round(((this.calories * this.percentProteins) / 100) / 4)
+          }else {
+              this.percentProteins=0
+          }
       },
       percentFats: function () {
-        this.fats = Math.round(((this.calories * this.percentFats) / 100) / 4)
+          if (this.percentFats >= 0 && this.percentFats <= 100){
+              this.fats = Math.round(((this.calories * this.percentFats) / 100) / 9)
+          }else {
+              this.percentFats = 0
+          }
       },
       percentCarbohydrates: function () {
-        this.carbohydrates = Math.round(((this.calories * this.percentCarbohydrates) / 100) / 4)
+          if (this.percentCarbohydrates >= 0 && this.percentCarbohydrates <= 100){
+              this.carbohydrates = Math.round(((this.calories * this.percentCarbohydrates) / 100) / 4)
+          }else {
+              this.percentCarbohydrates = 0
+          }
       }
     }
   }
